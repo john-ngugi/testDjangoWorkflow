@@ -2,7 +2,7 @@
 
 set -e
 
-RUN_MANAGE_PY='poetry run python -m manage'
+RUN_MANAGE_PY='poetry run python manage.py'
 
 echo 'Collecting static files...'
 $RUN_MANAGE_PY collectstatic --no-input
