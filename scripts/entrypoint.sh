@@ -2,7 +2,7 @@
 
 set -e
 
-RUN_MANAGE_PY='poetry run python -m cooking_core.manage'
+RUN_MANAGE_PY='poetry run python -m mtaawetu.manage'
 
 echo 'Collecting static files...'
 $RUN_MANAGE_PY collectstatic --no-input
