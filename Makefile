@@ -3,4 +3,4 @@ run-server:
 
 .PHONY: superuser
 superuser:
-	poetry run python -m cooking_core.manage createsuperuser
+	poetry run python -m manage.py createsuperuser
