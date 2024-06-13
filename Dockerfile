@@ -24,7 +24,7 @@ RUN poetry install --no-root
 # Copy project files
 COPY ["manage.py","README.md", "./"]
 COPY mtaawetu mtaawetu
-COPY local local
+# COPY local local
 
 # Expose the Django development server port (adjust if needed)
 EXPOSE 8000
