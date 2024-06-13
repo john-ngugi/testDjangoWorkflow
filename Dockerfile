@@ -22,7 +22,7 @@ COPY ["poetry.lock", "pyproject.toml", "./"]
 RUN poetry install --no-root
 
 # Copy project files
-COPY ["manage.py","README.md", "./"]
+COPY ["manage.py","Makefile","README.md", "./"]
 COPY mtaawetu mtaawetu
 # COPY local local
 
