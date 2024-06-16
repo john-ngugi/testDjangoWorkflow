@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="{% static 'bootstrap.min.css'%}">
+        <link rel="stylesheet" href="{% static 'main.css'%}">
+        <link rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin />
+
+
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin></script>
+        <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Mtaa Wetu</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'home' %}">Home
+                      <span class="visually-hidden">(current)</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="#">Another action</a>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Separated link</a>
+                    </div>
+                  </li>
+                </ul>
+                <form class="d-flex">
+                  <input class="form-control me-sm-2" type="search" placeholder="Search">
+                  <button class="btn btn-secondary my-2 my-sm-0" type="submit" id="search-location">Search</button>
+                </form>
+              </div>
+            </div>
+          </nav>
+        {%block content %}
+        <section class="container-fluid h-100 w-100 d-flex ">
+            <div i class="map">{{map|safe}}</div>
+
+            <div
+                class="layer-control w-25 pt-3 ps-2 pe-2  shadow-lg  ms-2 ms-2 mt-2 rounded-top d-flex flex-column">
+                <p class="ps-2 text-dark">Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit.
+                    Error vitae animi esse officia quis excepturi, laborum
+                    exercitationem omnis accusantium quam cum dolore illum alias
+                    modi.
+                    Omnis nostrum suscipit libero quas?
+                </p>
+
+
+                <div class="container mt-5">
+                    <h3>Query Layer</h3>
+                    <form method="post" id="send-layer-info">
+                        {% csrf_token %}
+                        <div class="form-group ">
+                            <label for="layerSelect" class="text-primary-emphasis">Layer Name </label>
+                            <select class="form-control" id="layerSelect">
+                                <option value="schoolaccessindexdrive">schoolaccessindexdrive</option>
+                                <option value="schoolaccessindexwalk">schoolaccessindexwalk</option>
+                            </select>
+
+                            <label for="layerNameSelect"class="text-primary-emphasis">Select Legend Name</label>
+                            <select class="form-control" id="layerNameSelect">
+                                <option value="school access index driv">school access index driv</option>
+                                <option value="School Access Index">School Access Index</option>
+                            </select>
+                            <label for="layerNameSelect" class="text-primary-emphasis">Select attribute</label>
+                            <select class="form-control" id="AttributeSelect">
+                                <option value="schoolacce">schoolacce</option>
+                                <option value="saccinddrv">saccinddrv</option>
+                            </select>
+                            <button type="submit"
+                            class="btn btn-sm  bg-primary mt-2 w-100 text-white" id="get-layer-btn ">Get Layer</button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <p class="ps-2 mt-2 pt-5 text-dark">Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit.
+                    Error vitae animi esse officia quis excepturi, laborum
+                    exercitationem omnis accusantium quam cum dolore illum alias
+                    modi.
+                    Omnis nostrum suscipit libero quas?
+                </p>
+            </div>
+        </section>
+        {% endblock %}
+        <script src="{% static 'main.js' %}"></script>
+        <script>
+
+        </script>
+    </body>
+</html>
