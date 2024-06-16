@@ -1,0 +1,71 @@
+/* Style for the whole scrollbar */
+::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+    height: 8px; /* Height of the scrollbar for horizontal scrollbars */
+}
+
+/* Style for the scrollbar track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background of the scrollbar track */
+    border-radius: 10px; /* Rounded edges for the scrollbar track */
+}
+
+/* Style for the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+    background: #888; /* Background color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded edges for the scrollbar thumb */
+}
+
+/* Style for the scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Background color of the scrollbar thumb on hover */
+}
+
+
+.map{
+    position: absolute;
+    height: 90vh;
+    width: 100vw;
+}
+
+#map{
+    position: absolute;
+    height: 90vh;
+    width: 100vw;
+}
+
+
+.layer-control{
+    position: fixed;
+    overflow-y: scroll;
+    z-index: 10;
+    height: 90vh;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+
+}
+
+
+@media only screen and (max-width: 768px) {
+    .layer-control{
+        position: fixed;
+        overflow-y: scroll;
+        z-index: 10;
+        height: 50vh;
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        color: white;
+
+        #map{
+            position: absolute;
+            height: 90vh;
+            width: 100vw;
+        }
+
+    }
+    }
