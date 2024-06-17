@@ -9,12 +9,18 @@ import geopandas as gpd
 import pandas as pd
 import requests
 from django.http import JsonResponse
+from django.contrib import messages
 # Function to randomize color selection
 
 import random
 # Create your views here.
 
+layer_options=['schoolaccessindexdrive','schoolaccessindexwalk', 'schoolaccessratiodrive',
+             'schoolaccessratiowal','nbihealthaccess','nbijobsacces','nbilanduseentropy','public.schoolaccessratiowalk']
 
+legend_options = options=['school access Index', 'school access index drive', 'school access index walk',
+                          'school access', 'school access ratio', 'school access ratio walk', 'school access ratio', "health access index","health access ratio",' Job access index','Job access ratio','land use Entropy']
+attribute_options = ["schoolacce", 'saccinddrv', 'schaccessb','saccindwlk','jobaccindx','jobacratio','accessindx','acessratio','areahex','entropy_fn',"JobAccesRatio"]
 
 # Define the custom tile layer URL and name
 custom_tile_url = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png'
@@ -266,7 +272,11 @@ def index(request):
     getPointData(m=m,lat='latitude',lon='longitude',table_name='nairobi_hospitals',extra_columns=['f_name', 'location','agency'])
     create_chloropeth(m=m,table_name="schoolaccessindexdrive",legend_name='school access Index',extra_columns=['id','schoolacce'])
     context = {
-        'map': m._repr_html_()
+        'map': m._repr_html_(),
+        'layer_options': layer_options,
+        'legend_options': legend_options,
+        'attribute_options': attribute_options,
+
     }
 
     return render(request,'base.html',context)
@@ -291,15 +301,18 @@ def getLayers(request):
         table_name = data.get('layerSelect')
         legend_name = data.get('layerNameSelect')
         attribute = data.get('attributeSelect')
+
         create_chloropeth(m=m,table_name=table_name,legend_name=legend_name,extra_columns=['id',f'{attribute}'])
         print(data)
-
         context = {
-        'map': m._repr_html_()
+            'map': m._repr_html_(),
+            'layer_options': layer_options,
+            'legend_options': legend_options,
+            'attribute_options': attribute_options,
         }
-
-        # Return a response after processing POST data
+            # Return a response after processing POST data
         return JsonResponse(context, safe = True)
 
+
     # If not a POST request (e.g., GET request), render 'index.html'
-    return render(request, 'index.html')
+    return render(request, 'base.html')
