@@ -60,3 +60,5 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+console.log('{{layer_options}}')
