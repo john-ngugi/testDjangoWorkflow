@@ -62,3 +62,45 @@ function getCookie(name) {
 }
 
 console.log('{{layer_options}}')
+
+// const commentsBox = document.getElementById('comments');
+// const boxOpener = document.getElementById('box-opener');
+// const closeFormBtn = document.getElementById("close-comment-btn")
+
+// boxOpener.addEventListener('click', ()=> {
+//         commentsBox.style.display = Flex;
+//     })
+
+// closeFormBtn.addEventListener('click',()=>{
+//     commentsBox.style.display = 'None'
+// })
+
+ /*
+
+  Facility hospital access index
+  select between hosital and school (simplified)
+  add in a changing opacity*
+  add in the overlay for neighbourhoods
+  separate the reseach papers
+  list of papers
+  datasets our datsets
+  open linksto open data
+  scrapped data inder datasets
+  Themes {accessibility opportunity , network analiys properties, zoning }
+
+   sdna = [ mad(clossness centarlity)  diva(sevierance/ separation) len(density) halr(efficiency) tpbta(2 faced-betweenness centrality) ] 1500 = 1.5 killomitres
+
+   density , design(sdna),  opportunity , diversity(entropy), acceccibitlity, distance to public transport , population density
+   short description of the layers i.e dates of aquiry for the hospitals ,
+   send a layer with shops, mpesa but for now use the ones from OSM
+
+
+   have a menu where people choose what the person is satisfied and uncertisfied with.
+   so that people in the medical or whatever field to have better services.
+
+   have a closed ended and open ended approach to facilities(level of satisfaction)
+
+   feedback- contact page
+
+
+ */

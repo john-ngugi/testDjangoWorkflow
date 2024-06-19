@@ -2,136 +2,216 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Document</title>
-        <link rel="stylesheet" href="{% static 'bootstrap.min.css'%}">
-        <link rel="stylesheet" href="{% static 'main.css'%}">
-        <link rel="stylesheet"
+        <link rel="stylesheet" href="{% static 'bootstrap.min.css'%}" />
+        <link rel="stylesheet" href="{% static 'main.css'%}" />
+        <link
+            rel="stylesheet"
             href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
             integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-            crossorigin />
+            crossorigin
+        />
 
-
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        <script
+            src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin></script>
+            crossorigin
+        ></script>
         <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
-
+            crossorigin="anonymous"
+        ></script>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
             <div class="container-fluid">
-              <a class="navbar-brand" href="#">Mtaa Wetu</a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav me-auto">
-                  <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'home' %}">Home
-                      <span class="visually-hidden">(current)</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Apps</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Datasets</a>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Separated link</a>
-                    </div>
-                  </li>
-                </ul>
-                <form class="d-flex">
-                  <input class="form-control me-sm-2" type="search" placeholder="Search">
-                  <button class="btn btn-secondary my-2 my-sm-0" type="submit" id="search-location">Search</button>
-                </form>
-              </div>
-            </div>
-          </nav>
-          {% if messages %}
-          <div class="mt-3">
-              {% for message in messages %}
-                  <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-              {% endfor %}
-          </div>
-        {% endif %}
-
-        {%block content %}
-        <section class="container-fluid h-100 w-100 d-flex ">
-            <div i class="map">{{map|safe}}</div>
-
-            <div
-                class="layer-control w-25 pt-3 ps-2 pe-2  shadow-lg  ms-2 ms-2 mt-2 rounded-top d-flex flex-column">
-                <p class="ps-2 text-dark">Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit.
-                    Error vitae animi esse officia quis excepturi, laborum
-                    exercitationem omnis accusantium quam cum dolore illum alias
-                    modi.
-                    Omnis nostrum suscipit libero quas?
-                </p>
-
-
-                <div class="container mt-5">
-                    <h3>Query Layer</h3>
-                    <form method="post" id="send-layer-info">
-                        {% csrf_token %}
-                        <div class="form-group ">
-                            <label for="layerSelect" class="text-primary-emphasis">Layer Name </label>
-                            <select class="form-control" id="layerSelect">
-                              {% for option in layer_options %}
-                                <option value="{{option}}">{{option}}</option>
-                              {% endfor %}
-                            </select>
-
-                            <label for="layerNameSelect"class="text-primary-emphasis">Select Legend Name</label>
-                            <select class="form-control" id="layerNameSelect">
-                                {% for option in legend_options %}
-                                    <option value="{{option}}">{{option}}</option>
-                                {% endfor %}
-                            </select>
-                            <label for="layerNameSelect" class="text-primary-emphasis">Select attribute</label>
-                            <select class="form-control" id="AttributeSelect">
-                                {% for option in attribute_options %}
-                                <option value="{{option}}">{{option}}</option>
-                                {% endfor %}
-                            </select>
-
-                            <button type="submit"
-                            class="btn btn-md  bg-primary mt-2 w-100 text-white" id="get-layer-btn ">Get Layer</button>
-                        </div>
-
+                <a class="navbar-brand" href="#">Mtaa Wetu</a>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarColor01"
+                    aria-controls="navbarColor01"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'home' %}"
+                                >Home
+                                <span class="visually-hidden">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Apps</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Pricing</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a
+                                class="nav-link dropdown-toggle"
+                                data-bs-toggle="dropdown"
+                                href="#"
+                                role="button"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                                >Datasets</a
+                            >
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Online Datasets</a>
+                                <a class="dropdown-item" href="#">Research Papers</a>
+                                {% comment %} <a class="dropdown-item" href="#">Something else here</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a> {% endcomment %}
+                            </div>
+                        </li>
+                    </ul>
+                    <form class="d-flex">
+                        <input class="form-control me-sm-2" type="search" placeholder="Search" />
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit" id="search-location">
+                            Search
+                        </button>
                     </form>
                 </div>
+            </div>
+        </nav>
+        {% if messages %}
+        <div class="mt-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %} {%block content %}
+        <section class="container-fluid h-100 w-100 d-flex col-lg-12 top-section">
+            <div class="map h-100 w-100 col-lg-12">{{map|safe}}</div>
 
-                <p class="ps-2 mt-2 pt-5 text-dark">Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit.
-                    Error vitae animi esse officia quis excepturi, laborum
-                    exercitationem omnis accusantium quam cum dolore illum alias
-                    modi.
-                    Omnis nostrum suscipit libero quas?
-                </p>
+            <div class="container-fluid d-flex hero-contents">
+                <div
+                    class="layer-control pt-3 ps-2 pe-2 shadow-lg ms-2 ms-2 mt-2 rounded-top d-flex flex-column col-lg-4"
+                >
+                    <p class="ps-2 text-dark">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error vitae animi esse officia quis
+                        excepturi, laborum exercitationem omnis accusantium quam cum dolore illum alias modi. Omnis
+                        nostrum suscipit libero quas?
+                    </p>
+
+                    <div class="container mt-5">
+                        <h3>Query Layer</h3>
+                        <form method="post" id="send-layer-info" class="form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="layerSelect" class="text-primary-emphasis">Select Layer Name </label>
+                                <select class="form-control" id="layerSelect">
+                                    {% for option in layer_options %}
+                                    <option value="{{option}}">{{option}}</option>
+                                    {% endfor %}
+                                </select>
+
+                                <label for="layerNameSelect" class="text-primary-emphasis">Select Legend Name</label>
+                                <select class="form-control" id="layerNameSelect">
+                                    {% for option in legend_options %}
+                                    <option value="{{option}}">{{option}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="layerNameSelect" class="text-primary-emphasis">Select attribute</label>
+                                <select class="form-control outline-dark" id="AttributeSelect">
+                                    {% for option in attribute_options %}
+                                    <option value="{{option}}">{{option}}</option>
+                                    {% endfor %}
+                                </select>
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-md bg-primary mt-2 w-100 text-white"
+                                    id="get-layer-btn "
+                                >
+                                    Get Layer
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <p class="ps-2 mt-2 pt-5 text-dark">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error vitae animi esse officia quis
+                        excepturi, laborum exercitationem omnis accusantium quam cum dolore illum alias modi. Omnis
+                        nostrum suscipit libero quas?
+                    </p>
+                </div>
+
+                <div class="comments rounded-top" id="comments">
+                    <div class="messages">
+                        <div class="comment-tag bg-primary rounded m-2">
+                            <h6 class="commenters-name m-2 text-warning">John Ngugi</h6>
+                            <p class="comment-body m-2">The beds are too few!</p>
+                            <small class="ms-5 text-sm">
+                                - Posted on
+                                <span><i>Mon Jun 17 2:35 pm </i></span>
+                            </small>
+                        </div>
+
+                        <div class="comment-tag bg-primary rounded m-2">
+                            <h6 class="commenters-name m-2 text-success">Martin</h6>
+                            <p class="comment-body m-2">The beds are too few!</p>
+                            <small class="ms-5 text-sm">
+                                - Posted on
+                                <span><i>Thu Aug 22 4:50 pm</i></span>
+                            </small>
+                        </div>
+
+                        <div class="comment-tag bg-primary rounded m-2">
+                            <h6 class="commenters-name m-2 text-success">Jane Omollo</h6>
+                            <p class="comment-body m-2">The service time was Great</p>
+                            <small class="ms-5 text-sm">
+                                - Posted on
+                                <span><i>Wed Jan 08 2:20 pm</i></span>
+                            </small>
+                        </div>
+
+                        <div class="comment-tag bg-primary rounded m-2">
+                            <h6 class="commenters-name m-2 text-success">John Ngugi</h6>
+                            <p class="comment-body m-2">The place was great!</p>
+                            <small class="ms-5 text-sm">
+                                - Posted on
+                                <span><i>Fri Jul 19 7:45 am</i></span>
+                            </small>
+                        </div>
+                    </div>
+                    <hr class="dropdown-divider" />
+                    <form action method="post">
+                        {% csrf_token %}
+                        <div>
+                            <label for="Textarea" class="form-label text-primary ms-2">Leave Comment</label>
+                            <textarea class="form-control" id="Textarea" rows="2"></textarea>
+                        </div>
+                        <div class="d-flex">
+                            <button type="submit" class="btn btn-primary bg-primary btn-sm mt-1 ms-2 w-25 text-white">
+                                Submit
+                            </button>
+                            <button
+                                type="button"
+                                id="close-comment-btn"
+                                class="btn btn-danger bg-danger btn-sm mt-1 w-25 ms-2 text-white close-comment-btn"
+                            >
+                                close
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </section>
         {% endblock %}
         <script src="{% static 'main.js' %}"></script>
-        <script>
-
-        </script>
+        <script></script>
     </body>
 </html>

@@ -4,23 +4,29 @@ import folium
 from folium import Html, Element
 import json
 import requests
+import psycopg2
 from sqlalchemy import create_engine
 import geopandas as gpd
 import pandas as pd
-import requests
+import decimal
 from django.http import JsonResponse
 from django.contrib import messages
+import branca
 # Function to randomize color selection
 
 import random
 # Create your views here.
 
 layer_options=['schoolaccessindexdrive','schoolaccessindexwalk', 'schoolaccessratiodrive',
-             'schoolaccessratiowal','nbihealthaccess','nbijobsacces','nbilanduseentropy','public.schoolaccessratiowalk']
+             'schoolaccessratiowal','nbihealthaccess','nbijobsacces','nbilanduseentropy','sdna_1500meters_2018','sdna_1000meters_2018','sdna_500meters_2018']
 
 legend_options = options=['school access Index', 'school access index drive', 'school access index walk',
-                          'school access', 'school access ratio', 'school access ratio walk', 'school access ratio', "health access index","health access ratio",' Job access index','Job access ratio','land use Entropy']
-attribute_options = ["schoolacce", 'saccinddrv', 'schaccessb','saccindwlk','jobaccindx','jobacratio','accessindx','acessratio','areahex','entropy_fn',"JobAccesRatio"]
+                          'school access', 'school access ratio', 'school access ratio walk', 'school access ratio',
+                          "health access index",
+                          "health access ratio",'Job access index','Job access ratio','land use Entropy','sdna_1500meters_2018',
+                          'sdna_1000meters_2018','sdna_500meters_2018']
+
+attribute_options = ["schoolacce", 'saccinddrv', 'schaccessb','saccindwlk','jobaccindx','jobacratio','accessindx','acessratio','areahex','entropy_fn',"JobAccesRatio",'shape_leng']
 
 # Define the custom tile layer URL and name
 custom_tile_url = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png'
@@ -33,12 +39,147 @@ base_maps = {
     "OpenStreetMap": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 }
 
+# Function to generate star rating HTML
+def generate_star_rating(rating):
+    stars = ''
+    for i in range(5):
+        if i < rating:
+            stars += '<i class="fa-solid fa-star " aria-hidden="true" style="color: #FFD43B;"></i>'
+        else:
+            stars += '<i class="fa-regular fa-star" aria-hidden="true" style="color: #FFD43B;"></i>'
+    return stars
 
+def get_db_connection():
+    return psycopg2.connect(
+        dbname='mtaa-wetu0_start',
+        user= 'mtaa-wetu0',
+        password='MtaaWetu***',
+        host='postgresql-mtaa-wetu0.alwaysdata.net',
+        port='5432'
+    )
+conn = get_db_connection()
 
 # Database connection URL
 db_connection_url = "postgresql://mtaa-wetu0:MtaaWetu***@postgresql-mtaa-wetu0.alwaysdata.net:5432/mtaa-wetu0_start"
 con = create_engine(db_connection_url)
 
+
+# Define a function to generate different colors based on the feature properties
+def get_color(properties):
+    # Convert Decimal objects to float, if applicable
+    properties = {key: str(value) if isinstance(value, decimal.Decimal) else value for key, value in properties.items()}
+    # Assuming you have a different property or combination of properties to use for generating colors
+    # Here, I'm just using a hash of the properties to generate a color
+    hue = hash(json.dumps(properties)) % 360
+    saturation = 50
+    lightness = 50
+    return f'hsl({hue}, {saturation}%, {lightness}%)'
+
+
+
+#define the function to create the featues
+def get_features_geojson(m,tableName,layername,extra_columns=[]):
+    """
+
+    Args:
+      tableName: Name of the database table to query
+      layername: Name of the layer name to add to the map
+      extra_columns: List of columns to include in the GeoJSON feature properties.
+    """
+
+
+
+    table_name = tableName
+    print(table_name)
+    cursor = conn.cursor()
+    # Create a cursor to execute SQL queries
+    with cursor:
+
+        # Join all the columns specified in *args into a comma-separated string
+        columns_str = ', '.join(extra_columns)
+
+        # Start a transaction
+        cursor.execute("BEGIN")
+
+        # Query to fetch all features and transform the geometry to GeoJSON
+        sql_query = f'SELECT ST_AsGeoJSON(ST_ForcePolygonCCW(geom)) AS geometry, {columns_str} FROM {table_name};'
+
+        cursor.execute("ROLLBACK")
+        conn.commit()
+        cursor.execute(sql_query)
+
+        # Fetch all rows
+        rows = cursor.fetchall()
+
+        # create the GeoJson file structure to avoid unaccepted geoJson
+        geojson_data = {
+            "type": "FeatureCollection",
+            "features": []
+        }
+
+        #loop through all the rows in the columns and append to the GeoJson dictionary
+        for row in rows:
+            try:
+                # Parse the geometry as GeoJSON
+                # add the properties given in the *args(extra columns)
+
+                properties = {}
+                for i, column in enumerate(extra_columns, 1):
+                    properties[column] = str(row[i])
+
+                feature = {
+                    "type": "Feature",
+                    "geometry": json.loads(row[0]),
+                    "properties": properties
+                }
+                geojson_data["features"].append(feature)
+
+            except (json.JSONDecodeError, TypeError) as e:
+                # Handle the error
+                print(f"Error decoding JSON for row: {row}. Error: {e}")
+
+        if geojson_data['features'][0]["geometry"]['type'] == 'MultiPolygon':
+            folium.GeoJson(
+                geojson_data,
+                name=layername,
+                style_function=lambda feature: {
+                    "fillColor": get_color(feature['properties']),
+                    "color": "grey",      # Outline color
+                    "weight": 1,          # Outline weight
+                    "fillOpacity": 0.9    # Transparency of fill color
+                },
+                highlight_function=lambda feature: {
+                    "fillColor": "red",   # Color for highlighted feature
+                    "color": "white",
+                    "weight": 2,
+                    "fillOpacity": 0.6
+                },
+                tooltip=folium.GeoJsonTooltip(fields=extra_columns, aliases=extra_columns)
+            ).add_to(m)
+            print("success: geojson")
+        elif geojson_data['features'][0]["geometry"]['type'] == 'MultiLineString':
+            folium.GeoJson(
+                geojson_data,
+                name=layername,
+                style_function=lambda feature: {
+                    "color": "blue",    # Line color
+                    "weight": 3,        # Line weight
+                    "opacity": 0.7      # Line opacity
+                },
+                highlight_function=lambda feature: {
+                    "color": "yellow",  # Highlighted line color
+                    "weight": 5,        # Highlighted line weight
+                    "opacity": 1        # Highlighted line opacity
+                },
+                tooltip=folium.GeoJsonTooltip(fields=extra_columns, aliases=extra_columns)
+            ).add_to(m)
+
+
+        else:
+            print('Layer is neither MultiPolygon nor MultiLineString')
+            return m
+
+        return 'success'
 
 color_values = [
     "YlGn",
@@ -82,7 +223,7 @@ def getPointData(m,lat,lon, table_name,extra_columns=[]):
   # Join all the columns specified in *args into a comma-separated string
   columns_str = ', '.join(extra_columns)
   # set the table name
-  tablename = f'\{table_name}'
+  tablename = f'{table_name}'
   # get the connection url from the database
   sql = f'SELECT {lat},{lon}, {columns_str} FROM {table_name}'
   columns = [lat,lon] + extra_columns
@@ -92,15 +233,47 @@ def getPointData(m,lat,lon, table_name,extra_columns=[]):
   df = pd.DataFrame(sql_query, columns=columns)
   #drop any null values
   df = df.dropna()
-
   for index, row in df.iterrows():
-    # print(row['latitude'],row['longitude'])
+    # Generate star rating HTML
+    # star_rating = generate_star_rating(row['rating'])
+    star_rating = generate_star_rating(2)
+    #integrating the toggle functionality within the popup HTML
+    popup_html = f"""
+    <div class="card border-0 shadow-md" style="width: 20rem;">
+        <div class="card-body">
+            <h5 class="card-title">{row['f_name']}</h5>
+            <p> Location: {row['location']}</p>
+            <p> Division: {row['division']}</p>
+            <div>Level of Satisfaction: {star_rating}</div>
+            <a href="#" class="stretched-link" id="box-opener-{index}" onclick="openCommentsBox({index})">View and add comment</a>
+
+        </div>
+    </div>
+    """
+
+    # Create a Marker with the formatted popup
     folium.Marker(
-        location= [row['latitude'], row['longitude']],
+        location=[row['latitude'], row['longitude']],
         tooltip=row['f_name'],
-        popup=row['f_name'],
+        popup=folium.Popup(popup_html, max_width=2650),
         icon=folium.Icon(color='green'),
     ).add_to(m)
+    # Add JavaScript to the map
+    js = """
+<script>
+    function openCommentsBox(index) {
+        var commentsBox = document.getElementById('comments');
+        commentsBox.style.display = 'flex';
+    }
+
+    function closeCommentsBox(index) {
+        var commentsBox = document.getElementById('comments');
+        commentsBox.style.display = 'none';
+    }
+    </script>
+
+    """
+    m.get_root().html.add_child(folium.Element(js))
   print("Markers added")
   return m
 
@@ -113,14 +286,14 @@ def create_chloropeth(m,table_name,legend_name,extra_columns=[]):
     extra_columns: list: other attributes to be returned
     '''
     if table_name == 'nbihealthaccess':
-        getPointData(m=m,lat='latitude',lon='longitude',table_name='nairobi_hospitals',extra_columns=['f_name', 'location','agency'])
+        getPointData(m=m,lat='latitude',lon='longitude',table_name='nairobi_hospitals',extra_columns=['f_name', 'location','agency','division'])
 
 
     # Join all the columns specified in *args into a comma-separated string
     columns_str = ', '.join(extra_columns)
     # set the table name
     #'\"nairobi_roads\"'
-    tablename = f'\{table_name}'
+    tablename = f'{table_name}'
     # get the connection url from the database
     db_connection_url = "postgresql://mtaa-wetu0:MtaaWetu***@postgresql-mtaa-wetu0.alwaysdata.net:5432/mtaa-wetu0_start"
 
@@ -138,6 +311,7 @@ def create_chloropeth(m,table_name,legend_name,extra_columns=[]):
         # Convert columns starting from the third column to float
         df[df.columns[2:]] = df[df.columns[2:]].astype(float)
         key_on = extra_columns[0]
+
         # Create the choropleth layer
         choropleth = folium.Choropleth(
             geo_data=df, # Data to be used
@@ -152,7 +326,8 @@ def create_chloropeth(m,table_name,legend_name,extra_columns=[]):
             # threshold_scale=custom_scale,  # Custom threshold scale(removed due to abnormal data distribution)
             bins=5,  # Number of bins for the scale
         ).add_to(m)
-        # Step 2: Create custom CSS
+
+        #  Create custom CSS
         custom_css = """
         <style>
         .leaflet-control-layers {
@@ -193,7 +368,7 @@ def create_chloropeth(m,table_name,legend_name,extra_columns=[]):
         </style>
         """
 
-        # Step 3: Inject custom CSS into the map
+        # Inject custom CSS into the map
         css_element = Element(custom_css)
         m.get_root().html.add_child(css_element)
 
@@ -204,12 +379,20 @@ def create_chloropeth(m,table_name,legend_name,extra_columns=[]):
 
 
       ####### overpass API #########
+        if table_name == 'schoolaccessindexdrive' or\
+            table_name == 'schoolaccessindexwalk' or table_name == 'schoolaccessratiodrive' \
+            or table_name == 'schoolaccessratiowalk':
+            amenity = 'school'
+        elif table_name == 'nbihealthaccess':
+            amenity ='hospital'
+        else:
+            amenity == 'hospital'
 
         # Define parameters
         radius = 25000
         latitude = -1.2921
         longitude = 36.8219
-        amenity_type = "amenity=hospital"
+        amenity_type = f"amenity={amenity}"
 
         # Define the Overpass query string
         overpass_query = f"""
@@ -233,13 +416,30 @@ def create_chloropeth(m,table_name,legend_name,extra_columns=[]):
             # check if elements are available
             if data['elements']:
                 print('success')
-                for i in data['elements']:
-                    folium.Marker(
-                        location= [i['lat'], i['lon']],
-                        tooltip=i['tags']['name'],
-                        popup=i['tags']['name'],
-                        icon=folium.Icon(color="red"),
-                    ).add_to(m)
+            for i in data['elements']:
+                # Generate star rating HTML
+                star_rating = generate_star_rating(i['tags'].get('rating', 0))
+
+                # Define the HTML for the popup using Bootstrap card
+                popup_html = f"""
+                <div class="card border-0 shadow-md" style="width: 20rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{i['tags']['name']}</h5>
+                    <p class="card-text">{i['tags'].get('description', 'No description available')}</p>
+                    <div>Level of Satisfaction: {star_rating}</div>
+                    <a href="#" class="stretched-link"> View and add comment </a>
+                </div>
+                </div>
+                """
+
+                # Create a Marker with the formatted popup
+                folium.Marker(
+                    location=[i['lat'], i['lon']],
+                    tooltip=i['tags']['name'],
+                    popup=folium.Popup(popup_html, max_width=2750),
+                    icon=folium.Icon(color="red"),
+                ).add_to(m)
+
             else:
                 print("No elements Available ")
         # Handle any errors
@@ -259,7 +459,9 @@ def index(request):
     m = folium.Map(
                    location = (-1.2921, 36.8219),
                    zoom_control=False,
-                   zoom_start=12)
+                   zoom_start=12,
+                    width='100%',
+                    height='100%')
 
     # Add the custom base map tile layer with a custom name
     folium.TileLayer(
@@ -269,8 +471,12 @@ def index(request):
     ).add_to(m)
     # connect to the database
     # create_chloropeth(m,'estates_nairobi','area',extra_columns=['name','shape_area'])
-    getPointData(m=m,lat='latitude',lon='longitude',table_name='nairobi_hospitals',extra_columns=['f_name', 'location','agency'])
+    getPointData(m=m,lat='latitude',lon='longitude',table_name='nairobi_hospitals',extra_columns=['f_name', 'location','agency','division'])
     create_chloropeth(m=m,table_name="schoolaccessindexdrive",legend_name='school access Index',extra_columns=['id','schoolacce'])
+
+    # f=folium.Figure(height="100%")
+    # m.add(f)
+
     context = {
         'map': m._repr_html_(),
         'layer_options': layer_options,
@@ -287,6 +493,7 @@ def getLayers(request):
                 location = (-1.2921, 36.8219),
                 zoom_control=False,
                 zoom_start=12)
+
     folium.TileLayer(
         tiles=custom_tile_url,
         name=custom_tile_name,
@@ -294,15 +501,19 @@ def getLayers(request):
     ).add_to(m)
 
     if request.method == 'POST':
-        # Process POST data here if needed
-        # Example: Assuming you want to extract data from JSON request body
-        import json
+
+        # Process POST data
+
         data = json.loads(request.body)
         table_name = data.get('layerSelect')
         legend_name = data.get('layerNameSelect')
         attribute = data.get('attributeSelect')
+        if table_name == 'sdna_1500meters_2018' or table_name == 'sdna_1000meters_2018' or table_name == 'sdna_500meters_2018':
+            print(table_name)
+            get_features_geojson(m,f'{table_name}',layername=legend_name,extra_columns=['id',f'{attribute}'])
+        else:
+            create_chloropeth(m=m,table_name=table_name,legend_name=legend_name,extra_columns=['id',f'{attribute}'])
 
-        create_chloropeth(m=m,table_name=table_name,legend_name=legend_name,extra_columns=['id',f'{attribute}'])
         print(data)
         context = {
             'map': m._repr_html_(),
@@ -310,9 +521,10 @@ def getLayers(request):
             'legend_options': legend_options,
             'attribute_options': attribute_options,
         }
-            # Return a response after processing POST data
+
+        # Return a response after processing POST data
         return JsonResponse(context, safe = True)
 
 
-    # If not a POST request (e.g., GET request), render 'index.html'
+    # If not a POST request (e.g., GET request), render 'base.html'
     return render(request, 'base.html')

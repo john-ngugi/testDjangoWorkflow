@@ -1,3 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+p{
+    font-family: "Nunito Sans", sans-serif;
+    line-height: 30px;
+    font-weight: 300;
+}
+
+body{
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
 /* Style for the whole scrollbar */
 ::-webkit-scrollbar {
     width: 8px; /* Width of the scrollbar */
@@ -12,60 +26,88 @@
 
 /* Style for the scrollbar thumb */
 ::-webkit-scrollbar-thumb {
-    background: #888; /* Background color of the scrollbar thumb */
+    background:#378DFC ; /* Background color of the scrollbar thumb */
     border-radius: 10px; /* Rounded edges for the scrollbar thumb */
 }
 
 /* Style for the scrollbar thumb on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Background color of the scrollbar thumb on hover */
+    background: #3872be; /* Background color of the scrollbar thumb on hover */
 }
 
 
 .map{
-    position: absolute;
+    position: Fixed;
     height: 90vh;
     width: 100vw;
 }
 
 #map{
-    position: absolute;
+    position: Fixed;
     height: 90vh;
     width: 100vw;
 }
 
 
 .layer-control{
-    position: fixed;
+    position: relative;
     overflow-y: scroll;
     z-index: 10;
     height: 90vh;
+    width: 25%;
     background: rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    color: white;
+    color: rgb(250, 230, 230);
 
 }
 
+.comments{
+    height: 65vh;
+    width: 350px;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-left: 50%;
+    margin-top: 10%;
+}
+
+
+
+.messages{
+    overflow-y: scroll;
+}
 
 @media only screen and (max-width: 768px) {
     .layer-control{
+        display:none;
+        width: 100%;
+    }
+    .map{
+        position: Fixed;
+        height: 90%;
+        width: 100%;
+    }
+
+    #map{
         position: fixed;
-        overflow-y: scroll;
-        z-index: 10;
-        height: 50vh;
-        background: rgba(255, 255, 255, 0.1);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        color: white;
-
-        #map{
-            position: absolute;
-            height: 90vh;
-            width: 100vw;
-        }
-
+        height: 90%;
+        width: 100%;
+    }
+    .comments{
+        display: none;
+    }
+    .top-section{
+        height: 100vh;
+        width: 100vw;
+    }
+    .hero-contents{
+           flex-direction: column;
     }
     }
