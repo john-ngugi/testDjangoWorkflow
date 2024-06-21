@@ -511,6 +511,21 @@ Pillow = "*"
 dev = ["bandit[toml] (==1.7.6)", "black (==22.12.0)", "codespell (==2.2.2)", "coverage (==7.4.0)", "mypy (==1.8.0)", "mypy-extensions (==1.0.0)", "pytest (==7.4.4)", "pytest-cov (==4.0.0)", "pytest-django (==4.5.2)", "pytest-mock (==3.10.0)", "safety (==2.3.5)", "types-setuptools (==65.6.0.2)", "typing-extensions (==4.9.0)"]
 
 [[package]]
+name = "django-cors-headers"
+version = "4.4.0"
+description = "django-cors-headers is a Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS)."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "django_cors_headers-4.4.0-py3-none-any.whl", hash = "sha256:5c6e3b7fe870876a1efdfeb4f433782c3524078fa0dc9e0195f6706ce7a242f6"},
+    {file = "django_cors_headers-4.4.0.tar.gz", hash = "sha256:92cf4633e22af67a230a1456cb1b7a02bb213d6536d2dcb2a4a24092ea9cebc2"},
+]
+
+[package.dependencies]
+asgiref = ">=3.6"
+django = ">=3.2"
+
+[[package]]
 name = "django-filter"
 version = "24.2"
 description = "Django-filter is a reusable Django application for allowing users to filter querysets dynamically."
@@ -1884,4 +1899,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "69af03e42427f9ea4be81631b21bb06bc2223c0d30631161e0d6092012ca72f5"
+content-hash = "45724a460f34b0689cde36a8f1c83f295b3db2ea76e4f24315dc0803e9ca9689"
