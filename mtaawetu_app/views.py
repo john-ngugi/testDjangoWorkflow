@@ -10,6 +10,8 @@ import geopandas as gpd
 import pandas as pd
 import decimal
 from django.http import JsonResponse
+from django.utils.http import urlencode
+from django.urls import reverse
 from django.contrib import messages
 import branca
 # Function to randomize color selection
@@ -449,13 +451,22 @@ def create_chloropeth(m,table_name,legend_name,extra_columns=[]):
     except:
       return 'error with the Query check the parameters and try again '
 
-
+def newIndex(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        go_ahead = data.get('send')
+        if go_ahead:
+            base_url = reverse('home')
+            print('reverse finished')
+            # return redirect(f"{base_url}?{urlencode({'coordinates': json.dumps(coordinates)})}")
+            return JsonResponse({'url': f"{base_url}?{urlencode({'pass': json.dumps(go_ahead)})}"})
+    return render(request,'base.html',)
 
 
 
 
 def index(request):
-
+    print("runing...")
     m = folium.Map(
                    location = (-1.2921, 36.8219),
                    zoom_control=False,
@@ -476,7 +487,7 @@ def index(request):
 
     # f=folium.Figure(height="100%")
     # m.add(f)
-
+    print("I am getting the layers! ")
     context = {
         'map': m._repr_html_(),
         'layer_options': layer_options,
@@ -528,3 +539,7 @@ def getLayers(request):
 
     # If not a POST request (e.g., GET request), render 'base.html'
     return render(request, 'base.html')
+
+
+def loading(request):
+    return render(request,'loaders/mainpage.html')

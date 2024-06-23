@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -27,6 +28,11 @@
         ></script>
     </head>
     <body>
+        <!-- Loading screen -->
+        <div id="loading-screen">
+            <div class="spinner"></div>
+        </div>
+
         <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Mtaa Wetu</a>
@@ -212,6 +218,5 @@
         </section>
         {% endblock %}
         <script src="{% static 'main.js' %}"></script>
-
     </body>
 </html>

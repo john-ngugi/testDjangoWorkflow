@@ -1,3 +1,4 @@
+
 // Select the form and button elements
 const form = document.getElementById('send-layer-info');
 const submitButton = document.getElementById('get-layer-btn');
