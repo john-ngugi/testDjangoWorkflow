@@ -57,11 +57,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOWED_ORIGINS = [
 
-    "https://mtaawetu.com"
-]
-
+CSRF_TRUSTED_ORIGINS = [ "https://mtaawetu.com"]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 ROOT_URLCONF = 'mtaawetu.urls'
