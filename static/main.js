@@ -62,7 +62,13 @@ function getCookie(name) {
     return cookieValue;
 }
 
-console.log('{{layer_options}}')
+function showQueryLayer() {
+    document.getElementById('query-layer').classList.remove('visually-hidden');
+}
+
+function hideQueryLayer() {
+    document.getElementById('query-layer').classList.add('visually-hidden');
+}
 
 // const commentsBox = document.getElementById('comments');
 // const boxOpener = document.getElementById('box-opener');
