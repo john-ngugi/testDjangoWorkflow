@@ -28,6 +28,7 @@ whitenoise = "^6.6.0"
 django-ckeditor-5 = "^0.2.13"
 branca = "^0.7.2"
 django-cors-headers = "^4.4.0"
+leafmap = "^0.34.5"
 
 [build-system]
 requires = ["poetry-core"]
