@@ -1,3 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+p{
+    font-family: "Nunito Sans", sans-serif;
+    line-height: 30px;
+    font-weight: 300;
+}
+
+body{
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
 /* Style for the whole scrollbar */
 ::-webkit-scrollbar {
     width: 8px; /* Width of the scrollbar */
@@ -12,60 +26,512 @@
 
 /* Style for the scrollbar thumb */
 ::-webkit-scrollbar-thumb {
-    background: #888; /* Background color of the scrollbar thumb */
+    background:#378DFC ; /* Background color of the scrollbar thumb */
     border-radius: 10px; /* Rounded edges for the scrollbar thumb */
 }
 
 /* Style for the scrollbar thumb on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Background color of the scrollbar thumb on hover */
+    background: #3872be; /* Background color of the scrollbar thumb on hover */
 }
 
 
 .map{
-    position: absolute;
+    position: Fixed;
     height: 90vh;
     width: 100vw;
 }
 
 #map{
-    position: absolute;
+    position: Fixed;
     height: 90vh;
     width: 100vw;
 }
 
 
 .layer-control{
-    position: fixed;
+    position: relative;
     overflow-y: scroll;
     z-index: 10;
     height: 90vh;
+    width: 30%;
     background: rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    color: white;
+    color: rgb(250, 230, 230);
 
 }
 
+.layer-control p{
+  font-size: 15px;
+}
 
+.comments{
+    height: 60vh;
+    width: 350px;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    /* margin-left: 30%; */
+    margin-top: 10%;
+}
+
+.comment-tag small {
+  font-size: 10px;
+}
+
+/* Tooltip container */
+.tooltip-custom {
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  z-index: 1000;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip-custom.show {
+  opacity: 1;
+}
+
+.messages{
+    overflow-y: scroll;
+}
+
+
+
+.socket {
+    width: 100vw;
+    height: 85vh;
+    position: absolute;
+    /* left: 50%;
+    margin-left: -100px; */
+    /* top: 50%;
+    margin-top: -100px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hex-brick {
+    background: #000000;
+    width: 30px;
+    height: 17px;
+    position: absolute;
+    top: 5px;
+    animation-name: fade00;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    -webkit-animation-name: fade00;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+  }
+
+  .h2 {
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+  }
+
+  .h3 {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+  }
+
+  .gel {
+    height: 30px;
+    width: 30px;
+    transition: all .3s;
+    -webkit-transition: all .3s;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+
+  .center-gel {
+    margin-left: -15px;
+    margin-top: -15px;
+    animation-name: pulse00;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    -webkit-animation-name: pulse00;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+  }
+
+  .c1 {
+    margin-left: -47px;
+    margin-top: -15px;
+  }
+
+  .c2 {
+    margin-left: -31px;
+    margin-top: -43px;
+  }
+
+  .c3 {
+    margin-left: 1px;
+    margin-top: -43px;
+  }
+
+  .c4 {
+    margin-left: 17px;
+    margin-top: -15px;
+  }
+
+  .c5 {
+    margin-left: -31px;
+    margin-top: 13px;
+  }
+
+  .c6 {
+    margin-left: 1px;
+    margin-top: 13px;
+  }
+
+  .c7 {
+    margin-left: -63px;
+    margin-top: -43px;
+  }
+
+  .c8 {
+    margin-left: 33px;
+    margin-top: -43px;
+  }
+
+  .c9 {
+    margin-left: -15px;
+    margin-top: 41px;
+  }
+
+  .c10 {
+    margin-left: -63px;
+    margin-top: 13px;
+  }
+
+  .c11 {
+    margin-left: 33px;
+    margin-top: 13px;
+  }
+
+  .c12 {
+    margin-left: -15px;
+    margin-top: -71px;
+  }
+
+  .c13 {
+    margin-left: -47px;
+    margin-top: -71px;
+  }
+
+  .c14 {
+    margin-left: 17px;
+    margin-top: -71px;
+  }
+
+  .c15 {
+    margin-left: -47px;
+    margin-top: 41px;
+  }
+
+  .c16 {
+    margin-left: 17px;
+    margin-top: 41px;
+  }
+
+  .c17 {
+    margin-left: -79px;
+    margin-top: -15px;
+  }
+
+  .c18 {
+    margin-left: 49px;
+    margin-top: -15px;
+  }
+
+  .c19 {
+    margin-left: -63px;
+    margin-top: -99px;
+  }
+
+  .c20 {
+    margin-left: 33px;
+    margin-top: -99px;
+  }
+
+  .c21 {
+    margin-left: 1px;
+    margin-top: -99px;
+  }
+
+  .c22 {
+    margin-left: -31px;
+    margin-top: -99px;
+  }
+
+  .c23 {
+    margin-left: -63px;
+    margin-top: 69px;
+  }
+
+  .c24 {
+    margin-left: 33px;
+    margin-top: 69px;
+  }
+
+  .c25 {
+    margin-left: 1px;
+    margin-top: 69px;
+  }
+
+  .c26 {
+    margin-left: -31px;
+    margin-top: 69px;
+  }
+
+  .c27 {
+    margin-left: -79px;
+    margin-top: -15px;
+  }
+
+  .c28 {
+    margin-left: -95px;
+    margin-top: -43px;
+  }
+
+  .c29 {
+    margin-left: -95px;
+    margin-top: 13px;
+  }
+
+  .c30 {
+    margin-left: 49px;
+    margin-top: 41px;
+  }
+
+  .c31 {
+    margin-left: -79px;
+    margin-top: -71px;
+  }
+
+  .c32 {
+    margin-left: -111px;
+    margin-top: -15px;
+  }
+
+  .c33 {
+    margin-left: 65px;
+    margin-top: -43px;
+  }
+
+  .c34 {
+    margin-left: 65px;
+    margin-top: 13px;
+  }
+
+  .c35 {
+    margin-left: -79px;
+    margin-top: 41px;
+  }
+
+  .c36 {
+    margin-left: 49px;
+    margin-top: -71px;
+  }
+
+  .c37 {
+    margin-left: 81px;
+    margin-top: -15px;
+  }
+
+  .r1 {
+    animation-name: pulse00;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-delay: .2s;
+    -webkit-animation-name: pulse00;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-delay: .2s;
+  }
+
+  .r2 {
+    animation-name: pulse00;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-delay: .4s;
+    -webkit-animation-name: pulse00;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-delay: .4s;
+  }
+
+  .r3 {
+    animation-name: pulse00;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-delay: .6s;
+    -webkit-animation-name: pulse00;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-delay: .6s;
+  }
+
+  .r1 > .hex-brick {
+    animation-name: fade00;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-delay: .2s;
+    -webkit-animation-name: fade00;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-delay: .2s;
+  }
+
+  .r2 > .hex-brick {
+    animation-name: fade00;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-delay: .4s;
+    -webkit-animation-name: fade00;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-delay: .4s;
+  }
+
+  .r3 > .hex-brick {
+    animation-name: fade00;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-delay: .6s;
+    -webkit-animation-name: fade00;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-delay: .6s;
+  }
+
+  @keyframes pulse00 {
+    0% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+
+    50% {
+      -webkit-transform: scale(0.01);
+      transform: scale(0.01);
+    }
+
+    100% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fade00 {
+    0% {
+      background: #252525;
+    }
+
+    50% {
+      background: #000000;
+    }
+
+    100% {
+      background: #353535;
+    }
+  }
+
+.loading-tag{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 65vh;
+}
+
+
+     /* Add this CSS for the sliding animation */
+  .slide-up {
+      animation: slide-up 0.5s ease-out forwards;
+  }
+
+  @keyframes slide-up {
+      from {
+          transform: translateY(100%);
+          opacity: 0;
+      }
+      to {
+          transform: translateY(0);
+          opacity: 1;
+      }
+  }
+
+  .slide-down {
+      animation: slide-down 0.5s ease-out forwards;
+  }
+
+  @keyframes slide-down {
+      from {
+          transform: translateY(0);
+          opacity: 1;
+      }
+      to {
+          transform: translateY(100%);
+          opacity: 0;
+      }
+  }
+  .display-card {
+    margin-top: 30px;
+    width: 300px;
+    height: 254px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset; */
+  }
+
+  .display-card p{
+    color: #333;
+  }
+
+
+  .hide{
+    display: none;
+  }
 @media only screen and (max-width: 768px) {
     .layer-control{
+        display:none;
+        width: 100%;
+    }
+    .map{
+        position: Fixed;
+        height: 90%;
+        width: 100%;
+    }
+
+    #map{
         position: fixed;
-        overflow-y: scroll;
-        z-index: 10;
-        height: 50vh;
-        background: rgba(255, 255, 255, 0.1);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        color: white;
-
-        #map{
-            position: absolute;
-            height: 90vh;
-            width: 100vw;
-        }
-
+        height: 90%;
+        width: 100%;
+    }
+    .comments{
+        display: none;
+    }
+    .top-section{
+        height: 100vh;
+        width: 100vw;
+    }
+    .hero-contents{
+           flex-direction: column;
     }
     }

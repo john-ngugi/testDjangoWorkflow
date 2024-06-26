@@ -122,8 +122,19 @@
         </div>
         {% endif %} {% block content %}
         <section class="container-fluid h-100 w-100 d-flex col-lg-12 top-section">
-            <div id="loader">{% include "content/loading.html" %}</div>
             <div class="map h-100 w-100 col-lg-12">{{ map|safe }}</div>
+
+            <div id="loader">
+                <div class="honeycomb">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
 
             <div class="container-fluid d-flex hero-contents">
                 <div class="display-card d-block" id="small-info">
@@ -166,10 +177,9 @@
                                     Select Layer Name
                                 </label>
                                 <select class="form-control" id="layerSelect">
-                                    {% for option, value in layer_options.items %}
-                                    <option value="{{ option }}" title="{{ value }}">{{ value }}</option>
-                                    {% endfor %}
+                                    <option value="null">--Select an Option--</option>
                                 </select>
+
                                 <label
                                     for="AttributeSelect"
                                     class="text-primary-emphasis"
@@ -178,9 +188,7 @@
                                     Select attribute
                                 </label>
                                 <select class="form-control" id="AttributeSelect">
-                                    {% for option in attribute_options %}
-                                    <option value="{{ option }}" title="{{option}}">{{option}}</option>
-                                    {% endfor %}
+                                    <option value="null">--Select an Option--</option>
                                 </select>
 
                                 <button

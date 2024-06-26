@@ -1,388 +1,63 @@
-const loading_data = `<div class="socket">
-    <div class="gel center-gel">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c1 r1">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c2 r1">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c3 r1">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c4 r1">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c5 r1">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c6 r1">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-
-    <div class="gel c7 r2">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-
-    <div class="gel c8 r2">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c9 r2">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c10 r2">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c11 r2">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c12 r2">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c13 r2">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c14 r2">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c15 r2">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c16 r2">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c17 r2">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c18 r2">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c19 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c20 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c21 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c22 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c23 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c24 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c25 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c26 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c28 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c29 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c30 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c31 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c32 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c33 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c34 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c35 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c36 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-    <div class="gel c37 r3">
-        <div class="hex-brick h1"></div>
-        <div class="hex-brick h2"></div>
-        <div class="hex-brick h3"></div>
-    </div>
-
-</div>
-
-<h5 class="loading-tag">Loading ...</h5>`
-
-
-const normal_data = `            <div class="map h-100 w-100 col-lg-12">{{ map|safe }}</div>
-
-            <div class="container-fluid d-flex hero-contents">
-                <div class="display-card d-block" id="small-info">
-                    <h5 class="ps-2 pt-2">School Accesibility Walk</h5>
-                    <div class="divider"></div>
-                    <p class="ps-2 pe-1">
-                        How easy it is to access schools, jobs and hospitals across the city. Select the layer of
-                        interest e.g schools to view the map of school accessibility.
-                    </p>
-                </div>
-
-                <div
-                    id="query-layer"
-                    class="layer-control pt-3 ps-2 pe-2 shadow-lg ms-2 ms-2 mt-2 rounded-top d-flex flex-column col-lg-4 visually-hidden"
-                >
-                    <button
-                        type="button"
-                        class="btn-close align-self-end"
-                        aria-label="Close"
-                        onclick="hideQueryLayer()"
-                    ></button>
-                    <h5 id="layer-title">Accessibility</h5>
-                    <p class="ps-2 text-dark" id="layer-info">
-                        How easy it is to access schools, jobs and hospitals across the city. Select the layer of
-                        interest e.g schools to view the map of school accessibility For more information about how
-                        accessibility is measured. Go to our
-                        <span> <a href="#">methodology section.</a></span>
-                    </p>
-
-                    <div class="container mt-3">
-                        <h5>Query Layer</h5>
-                        <form method="post" id="send-layer-info" class="form">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label
-                                    for="layerSelect"
-                                    class="text-primary-emphasis"
-                                    title="The layer you want to visualize, nrbjaaccess: Nairobi job access index"
-                                >
-                                    Select Layer Name
-                                </label>
-                                <select class="form-control" id="layerSelect">
-                                    {% for option, value in layer_options.items %}
-                                    <option value="{{ option }}" title="{{ value }}">{{ value }}</option>
-                                    {% endfor %}
-                                </select>
-                                <label
-                                    for="AttributeSelect"
-                                    class="text-primary-emphasis"
-                                    title="The attribute to associate with the layer eg: entropy_fn"
-                                >
-                                    Select attribute
-                                </label>
-                                <select class="form-control" id="AttributeSelect">
-                                    {% for option in attribute_options %}
-                                    <option value="{{ option }}" title="{{option}}">{{option}}</option>
-                                    {% endfor %}
-                                </select>
-
-                                <button
-                                    type="submit"
-                                    class="btn btn-md bg-primary mt-2 w-100 text-white"
-                                    id="get-layer-btn"
-                                >
-                                    Get Layer
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <p class="ps-2 mt-2 pt-5 text-dark">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error vitae animi esse officia quis
-                        excepturi, laborum exercitationem omnis accusantium quam cum dolore illum alias modi. Omnis
-                        nostrum suscipit libero quas?
-                    </p>
-                </div>
-            </div>
-
-            <div class="comments rounded-top visually-hidden" id="comments">
-                <div class="messages">
-                    <div class="comment-tag bg-primary rounded m-2">
-                        <h6 class="commenters-name m-2 pt-3 text-warning">John Ngugi</h6>
-                        <p class="comment-body m-2">The beds are too few!</p>
-                        <small class="ms-5 text-sm">
-                            - Posted on
-                            <span><i>Mon Jun 17 2:35 pm</i></span>
-                        </small>
-                    </div>
-
-                    <div class="comment-tag bg-primary rounded m-2">
-                        <h6 class="commenters-name m-2 pt-3 text-success">Martin</h6>
-                        <p class="comment-body m-2">The beds are too few!</p>
-                        <small class="ms-5 text-sm">
-                            - Posted on
-                            <span><i>Thu Aug 22 4:50 pm</i></span>
-                        </small>
-                    </div>
-
-                    <div class="comment-tag bg-primary rounded m-2">
-                        <h6 class="commenters-name m-2 pt-3 text-success">Jane Omollo</h6>
-                        <p class="comment-body m-2">The service time was Great</p>
-                        <small class="ms-5 text-sm">
-                            - Posted on
-                            <span><i>Wed Jan 08 2:20 pm</i></span>
-                        </small>
-                    </div>
-
-                    <div class="comment-tag bg-primary rounded m-2">
-                        <h6 class="commenters-name m-2 text-success">John Ngugi</h6>
-                        <p class="comment-body m-2">The place was great!</p>
-                        <small class="ms-5 text-sm">
-                            - Posted on
-                            <span><i>Fri Jul 19 7:45 am</i></span>
-                        </small>
-                    </div>
-                </div>
-                <hr class="dropdown-divider" />
-                <form action method="post">
-                    {% csrf_token %}
-                    <div>
-                        <label for="Textarea" class="form-label text-primary ms-2">Leave Comment</label>
-                        <textarea class="form-control" id="Textarea" rows="2"></textarea>
-                    </div>
-                    <div class="d-flex">
-                        <button type="submit" class="btn btn-primary bg-primary btn-sm mt-1 ms-2 w-25 text-white">
-                            Submit
-                        </button>
-                        <button
-                            type="button"
-                            id="close-comment-btn"
-                            class="btn btn-danger bg-danger btn-sm mt-1 w-25 ms-2 text-white close-comment-btn"
-                        >
-                            Close
-                        </button>
-                    </div>
-                </form>
-            </div>`
-
 
 // Select the form and button elements
 const form = document.getElementById('send-layer-info');
 const submitButton = document.getElementById('get-layer-btn');
 const mapDiv = document.querySelector(".map");
+const loadingScreen = document.getElementById('loader');
+const layerSelector = document.getElementById('layerSelect');
+const attributeSelector = document.getElementById('AttributeSelect');
+// Get selected values from the form
+const layerSelect = document.getElementById('layerSelect').value;
+const attributeSelect = document.getElementById('AttributeSelect').value;
+
+
+loadingScreen.style.display = 'none';
+
 // Add an event listener to the form submit event
 form.addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission
-    document.querySelector('.top-section').innerHTML=loading_data
     // Get selected values from the form
-    const layerSelect = document.getElementById('layerSelect').value;
-    const attributeSelect = document.getElementById('AttributeSelect').value;
+    const layerSelectFn = document.getElementById('layerSelect').value;
+    const attributeSelectFn = document.getElementById('AttributeSelect').value;
+        event.preventDefault(); // Prevent the default form submission
 
-    // Construct the data object to be sent
-    const data = {
-        layerSelect: layerSelect,
-        attributeSelect: attributeSelect
-    };
+        loadingScreen.style.display = 'flex';
+        // Construct the data object to be sent
+        const data = {
+            layerSelect: layerSelectFn,
+            attributeSelect: attributeSelectFn
+        };
 
-    // Make a POST request using Fetch API
-    fetch('get-layer/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken') // Include CSRF token
-        },
-        body: JSON.stringify(data) // Convert data to JSON string
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json(); // Parse JSON response
-    })
-    .then(data => {
-        console.log('Success:', data);
-        document.querySelector('.top-section').innerHTML= normal_data
-        // Handle success response here if needed
-        mapDiv.innerHTML = data.map
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        // Handle error here
-    })
-    .catch(error => {
-        document.querySelector('.top-section').innerHTML= normal_data
-        // Handle error here
-    })
-    .finally(() => {
-        // Hide the loading screen
-        document.getElementById('loadingScreen').style.display = 'none';
-    });;
+        // Make a POST request using Fetch API
+        fetch('get-layer/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken') // Include CSRF token
+            },
+            body: JSON.stringify(data) // Convert data to JSON string
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // Parse JSON response
+        })
+        .then(data => {
+            console.log('Success:', data);
+            // Handle success response here if needed
+            mapDiv.innerHTML = data.map
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle error here
+        })
+        .catch(error => {
+            // Handle error here
+        })
+        .finally(() => {
+            // Hide the loading screen
+            loadingScreen.style.display = 'none'
+        });
 });
 
 // Function to get CSRF token from cookie
@@ -418,6 +93,100 @@ const maps = document.querySelectorAll(".layer-identifier")
 const layerTitle = document.getElementById("layer-title");
 const layerInfo = document.getElementById('layer-info');
 
+const layers_dict = {
+    'schoolaccessindexwalk': 'school index walk',
+    'schoolaccessindexdrive': 'school index drive',
+    'schoolaccessratiodrive': 'school access ratio drive',
+    'schoolaccessratiowalk': 'school access ratio walk',
+    'nbijobsacces_index': 'job access index',
+    'nbijobsacces_ratio': 'job access ratio',
+    'nbilanduseentropy_areahex': 'land use entropy area',
+    'nbilanduseentropy_fn': 'land use entropy function',
+    'nbihealthaccess_index': 'Nairobi Health Access Index',
+    'nbihealthaccess_ratio': 'Nairobi Health Access Ratio',
+    'sdna_1500meters_2018': 'Spatial design network analysis 1.5Km',
+    'sdna_1000meters_2018': 'Spatial Design Network Analysis 1km',
+    'sdna_500meters_2018': 'Spatial Design Network Analysis 500m'
+}
+
+const accesibility_layers = {
+    'schoolaccessindexwalk': 'school index walk',
+    'schoolaccessindexdrive': 'school index drive',
+    'schoolaccessratiodrive': 'school access ratio drive',
+    'schoolaccessratiowalk': 'school access ratio walk',
+    'nbijobsacces_index': 'job access index',
+    'nbijobsacces_ratio': 'job access ratio',
+    'nbihealthaccess_index': 'Nairobi Health Access Index',
+    'nbihealthaccess_ratio': 'Nairobi Health Access Ratio',
+}
+
+
+const landUse_layers = {
+    'nbilanduseentropy_areahex': 'land use entropy area',
+    'nbilanduseentropy_fn': 'land use entropy function',
+}
+
+
+const design_layers = {
+    'sdna_1500meters_2018': 'Spatial design network analysis 1.5Km',
+    'sdna_1000meters_2018': 'Spatial Design Network Analysis 1km',
+    'sdna_500meters_2018': 'Spatial Design Network Analysis 500m'
+
+}
+
+const designAttrs = ['shape_leng']
+const accessAttrs = ["schoolacce", 'saccinddrv', 'schaccessb','saccindwlk','jobaccindx','jobacratio','accessindx','acessratio']
+const entropyAttrs = ['areahex','entropy_fn']
+
+
+const layerObjs = {
+    'Destination Accessibility': accesibility_layers,
+    'Design of Road Network': design_layers,
+    'Diversity': landUse_layers,
+}
+
+const attrsObj = {
+    'Destination Accessibility':accessAttrs,
+    'Design of Road Network': designAttrs,
+    'Diversity':entropyAttrs,
+}
+
+function clearChildrenFromIndex(element, startIndex) {
+    const children = element.children;
+    const length = children.length;
+    console.log("length: ",length)
+    // Remove children starting from the startIndex
+    for (let i = startIndex; i < length; i++) {
+            element.removeChild(children[startIndex]);
+        }
+    }
+
+
+function getAttrbutes(layer_title){
+    clearChildrenFromIndex(attributeSelector,1)
+    for(const [key, value] of Object.entries(attrsObj)){
+        if(layer_title.innerText == key){
+            value.forEach((attr)=>{
+                var newElement = `<option value=${attr} title="${attr}">${attr}</option>`
+                attributeSelector.insertAdjacentHTML('beforeend', newElement)
+            });
+        };
+    };
+}
+
+function getLayernames(layerTitle){
+    clearChildrenFromIndex(layerSelector,1)
+    for(const [key_outer, value_outer] of Object.entries(layerObjs)){
+        if(layerTitle.innerText == key_outer){
+            console.log("in loop")
+            for (const [key, value] of Object.entries(value_outer)) {
+                var newElement = `<option value=${key} title="${value}">${value}</option>`
+                layerSelector.insertAdjacentHTML( 'beforeend', newElement );
+            };
+        };
+    };
+}
+
 
 maps.forEach((map)=>{
     console.log(map)
@@ -425,19 +194,14 @@ maps.forEach((map)=>{
         var name = map.text
         console.log("name" , name)
         layerTitle.innerText = name
-    })
-
-})
-
-
-
-function getLayerInfo(){
+        getLayernames(layerTitle)
+        getAttrbutes(layerTitle)
+    });
+    clearChildrenFromIndex(layerSelector,1)
+});
 
 
 
-
-
-}
 
 
 

@@ -20,13 +20,13 @@ import random
 # Create your views here.
 
 layer_options=['schoolaccessindexdrive','schoolaccessindexwalk', 'schoolaccessratiodrive',
-             'schoolaccessratiowal','nbihealthaccess','nbijobsacces','nbilanduseentropy','sdna_1500meters_2018','sdna_1000meters_2018','sdna_500meters_2018']
+            'schoolaccessratiowal','nbihealthaccess','nbijobsacces','nbilanduseentropy','sdna_1500meters_2018','sdna_1000meters_2018','sdna_500meters_2018']
 
 legend_options = options=['school access Index', 'school access index drive', 'school access index walk',
-                          'school access', 'school access ratio', 'school access ratio walk', 'school access ratio',
-                          "health access index",
-                          "health access ratio",'Job access index','Job access ratio','land use Entropy','sdna_1500meters_2018',
-                          'sdna_1000meters_2018','sdna_500meters_2018']
+                        'school access', 'school access ratio', 'school access ratio walk', 'school access ratio',
+                        "health access index",
+                        "health access ratio",'Job access index','Job access ratio','land use Entropy','sdna_1500meters_2018',
+                        'sdna_1000meters_2018','sdna_500meters_2018']
 
 attribute_options = ["schoolacce", 'saccinddrv', 'schaccessb','saccindwlk','jobaccindx','jobacratio','accessindx','acessratio','areahex','entropy_fn',"JobAccesRatio",'shape_leng']
 
@@ -37,8 +37,8 @@ layers_dict = {
     'schoolaccessratiowalk': 'school access ratio walk',  # Corrected typo from 'schoolaccessratiowal'
     'nbijobsacces_index': 'job access index',  # Renamed to ensure uniqueness
     'nbijobsacces_ratio': 'job access ratio',  # Renamed to ensure uniqueness
-    'nbilanduseentropy_areahex': 'areahex',  # Renamed to ensure uniqueness
-    'nbilanduseentropy_fn': 'entropy_fn',  # Renamed to ensure uniqueness
+    'nbilanduseentropy_areahex': 'land use entropy area',  # Renamed to ensure uniqueness
+    'nbilanduseentropy_fn': 'land use entropy function',  # Renamed to ensure uniqueness
     'nbihealthaccess_index': 'Nairobi Health Access Index',  # Renamed to ensure uniqueness
     'nbihealthaccess_ratio': 'Nairobi Health Access Ratio',  # Renamed to ensure uniqueness
     'sdna_1500meters_2018': 'Spatial design network analysis 1.5Km',
@@ -49,22 +49,33 @@ layers_dict = {
 def filterLayers(layer_name, attribute_name):
     if layer_name == 'nbijobsacces_index' and attribute_name == 'jobaccindx':
         table_name = 'nbijobsaccess'
-    if layer_name == 'nbijobsacces_ratio' and attribute_name == 'jobacratio':
+    elif layer_name == 'nbijobsacces_ratio' and attribute_name == 'jobacratio':
         table_name = 'nbijobsaccess'
 
 
-    if layer_name == 'nbilanduseentropy_areahex' and attribute_name == 'areahex':
-        table_name = 'nbilanduseentropy'
-    if layer_name == 'nbilanduseentropy_fn' and attribute_name == 'entropy_fn':
+    elif layer_name == 'nbilanduseentropy_areahex' and attribute_name == 'areahex':
         table_name = 'nbilanduseentropy'
 
+    elif layer_name == 'nbilanduseentropy_fn' and attribute_name == 'entropy_fn':
+        table_name = 'nbilanduseentropy'
 
-    if layer_name == 'nbihealthaccess_index' and attribute_name == 'accessindx':
+
+    elif layer_name == 'nbihealthaccess_index' and attribute_name == 'accessindx':
         table_name = 'nbihealthaccess'
 
-    if layer_name == 'nbihealthaccess_ratio' and attribute_name == 'acessratio':
+    elif layer_name == 'nbihealthaccess_ratio' and attribute_name == 'acessratio':
         table_name = 'nbihealthaccess'
-    print(table_name)
+
+    elif layer_name == 'nbilanduseentropy_fn' and attribute_name == 'entropy_fn':
+        table_name = 'nbilanduseentropy'
+
+    elif layer_name == 'nbilanduseentropy_areahex' and attribute_name == 'areahex':
+        table_name = 'nbilanduseentropy'
+
+    else:
+        table_name = layer_name
+
+    print("table name", table_name)
     return table_name
 
 # Define the custom tile layer URL and name
@@ -507,11 +518,11 @@ def newIndex(request):
 def index(request):
     print("runing...")
     m = folium.Map(
-                   location = (-1.2921, 36.8219),
-                   zoom_control=False,
-                   zoom_start=12,
-                    width='100%',
-                    height='100%')
+                location = (-1.2921, 36.8219),
+                zoom_control=False,
+                zoom_start=12,
+                width='100%',
+                height='100%')
 
     # Add the custom base map tile layer with a custom name
     folium.TileLayer(
@@ -524,12 +535,10 @@ def index(request):
     marker_group = folium.FeatureGroup(name='Service buildings',show=False)
 
     # connect to the database
-    # create_chloropeth(m,'estates_nairobi','area',extra_columns=['name','shape_area'])
+    # create_chloropeth(m,table_name='estates_nairobi',legend_name='area',marker_group=marker_group,extra_columns=['name','shape_area'])
     getPointData(m=m,marker_group=marker_group ,lat='latitude',lon='longitude',table_name='nairobi_hospitals',extra_columns=['f_name', 'location','agency','division'])
     create_chloropeth(m=m,marker_group=marker_group,table_name="schoolaccessindexdrive",legend_name='school access Index',extra_columns=['id','schoolacce'])
-    # Add layer control to the map
-    # f=folium.Figure(height="100%")
-    # m.add(f)
+
     print("I am getting the layers! ")
     context = {
         'map': m._repr_html_(),
@@ -538,6 +547,10 @@ def index(request):
     }
 
     return render(request,'base.html',context)
+
+
+
+
 
 def getLayers(request):
 
@@ -560,8 +573,9 @@ def getLayers(request):
         table_name = data.get('layerSelect')
         legend_name = table_name
         attribute = data.get('attributeSelect')
+        print("initial table Name", table_name)
         table_name = filterLayers(table_name,attribute)
-        print(table_name)
+        print("After filter tabe_name", table_name)
 
         if table_name == 'sdna_1500meters_2018' or table_name == 'sdna_1000meters_2018' or table_name == 'sdna_500meters_2018':
             print(table_name)
