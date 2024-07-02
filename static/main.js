@@ -6,10 +6,11 @@ const mapDiv = document.querySelector(".map");
 const loadingScreen = document.getElementById('loader');
 const layerSelector = document.getElementById('layerSelect');
 const attributeSelector = document.getElementById('AttributeSelect');
+const closeQuery = document.querySelector('.close-query');
 // Get selected values from the form
 const layerSelect = document.getElementById('layerSelect').value;
 const attributeSelect = document.getElementById('AttributeSelect').value;
-
+const expanationText = document.querySelector(".explanation-text");
 
 loadingScreen.style.display = 'none';
 
@@ -56,7 +57,7 @@ form.addEventListener('submit', function(event) {
         })
         .finally(() => {
             // Hide the loading screen
-            loadingScreen.style.display = 'none'
+            loadingScreen.style.display = 'none';
         });
 });
 
@@ -77,18 +78,28 @@ function getCookie(name) {
     return cookieValue;
 }
 
+
+const that_fucking_card = document.querySelector('.small-info')
+
 function showQueryLayer() {
-    document.getElementById('small-info').style.display = 'none';
     document.getElementById('query-layer').classList.remove('visually-hidden');
 }
 
 function hideQueryLayer() {
-    document.getElementById('small-info').classList.remove('visually-hidden')
     document.getElementById('query-layer').classList.add('visually-hidden');
 }
 
+function removeSmallInfo(){
+    that_fucking_card.classList.add('visually-hidden');
+}
 
+closeQuery.addEventListener('click', ()=>{
+    that_fucking_card.classList.remove('visually-hidden');
+});
 
+function addSmallInfo(){
+    that_fucking_card.classList.remove('visually-hidden');
+}
 const maps = document.querySelectorAll(".layer-identifier")
 const layerTitle = document.getElementById("layer-title");
 const layerInfo = document.getElementById('layer-info');
@@ -134,21 +145,27 @@ const design_layers = {
 
 }
 
-const designAttrs = ['shape_leng']
+const zoning_layers ={
+    'ccn_zones':' Zoning'
+}
+
+const designAttrs = ['mad1500','diva1500','len1500','hullr1500','tpbta1500','mad1000','diva1000','len1000','hullr1000','tpbta1000','mad500','diva500','len500','hullr500','tpbta500']
 const accessAttrs = ["schoolacce", 'saccinddrv', 'schaccessb','saccindwlk','jobaccindx','jobacratio','accessindx','acessratio']
 const entropyAttrs = ['areahex','entropy_fn']
-
+const zoningAttrs = ['dev_1970']
 
 const layerObjs = {
     'Destination Accessibility': accesibility_layers,
     'Design of Road Network': design_layers,
-    'Diversity': landUse_layers,
+    'Diversity of Land Use': landUse_layers,
+    'Zoning Policy' : zoning_layers,
 }
 
 const attrsObj = {
     'Destination Accessibility':accessAttrs,
     'Design of Road Network': designAttrs,
-    'Diversity':entropyAttrs,
+    'Diversity of Land Use':entropyAttrs,
+    'Zoning Policy': zoningAttrs,
 }
 
 function clearChildrenFromIndex(element, startIndex) {
@@ -160,6 +177,7 @@ function clearChildrenFromIndex(element, startIndex) {
             element.removeChild(children[startIndex]);
         }
     }
+
 
 
 function getAttrbutes(layer_title){
@@ -194,6 +212,12 @@ maps.forEach((map)=>{
         var name = map.text
         console.log("name" , name)
         layerTitle.innerText = name
+        const chosen_value = name
+        for(const [key_chosen, value_chosen] of Object.entries(texts_objs)){
+            if ( chosen_value == key_chosen){
+                expanationText.innerText = value_chosen
+            }
+        }
         getLayernames(layerTitle)
         getAttrbutes(layerTitle)
     });
@@ -202,9 +226,35 @@ maps.forEach((map)=>{
 
 
 
+const Accessibility_txt = "The accessibility map tells us how easy it is to access various services such as schools, jobs, and hospitals across the city. Select the layer of interest,  e.g Schools, to view the map of school accessibility. Click on a point in this interactive map to view the accessibility index. A high index number means that it is easier to access services, while a low index number means that it is more difficult to access services. Click here to see our methodology section to understand the science of measuring service accessibility."
+const Diversity_txt = "This map tells us how different land uses are mixed in a location. A high value means that there are more land uses mixed in a given location, while a low value tells us there is little or no mix of land uses. In your mtaa, a high value of diversity would for instance tell you that the land uses such as residential, are mixed with other land uses such as commercial."
+const Density_txt = "Building density tells us the level of development in a neighborhood. It represents the number of buildings per unit area of land."
+const distance_to_pt_txt = "This map shows us how far (or near) buildings are to public transport stops. "
+const design_of_road_network_txt = "This map shows us how the road network is designed and how this design affects accessibility, walkability, and sustainable transport"
 
+const drn_txt_extra = `Layer name:
+Important roads
+Road importance
+[Roads with a high value are more  important, have more flows and are crucial to connectivity in the neighborhood ]
+2. Nearness  of  places (hubs)
+Nearness
+[Points with  high values of nearness  are the nearest to reach from all corners of the neighborhood, they are central places ]
 
+3. Junctions within 1 kilometer radius
+Number of junctions
+[This map shows us pedestrian friendly places that can promote walking and healthy lifestyly. The more junctions a place has the easier it is to navigate ]
 
+4. Convex Hull Shape Index within 1 kilometer radius
+Hull Shape Index
+[This map shows us the efficiency of the road network in terms of how easy it is to navigate and move around the neighburhood. A low value is good , meaning the network is circular and one can easily reach the different places withn 1 kilometer radius)
+
+`
+
+const texts_objs ={
+    'Destination Accessibility':Accessibility_txt,
+    'Diversity of Land Use':Density_txt,
+    'Design of Road Network': design_of_road_network_txt,
+}
 
 
 // const commentsBox = document.getElementById('comments');
@@ -224,13 +274,13 @@ maps.forEach((map)=>{
   Facility hospital access index
   select between hosital and school (simplified)
   add in a changing opacity*
-  add in the overlay for neighbourhoods
+  add in the overlay for neighbourhoods (done)
   separate the reseach papers
   list of papers
-  datasets our datsets
+  datasets our datsets ()
   open linksto open data
   scrapped data inder datasets
-  Themes {accessibility opportunity , network analiys properties, zoning }
+  Themes {accessibility opportunity , network analiys properties, zoning }(Done)
 
    sdna = [ mad(clossness centarlity)  diva(sevierance/ separation) len(density) halr(efficiency) tpbta(2 faced-betweenness centrality) ] 1500 = 1.5 killomitres
 

@@ -63,6 +63,7 @@
                                 role="button"
                                 aria-haspopup="true"
                                 aria-expanded="false"
+                                onclick="removeSmallInfo()"
                                 >Maps</a
                             >
                             <div class="dropdown-menu">
@@ -70,7 +71,7 @@
                                     >Destination Accessibility</a
                                 >
                                 <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
-                                    >Diversity</a
+                                    >Diversity of Land Use</a
                                 >
                                 <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
                                     >Design of Road Network</a
@@ -80,6 +81,9 @@
                                 >
                                 <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
                                     >Distance to matatu stop</a
+                                >
+                                <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
+                                    >Zoning Policy</a
                                 >
                             </div>
                         </li>
@@ -97,7 +101,7 @@
                                 role="button"
                                 aria-haspopup="true"
                                 aria-expanded="false"
-                                >Datasets</a
+                                >Research</a
                             >
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="#">Online Datasets</a>
@@ -121,7 +125,7 @@
             {% endfor %}
         </div>
         {% endif %} {% block content %}
-        <section class="container-fluid h-100 w-100 d-flex col-lg-12 top-section">
+        <section class="container-fluid h-100 w-100 d-flex col-lg-12 top-section p-0">
             <div class="map h-100 w-100 col-lg-12">{{ map|safe }}</div>
 
             <div id="loader">
@@ -137,7 +141,7 @@
             </div>
 
             <div class="container-fluid d-flex hero-contents">
-                <div class="display-card d-block" id="small-info">
+                <div class="display-card d-block small-info" id="small-info">
                     <h5 class="ps-2 pt-2">School Accesibility Walk</h5>
                     <div class="divider"></div>
                     <p class="ps-2 pe-1">
@@ -152,12 +156,12 @@
                 >
                     <button
                         type="button"
-                        class="btn-close align-self-end"
+                        class="btn-close align-self-end close-query"
                         aria-label="Close"
                         onclick="hideQueryLayer()"
                     ></button>
                     <h5 id="layer-title">Accessibility</h5>
-                    <p class="ps-2 text-dark" id="layer-info">
+                    <p class="ps-2 text-dark explanation-text" id="layer-info">
                         How easy it is to access schools, jobs and hospitals across the city. Select the layer of
                         interest e.g schools to view the map of school accessibility For more information about how
                         accessibility is measured. Go to our
@@ -169,6 +173,16 @@
                         <form method="post" id="send-layer-info" class="form">
                             {% csrf_token %}
                             <div class="form-group">
+                                <label
+                                    for="countySelect"
+                                    class="text-primary-emphasis"
+                                    title="The layer you want to visualize, nrbjaaccess: Nairobi job access index"
+                                >
+                                    Select County
+                                </label>
+                                <select class="form-control" id="countySelect">
+                                    <option value="null">--Select an Option--</option>
+                                </select>
                                 <label
                                     for="layerSelect"
                                     class="text-primary-emphasis"

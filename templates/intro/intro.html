@@ -1,0 +1,204 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mtaa wetu | our neighbourhood planning app</title>
+        <link rel="stylesheet" href="{% static 'mainpage.css' %}" />
+        <script src="https://kit.fontawesome.com/c4e0f4710c.js"
+            crossorigin="anonymous"></script>
+
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin />
+        <!-- Make sure you put this AFTER Leaflet's CSS -->
+        <script
+            src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin></script>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous" />
+
+        <style>
+            body,
+            html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                overflow: hidden;
+            }
+            .video-container {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                z-index: -1;
+            }
+            video {
+                min-width: 100%;
+                min-height: 100%;
+                width: auto;
+                height: auto;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        </style>
+    </head>
+
+    <body>
+        {% block content %}
+        <div class="video-container">
+            <video autoplay muted loop>
+                <source src="{% static '15556119-hd_1920_1080_30fps.mp4' %}"
+                    type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <div class="wrapper">
+            <nav>
+                <div class="logo">Mtaa Wetu</div>
+                <div class="navlinks">
+                    <ul>
+                        <li><a href="#"> Home </a></li>
+                        <li><a href="#"> Pricing</a></li>
+                        <li><a href="#"> About</a></li>
+                        <li><a href="#"> Datasets</a></li>
+                        <li><a href="#"> Contact </a></li>
+                        <!-- <li><a href="#"> Home </a></li> -->
+                    </ul>
+                </div>
+            </nav>
+            <hr class="breakline" />
+            <section>
+                <header class="hero">
+                    <h2>Mtaa Wetu</h2>
+                    <h6>Mtaa Wetu is yours. Welcome !</h6>
+                    <p>
+                        You can use Mtaa Wetu; as an interactive platform
+                        through which you can report your perceived
+                        level of satisfaction with public facilities,
+                        infrastructure and services. For example, did you
+                        just visit a hospital? Were you satisfied with the
+                        services offered or the infrastructure in
+                        general? Or are you satisfied with the quality of the
+                        road that you commonly use ?
+                    </p>
+                    <a href="{% url 'loading' %}"><button>Start App</button></a>
+                </header>
+            </section>
+
+            <section class="card-container">
+                <div class="container">
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Residents</h5>
+                                    <p class="card-text">
+                                        Residents can get to know important or
+                                        interesting information about where they
+                                        live and make informed choices about
+                                        residential location.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Neighborhood
+                                        Associations</h5>
+                                    <p class="card-text">
+                                        Neighborhood associations can get a good
+                                        grasp of their surroundings improving
+                                        situational awareness.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">County
+                                        Governments</h5>
+                                    <p class="card-text">
+                                        The county governments can access data
+                                        information to aid in urban planning and
+                                        management.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Researchers</h5>
+                                    <p class="card-text">
+                                        Researchers can quickly access data and
+                                        information to support their discovery
+                                        of knowledge.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Planning
+                                        Professionals</h5>
+                                    <p class="card-text">
+                                        Planning professionals and built
+                                        environment experts have a ready source
+                                        of
+                                        information to support their work and
+                                        assignments.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Real Estate
+                                        Investors</h5>
+                                    <p class="card-text">
+                                        Real Estate Investors and property
+                                        developers can get information to assess
+                                        the
+                                        feasibility of different sites.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Entrepreneurs</h5>
+                                    <p class="card-text">
+                                        Entrepreneurs and commercial enterprises
+                                        can utilize Mtaa Wetu to pinpoint the
+                                        “best bet” locations for business.
+                                        Location, location, location is the Mtaa
+                                        Wetu mantra.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        {% endblock %}
+    </body>
+</html>
