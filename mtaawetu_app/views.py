@@ -225,10 +225,10 @@ def get_features_geojson(m,geojson_data,layername,extra_columns):
                     "fillOpacity": 0.4    # Transparency of fill color
                 },
                 highlight_function=lambda feature: {
-                    "fillColor": "red",   # Color for highlighted feature
-                    "color": "white",
-                    "weight": 2,
-                    "fillOpacity": 0.3
+                    "fillColor": "rgba(255, 255, 255, 0.1)",   # Color for highlighted feature
+                    "color": "grey",
+                    "weight": 3,
+                    "fillOpacity": 0.1
                 },
                 tooltip=folium.GeoJsonTooltip(fields=extra_columns, aliases=extra_columns)
             ).add_to(m)
@@ -575,7 +575,7 @@ def index(request):
 
     # connect to the database
     # getPointData(m=m,marker_group=marker_group ,lat='latitude',lon='longitude',table_name='nairobi_hospitals',extra_columns=['f_name', 'location','agency','division'])
-    create_chloropeth(m=m,marker_group=marker_group,table_name="schoolaccessindexdrive",legend_name='school access Index',extra_columns=['id','schoolacce'])
+    # create_chloropeth(m=m,marker_group=marker_group,table_name="schoolaccessindexdrive",legend_name='school access Index',extra_columns=['id','schoolacce'])
     getLineGeojson(m,table_name='estates_nairobi',db_conn=db_conn,extra_columns=['name','shape_area'])
     getLayercontrol(m)
     folium.LayerControl().add_to(m)

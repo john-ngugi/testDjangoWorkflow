@@ -161,7 +161,7 @@ nav{
     margin-bottom: 20px;
 }
 /* Responsive */
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
     .navbar-menu {
         display: none;
         flex-direction: column;
@@ -173,16 +173,53 @@ nav{
         padding: 10px 0;
     }
 
+    .navbar-menu {
+        display: none; /* Hide the menu items by default on smaller screens */
+        flex-direction: column;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        background-color: #333;
+        padding: 10px 0;
+    }
+
     .navbar-menu.active {
-        display: flex;
+        display: flex; /* Show the menu items when active class is applied */
     }
 
     .navbar-toggle {
-        display: block;
+        display: block; /* Display the toggle button on smaller screens */
+    }
+
+    .navbar-toggle i {
+        font-size: 24px; /* Adjust the font size of the toggle icon */
     }
 
     .navbar-menu li {
         margin: 10px 0;
         text-align: center;
+    }
+    .logo{
+        font-size: 18px;
+    }
+    .hero p{
+        padding-top: 30px;
+        width: 70%;
+        font-size: 12px;
+        line-height: 1.2rem;
+    }
+
+    .hero h6{
+        font-size: 14px;
+    }
+
+    .hero h2{
+        font-size: 40px;
+    }
+
+        .hero a button{
+            width: 200px;
+            padding: 10px 20px;
     }
 }

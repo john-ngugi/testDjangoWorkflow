@@ -94,12 +94,13 @@ function removeSmallInfo(){
 }
 
 closeQuery.addEventListener('click', ()=>{
-    that_fucking_card.classList.remove('visually-hidden');
+    setTimeout( addSmallInfo,1000);
 });
 
 function addSmallInfo(){
     that_fucking_card.classList.remove('visually-hidden');
 }
+
 const maps = document.querySelectorAll(".layer-identifier")
 const layerTitle = document.getElementById("layer-title");
 const layerInfo = document.getElementById('layer-info');
@@ -123,12 +124,12 @@ const layers_dict = {
 const accesibility_layers = {
     'schoolaccessindexwalk': 'school index walk',
     'schoolaccessindexdrive': 'school index drive',
-    'schoolaccessratiodrive': 'school access ratio drive',
+    // 'schoolaccessratiodrive': 'school access ratio drive',
     'schoolaccessratiowalk': 'school access ratio walk',
     'nbijobsacces_index': 'job access index',
-    'nbijobsacces_ratio': 'job access ratio',
+    // 'nbijobsacces_ratio': 'job access ratio',
     'nbihealthaccess_index': 'Nairobi Health Access Index',
-    'nbihealthaccess_ratio': 'Nairobi Health Access Ratio',
+    // 'nbihealthaccess_ratio': 'Nairobi Health Access Ratio',
 }
 
 
@@ -213,9 +214,16 @@ maps.forEach((map)=>{
         console.log("name" , name)
         layerTitle.innerText = name
         const chosen_value = name
+
         for(const [key_chosen, value_chosen] of Object.entries(texts_objs)){
-            if ( chosen_value == key_chosen){
+            console.log("value chosen: ",chosen_value + "\n" + "key Value: ",key_chosen)
+            chosen_value == key_chosen
+            if( chosen_value == key_chosen){
                 expanationText.innerText = value_chosen
+                break;
+            }
+            else{
+                expanationText.innerText = "Comming Soon, Under construction!"
             }
         }
         getLayernames(layerTitle)
@@ -252,7 +260,7 @@ Hull Shape Index
 
 const texts_objs ={
     'Destination Accessibility':Accessibility_txt,
-    'Diversity of Land Use':Density_txt,
+    'Diversity of Land Use':Diversity_txt,
     'Design of Road Network': design_of_road_network_txt,
 }
 
