@@ -6,28 +6,60 @@ const mapDiv = document.querySelector(".map");
 const loadingScreen = document.getElementById('loader');
 const layerSelector = document.getElementById('layerSelect');
 const attributeSelector = document.getElementById('AttributeSelect');
+const countySelector = document.getElementById('countySelect');
 const closeQuery = document.querySelector('.close-query');
-// Get selected values from the form
-const layerSelect = document.getElementById('layerSelect').value;
-const attributeSelect = document.getElementById('AttributeSelect').value;
 const expanationText = document.querySelector(".explanation-text");
-
+const smallTextContent = document.querySelector(".small-info-content");
+const commentBoxTitle = document.querySelector(".title-name");
 loadingScreen.style.display = 'none';
+
+
+const countiesOfKenya = [
+    'Baringo', 'Bomet', 'Bungoma', 'Busia', 'Elgeyo-Marakwet', 'Embu', 'Garissa', 'Homa Bay', 'Isiolo', 'Kajiado',
+    'Kakamega', 'Kericho', 'Kiambu', 'Kilifi', 'Kirinyaga', 'Kisii', 'Kisumu', 'Kitui', 'Kwale', 'Laikipia', 'Lamu',
+    'Machakos', 'Makueni', 'Mandera', 'Marsabit', 'Meru', 'Migori', 'Mombasa', 'Murang\'a', 'Nairobi', 'Nakuru', 'Nandi',
+    'Narok', 'Nyamira', 'Nyandarua', 'Nyeri', 'Samburu', 'Siaya', 'Taita-Taveta', 'Tana River', 'Tharaka-Nithi',
+    'Trans Nzoia', 'Turkana', 'Uasin Gishu', 'Vihiga', 'Wajir', 'West Pokot'
+];
+
+const attributeObj = {
+    'School accessibility': 'School access index ',
+    'Healthcare Accessibility ':'Healthcare Access Index',
+    'Jobs accessibility':'Jobs access index',
+    'Land use mix ': 'Land use mix index',
+}
+// const attributeSelect = null
+// const attributeSelectFn= getAttributes(layerSelectFn)
+
+function getAttributes(key){
+    var attributeSelectFn = "hello";
+    for(const [key_attr, value_attr] of Object.entries(attributeObj)){
+        console.log('in function: ',key)
+        if(key == key_attr){
+            attributeSelectFn = value_attr;
+            break;
+        }
+    }
+    return attributeSelectFn
+};
 
 // Add an event listener to the form submit event
 form.addEventListener('submit', function(event) {
     // Get selected values from the form
+    const countySelectFn= document.getElementById('countySelect').value;
     const layerSelectFn = document.getElementById('layerSelect').value;
-    const attributeSelectFn = document.getElementById('AttributeSelect').value;
+    // const attributeSelectFn = document.getElementById('AttributeSelect').value;
+
         event.preventDefault(); // Prevent the default form submission
 
         loadingScreen.style.display = 'flex';
         // Construct the data object to be sent
         const data = {
+            countySelect:countySelectFn,
             layerSelect: layerSelectFn,
-            attributeSelect: attributeSelectFn
+            attributeSelect: getAttributes(layerSelectFn),
         };
-
+        console.log(data);
         // Make a POST request using Fetch API
         fetch('get-layer/', {
             method: 'POST',
@@ -52,11 +84,21 @@ form.addEventListener('submit', function(event) {
             console.error('Error:', error);
             // Handle error here
         })
-        .catch(error => {
-            // Handle error here
-        })
         .finally(() => {
+            smallInfoTitle.innerText = layerSelectFn;
+            // smallInfoContent.innerText = value_chosen;
             // Hide the loading screen
+            for(const [key_fetch, value_fetch] of Object.entries(innerTextObjs)){
+                console.log(key_fetch, layerSelectFn)
+                if( layerSelectFn == key_fetch){
+                    smallTextContent.innerText = value_fetch;
+                    break;
+                }
+                else{
+                    smallTextContent.innerText = "Comming Soon, Under construction!"
+                }
+            }
+
             loadingScreen.style.display = 'none';
         });
 });
@@ -122,20 +164,15 @@ const layers_dict = {
 }
 
 const accesibility_layers = {
-    'schoolaccessindexwalk': 'school index walk',
-    'schoolaccessindexdrive': 'school index drive',
-    // 'schoolaccessratiodrive': 'school access ratio drive',
-    'schoolaccessratiowalk': 'school access ratio walk',
-    'nbijobsacces_index': 'job access index',
-    // 'nbijobsacces_ratio': 'job access ratio',
-    'nbihealthaccess_index': 'Nairobi Health Access Index',
-    // 'nbihealthaccess_ratio': 'Nairobi Health Access Ratio',
+    'School accessibility': 'School access index',
+    'Jobs accessibility': 'job access index',
+    'Healthcare Accessibility':'Healthcare access index',
 }
 
 
 const landUse_layers = {
-    'nbilanduseentropy_areahex': 'land use entropy area',
-    'nbilanduseentropy_fn': 'land use entropy function',
+
+    'Land use mix': 'Land use mix index',
 }
 
 
@@ -199,13 +236,23 @@ function getLayernames(layerTitle){
         if(layerTitle.innerText == key_outer){
             console.log("in loop")
             for (const [key, value] of Object.entries(value_outer)) {
-                var newElement = `<option value=${key} title="${value}">${value}</option>`
+                var newElement = `<option value="${key}" title="${value}">${key}</option>`
                 layerSelector.insertAdjacentHTML( 'beforeend', newElement );
             };
         };
     };
 }
 
+function getCounties(){
+    clearChildrenFromIndex(layerSelector,1)
+    countiesOfKenya.forEach((county)=>{
+        var newElement = `<option value=${county} title="${county}">${county}</option>`
+        countySelector.insertAdjacentHTML('beforeend', newElement )
+    });
+}
+
+const smallInfoTitle = document.querySelector(".small-info-title");
+const smallInfoContent = document.querySelector(".small-info-content");
 
 maps.forEach((map)=>{
     console.log(map)
@@ -214,27 +261,27 @@ maps.forEach((map)=>{
         console.log("name" , name)
         layerTitle.innerText = name
         const chosen_value = name
-
         for(const [key_chosen, value_chosen] of Object.entries(texts_objs)){
             console.log("value chosen: ",chosen_value + "\n" + "key Value: ",key_chosen)
             chosen_value == key_chosen
             if( chosen_value == key_chosen){
-                expanationText.innerText = value_chosen
+                expanationText.innerText = value_chosen;
                 break;
             }
             else{
                 expanationText.innerText = "Comming Soon, Under construction!"
             }
         }
+        getCounties()
         getLayernames(layerTitle)
-        getAttrbutes(layerTitle)
+        // getAttrbutes(layerTitle)
     });
     clearChildrenFromIndex(layerSelector,1)
 });
 
 
-
-const Accessibility_txt = "The accessibility map tells us how easy it is to access various services such as schools, jobs, and hospitals across the city. Select the layer of interest,  e.g Schools, to view the map of school accessibility. Click on a point in this interactive map to view the accessibility index. A high index number means that it is easier to access services, while a low index number means that it is more difficult to access services. Click here to see our methodology section to understand the science of measuring service accessibility."
+//Click here to see our methodology section to understand the science of measuring service accessibility.
+const Accessibility_txt = "The accessibility map tells us how easy it is to access various services such as schools, jobs, and hospitals across the city. Select the layer of interest,  e.g Schools, to view the map of school accessibility. Click on a point in this interactive map to view the accessibility index. A high index number means that it is easier to access services, while a low index number means that it is more difficult to access services."
 const Diversity_txt = "This map tells us how different land uses are mixed in a location. A high value means that there are more land uses mixed in a given location, while a low value tells us there is little or no mix of land uses. In your mtaa, a high value of diversity would for instance tell you that the land uses such as residential, are mixed with other land uses such as commercial."
 const Density_txt = "Building density tells us the level of development in a neighborhood. It represents the number of buildings per unit area of land."
 const distance_to_pt_txt = "This map shows us how far (or near) buildings are to public transport stops. "
@@ -258,11 +305,164 @@ Hull Shape Index
 
 `
 
+const innerTextObjs = {
+    'Jobs accessibility': Accessibility_txt,
+    'School accessibility': Accessibility_txt,
+    "Healthcare Accessibility": Accessibility_txt,
+    "Land Use Mix": Diversity_txt,
+    'sdna_1500meters_2018':design_of_road_network_txt,
+    'sdna_1000meters_2018':design_of_road_network_txt,
+    'sdna_500meters_2018': design_of_road_network_txt,
+}
+
 const texts_objs ={
     'Destination Accessibility':Accessibility_txt,
     'Diversity of Land Use':Diversity_txt,
+    'Density of Buildings':Density_txt,
     'Design of Road Network': design_of_road_network_txt,
+    'Distance to Public Transport': distance_to_pt_txt,
 }
+
+const closeBtn = document.getElementById('close-button');
+const commentSection = document.querySelector('.comments-section');
+const message_tag = document.querySelector('.messages')
+closeBtn.addEventListener('click',() =>{
+        commentSection.style.display = "none";
+});
+
+const commentSectionObjTitle = document.querySelector(".title-name");
+// Function to open the comment section
+function openCommentBox(data) {
+    console.log("openCommentBox function called"); // Debugging log
+
+    const commentBox = document.querySelector('.comments-section');
+    if (commentBox) {
+        commentBox.classList.add('show');
+    }
+
+    var commentSection = document.getElementById('comments-section');
+    if (commentSection) {
+        commentSectionObjTitle.innerText = data;
+        fetch(`/getandcreatesatistisfaction/?title=${encodeURIComponent(data)}`).then(response => response.json()).then(data => {
+        comments = data.comments;
+        if(comments != []){
+            console.log('data:', data)
+            clearChildrenFromIndex(message_tag,1)
+            comments.forEach((comment) =>{
+                    var newElement = `
+                    <div class="comment-tag bg-primary rounded m-2">
+                        <h6 class="commenters-name m-2 pt-3">Mtaa wetu User</h6>
+                        <p class="comment-body m-2">${comment[0]}</p>
+                        <small class="ms-5 text-sm">
+                            - Posted on
+                            <span><i>${new Date(comment[1]).toLocaleString()}</i></span>
+                        </small>
+                    </div>
+                    `
+                    message_tag.insertAdjacentHTML('afterbegin', newElement )
+                });
+            }
+        else{
+            message_tag.innerHTML =`
+                        <div class="comment-tag bg-primary rounded m-2">
+                        <h6 class="commenters-name m-2 pt-3">Devs</h6>
+                        <p class="comment-body m-2">Comments will show here</p>
+                        <small class="ms-5 text-sm">
+                            - Posted on
+                            <span><i>Mon Jun 17 2:35 pm</i></span>
+                        </small>
+                    </div>`
+        }
+    });
+
+        commentSection.style.display = 'flex';
+    } else {
+        console.log("Comment section not found"); // Debugging log
+    }
+}
+
+// Add an event listener to listen for messages from the iframe
+window.addEventListener('message', function(event) {
+    console.log("Message received:", event.data); // Debugging log
+    if (event.data.action === 'openCommentBox') {
+        openCommentBox(event.data.data);
+    }
+});
+
+
+document.getElementById('satisfaction-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const satisfaction = document.getElementById('satisfactionSlider').value;
+    const comment = document.getElementById('Textarea').value;
+    const name = commentSectionObjTitle.textContent;
+
+    fetch('/getandcreatesatistisfaction/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({
+            name:name,
+            satisfaction: satisfaction,
+            comment: comment,
+
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Form submitted successfully!');
+            // Optionally, you can reset the form or handle success further
+        } else {
+            alert('Error submitting form. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    });
+});
+
+document.getElementById('close-comment-btn').addEventListener('click', function() {
+    // Handle the close button action (e.g., hide the form or modal)
+});
+
+
+
+
+
+
+
+
+
+
+
+// const draggableSection = document.getElementById('draggableSection');
+
+// draggableSection.addEventListener('dragstart', function (e) {
+//     e.dataTransfer.setData('text/plain', null);
+//     const rect = e.target.getBoundingClientRect();
+//     e.dataTransfer.setData('offsetX', e.clientX - rect.left);
+//     e.dataTransfer.setData('offsetY', e.clientY - rect.top);
+// });
+
+// document.addEventListener('dragover', function (e) {
+//     e.preventDefault();
+// });
+
+// document.addEventListener('drop', function (e) {
+//     e.preventDefault();
+//     const offsetX = e.dataTransfer.getData('offsetX');
+//     const offsetY = e.dataTransfer.getData('offsetY');
+//     draggableSection.style.position = 'absolute';
+//     draggableSection.style.left = `${e.clientX - offsetX}px`;
+//     draggableSection.style.top = `${e.clientY - offsetY}px`;
+// });
+
+
 
 
 // const commentsBox = document.getElementById('comments');

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'mtaawetu_app',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
-
+X_FRAME_OPTIONS = "SAMEORIGIN"
 CSRF_TRUSTED_ORIGINS = [ "https://mtaawetu.com","https://www.mtaawetu.com"]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
@@ -127,6 +128,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+# DATETIME_FORMAT="%Y-%m-%d%H:%M:%S"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/

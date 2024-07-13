@@ -1,12 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 
+
+/* Style for the whole scrollbar */
+::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+    height: 8px; /* Height of the scrollbar for horizontal scrollbars */
+}
+
+/* Style for the scrollbar track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background of the scrollbar track */
+    border-radius: 10px; /* Rounded edges for the scrollbar track */
+}
+
+/* Style for the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+    background:#378DFC ; /* Background color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded edges for the scrollbar thumb */
+}
+
+/* Style for the scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #3872be; /* Background color of the scrollbar thumb on hover */
+}
 body{
     padding: 0;
     margin: 0;
     font-family: "Nunito Sans", sans-serif;
     /* overflow-x: hidden; */
-    /* overflow-y: hidden; */
-    color:#fff;
+    overflow-y: scroll;
+    color: rgb(250, 230, 230);;
 }
 *{
     font-family: "Nunito Sans", sans-serif;
@@ -14,15 +37,24 @@ body{
 .wrapper{
     height: 100vh;
     width: 100vw;
-    background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.5),rgba(0,0,0,0.5));
+    background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.4),rgba(0,0,0,0.2));
     background-size: cover;
+    /* background-color: #378DFC; */
     background-repeat: no-repeat;
-    color:#fff;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    color: rgb(250, 230, 230);
 }
+
+.breakline{
+    margin:10px 100px 0px 100px;
+}
+
 hr{
     height: 1px;
     background-color: #ccc;
     border: none;
+
 }
 
 nav{
@@ -30,7 +62,7 @@ nav{
     flex-direction: row;
     width: 100vw;
     height: 10vh;
-    /* justify-content: space-between; */
+    justify-content: space-between;
 }
 
 .logo{
@@ -47,6 +79,7 @@ nav{
     align-items: center;
     float: right;
     padding-top: 10px;
+    padding-right: 180px;
 }
 
 .navlinks ul li{
@@ -61,7 +94,7 @@ nav{
 }
 .hero{
     display: flex;
-    height: 90vh;
+    height: 74vh;
     width: 100vw;
     flex-direction: column;
     justify-content: center;
@@ -71,15 +104,20 @@ nav{
 
 .hero h2{
     font-size: 60px;
+    letter-spacing: 0.08rem;
 }
 
 .hero h6{
     font-size: 18px;
+    letter-spacing: 0.04rem;
 }
 
 .hero p{
-    padding-top: 30px;
+    padding-top: 18px;
     width: 50%;
+    font-weight: 200;
+    /* line-height: 1.8rem; */
+    /* letter-spacing: 0.03rem; */
 }
 
 .hero a button{
@@ -115,7 +153,7 @@ nav{
 }
 
 
-.navbar {
+/* .navbar {
     background-color: #fff;
     color: #333;
     display: flex;
@@ -124,7 +162,7 @@ nav{
     padding: 10px 20px;
     height: 50px;
     position: relative;
-}
+} */
 
 .navbar-brand {
     font-size: 20px;
@@ -155,10 +193,116 @@ nav{
 
 .card-container {
     padding: 20px;
-    background-color: #f8f9fa;
+    padding-top: 20px;
+    background-color: transparent;
+    color: black;
 }
-.card-deck .card {
-    margin-bottom: 20px;
+
+
+.card-body{
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    color: rgb(250, 230, 230);
+}
+
+.divider{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+.divider a{
+    color: rgb(250, 230, 230);
+    text-decoration: none;
+}
+
+
+.cards-title{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+
+
+.cards-title h4{
+    color: white;
+    text-decoration: underline;
+    text-decoration-color: #378DFC;
+    text-underline-offset: 10px;
+}
+.card-text{
+    padding-top: 15px;
+}
+.icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer{
+    width: 100vw;
+    height: 250px;
+    margin-top: 30px;
+}
+
+.foot-wrapper{
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    justify-content: space-between;
+    padding-right: 140px;
+    padding-left: 130px;
+}
+
+.copyrights{
+    display: flex;
+    width: 100vw;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.name-footer-div{
+    font-size: 30px;
+
+}
+.footer-contact{
+    display: inline;
+}
+.socials{
+    display:flex;
+    flex-direction: row;
+}
+.socials p{
+    /* padding-left: 10px; */
+    font-size: 18px;
+}
+
+.social-title{
+    font-size: 25px;
+    padding-bottom: 20px;
+}
+.Quicklinks ul{
+    list-style: none;
+    cursor: pointer;
+}
+.Quicklinks ul li{
+    font-size: 18px;
+}
+.Quicklinks ul li:hover{
+    color:#378DFC;
+}
+#whatsapp i{
+    color: green;
+}
+#email i{
+    color: red;
 }
 /* Responsive */
 @media screen and (max-width: 768px) {

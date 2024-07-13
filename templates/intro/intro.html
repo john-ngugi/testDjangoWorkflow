@@ -24,7 +24,8 @@
             rel="stylesheet"
             integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
             crossorigin="anonymous" />
-
+        <script src="https://kit.fontawesome.com/c4e0f4710c.js"
+            crossorigin="anonymous"></script>
         <style>
             body,
             html {
@@ -99,13 +100,22 @@
                 </header>
             </section>
 
-            <section class="card-container">
+            <div class="divider">
+                <p>Learn more</p>
+                <a href="#cards"><i
+                        class="fa-solid fa-arrow-down fa-bounce"></i></a>
+            </div>
+
+            <section id="cards" class="card-container">
+                <div class="cards-title"><h4>What we do</h4></div>
                 <div class="container">
                     <div class="row row-cols-1 row-cols-md-3 g-4">
-                        <div class="col">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">Residents</h5>
+                        <div class="col card-deck">
+                            <div class="card bg-transparent h-100">
+                                <div class="card-body rounded">
+                                    <h5 class="card-title"><i
+                                            class="fa-solid fa-house-user"></i>
+                                        &nbsp; Residents</h5>
                                     <p class="card-text">
                                         Residents can get to know important or
                                         interesting information about where they
@@ -115,11 +125,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">Neighborhood
-                                        Associations</h5>
+                        <div class="col card-deck">
+                            <div class="card bg-transparent h-100">
+                                <div class="card-body rounded">
+                                    <h5 class="card-title">
+                                        <i class="fa-solid fa-tree-city"></i>
+                                        &nbsp; Neighborhood Associations
+                                    </h5>
                                     <p class="card-text">
                                         Neighborhood associations can get a good
                                         grasp of their surroundings improving
@@ -128,11 +140,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">County
-                                        Governments</h5>
+                        <div class="col card-deck">
+                            <div class="card bg-transparent h-100">
+                                <div class="card-body rounded">
+                                    <h5 class="card-title">
+                                        <i
+                                            class="fa-solid fa-building-columns"></i>
+                                        &nbsp;County Governments
+                                    </h5>
                                     <p class="card-text">
                                         The county governments can access data
                                         information to aid in urban planning and
@@ -141,10 +156,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">Researchers</h5>
+                        <div class="col card-deck">
+                            <div class="card bg-transparent h-100">
+                                <div class="card-body rounded">
+                                    <h5 class="card-title">
+                                        <i
+                                            class="fa-solid fa-magnifying-glass-location"></i>&nbsp;Researchers
+                                    </h5>
                                     <p class="card-text">
                                         Researchers can quickly access data and
                                         information to support their discovery
@@ -153,11 +171,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">Planning
-                                        Professionals</h5>
+                        <div class="col card-deck">
+                            <div class="card bg-transparent h-100">
+                                <div class="card-body rounded">
+                                    <h5 class="card-title">
+                                        <i
+                                            class="fa-solid fa-map-location-dot"></i>&nbsp;Planning
+                                        Professionals
+                                    </h5>
                                     <p class="card-text">
                                         Planning professionals and built
                                         environment experts have a ready source
@@ -168,11 +189,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">Real Estate
-                                        Investors</h5>
+                        <div class="col card-deck">
+                            <div class="card bg-transparent h-100">
+                                <div class="card-body rounded">
+                                    <h5 class="card-title">
+                                        <i
+                                            class="fa-solid fa-hand-holding-dollar"></i>
+                                        &nbsp;Real Estate Investors
+                                    </h5>
                                     <p class="card-text">
                                         Real Estate Investors and property
                                         developers can get information to assess
@@ -182,10 +206,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">Entrepreneurs</h5>
+                        <div class="col card-deck">
+                            <div class="card bg-transparent h-100">
+                                <div class="card-body rounded">
+                                    <h5 class="card-title">
+                                        <i
+                                            class="fa-solid fa-building-user"></i>
+                                        &nbsp;Entrepreneurs
+                                    </h5>
                                     <p class="card-text">
                                         Entrepreneurs and commercial enterprises
                                         can utilize Mtaa Wetu to pinpoint the
@@ -198,6 +226,39 @@
                         </div>
                     </div>
                 </div>
+            </section>
+            <hr class="breakline" />
+            <section>
+                <footer>
+                    <div class="foot-wrapper">
+                        <div class="name-footer-div"><p>Mtaawetu</p></div>
+                        <div class="footer-contact">
+                            <div class="social-title">Socials</div>
+                            <div id="whatsapp" class="socials">
+
+                                <p><i class="fa-brands fa-whatsapp fa-lg"></i>
+                                    &nbsp;+254735880407</p>
+                            </div>
+                            <div id="email" class="socials">
+
+                                <p> <i
+                                        class="fa-solid fa-envelope fa-lg"></i>
+                                    &nbsp;info@mtaawetu.com</p>
+                            </div>
+                        </div>
+
+                        <div class="Quicklinks">
+                            <div class="social-title">Quick links</div>
+                            <ul>
+                                <li>About</li>
+                                <li>Welcome</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="copyrights"><i
+                            class="fa-regular fa-copyright"></i> &nbsp;mtaa
+                        wetu</div>
+                </footer>
             </section>
         </div>
         {% endblock %}

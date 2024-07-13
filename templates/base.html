@@ -74,13 +74,13 @@
                                     >Diversity of Land Use</a
                                 >
                                 <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
+                                    >Distance to Public Transport</a
+                                >
+                                <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
                                     >Design of Road Network</a
                                 >
                                 <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
-                                    >Density</a
-                                >
-                                <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
-                                    >Distance to matatu stop</a
+                                    >Density of Buildings</a
                                 >
                                 <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
                                     >Zoning Policy</a
@@ -88,9 +88,6 @@
                             </div>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a
                                 class="nav-link dropdown-toggle"
@@ -99,14 +96,67 @@
                                 role="button"
                                 aria-haspopup="true"
                                 aria-expanded="false"
+                                data-toggle="dropdown"
                                 >Research</a
                             >
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Online Datasets</a>
-                                <a class="dropdown-item" href="#">Research Papers</a>
+                                <a
+                                    class="dropdown-item dropdown-toggle"
+                                    href="#"
+                                    role="button"
+                                    data-bs-toggle="dropdown"
+                                    data-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    Datasets
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#" onclick="event.preventDefault();"
+                                        >Subcategory 1</a
+                                    >
+                                    <a class="dropdown-item" href="#" onclick="event.preventDefault();"
+                                        >Subcategory 2</a
+                                    >
+
+                                    <!-- Add more items as needed -->
+                                </div>
+                                <div class="dropdown">
+                                    <a
+                                        class="dropdown-item dropdown-toggle"
+                                        href="#"
+                                        role="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                    >
+                                        Research
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li>
+                                            <a class="dropdown-item" href="#" onclick="event.preventDefault();"
+                                                >Subcategory 1</a
+                                            >
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#" onclick="event.preventDefault();"
+                                                >Subcategory 2</a
+                                            >
+                                        </li>
+                                        <!-- Add more items as needed -->
+                                    </ul>
+                                </div>
                             </div>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'home' %}">CyberMart </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'home' %}">Contact Us </a>
+                        </li>
                     </ul>
+
                     <form class="d-flex">
                         <input class="form-control me-sm-2" type="search" placeholder="Search" />
                         <button class="btn btn-secondary my-2 my-sm-0" type="submit" id="search-location">
@@ -123,165 +173,174 @@
             {% endfor %}
         </div>
         {% endif %} {% block content %}
-        <section class="container-fluid h-100 w-100 d-flex col-lg-12 top-section p-0">
-            <div class="map h-100 w-100 col-lg-12">{{ map|safe }}</div>
+        <div class="wrapper">
+            <section class="container-fluid h-100 w-100 d-flex col-lg-12 top-section p-0">
+                <div class="map h-100 w-100 col-lg-12" id="map">{{ map|safe }}</div>
 
-            <div id="loader">
-                <div class="honeycomb">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            </div>
-
-            <div class="container-fluid d-flex hero-contents">
-                <div class="display-card d-block small-info" id="small-info">
-                    <h5 class="ps-2 pt-2">School Accesibility Walk</h5>
-                    <div class="divider"></div>
-                    <p class="ps-2 pe-1">
-                        How easy it is to access schools, jobs and hospitals across the city. Select the layer of
-                        interest e.g schools to view the map of school accessibility.
-                    </p>
-                </div>
-
-                <div
-                    id="query-layer"
-                    class="layer-control pt-3 ps-2 pe-2 shadow-lg ms-2 ms-2 mt-2 rounded-top d-flex flex-column col-lg-4 visually-hidden"
-                >
-                    <button
-                        type="button"
-                        class="btn-close align-self-end close-query"
-                        aria-label="Close"
-                        onclick="hideQueryLayer()"
-                    ></button>
-                    <h5 id="layer-title">Accessibility</h5>
-                    <p class="ps-2 text-dark explanation-text" id="layer-info">
-                        How easy it is to access schools, jobs and hospitals across the city. Select the layer of
-                        interest e.g schools to view the map of school accessibility For more information about how
-                        accessibility is measured. Go to our
-                        <span> <a href="#">methodology section.</a></span>
-                    </p>
-
-                    <div class="container mt-3">
-                        <h5>Query Layer</h5>
-                        <form method="post" id="send-layer-info" class="form">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label
-                                    for="countySelect"
-                                    class="text-primary-emphasis"
-                                    title="The layer you want to visualize, nrbjaaccess: Nairobi job access index"
-                                >
-                                    Select County
-                                </label>
-                                <select class="form-control" id="countySelect">
-                                    <option value="null">--Select an Option--</option>
-                                </select>
-                                <label
-                                    for="layerSelect"
-                                    class="text-primary-emphasis"
-                                    title="The layer you want to visualize, nrbjaaccess: Nairobi job access index"
-                                >
-                                    Select Layer Name
-                                </label>
-                                <select class="form-control" id="layerSelect">
-                                    <option value="null">--Select an Option--</option>
-                                </select>
-
-                                <label
-                                    for="AttributeSelect"
-                                    class="text-primary-emphasis"
-                                    title="The attribute to associate with the layer eg: entropy_fn"
-                                >
-                                    Select attribute
-                                </label>
-                                <select class="form-control" id="AttributeSelect">
-                                    <option value="null">--Select an Option--</option>
-                                </select>
-
-                                <button
-                                    type="submit"
-                                    class="btn btn-md bg-primary mt-2 w-100 text-white"
-                                    id="get-layer-btn"
-                                >
-                                    Get Layer
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <p class="ps-2 mt-2 pt-5 text-dark">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error vitae animi esse officia quis
-                        excepturi, laborum exercitationem omnis accusantium quam cum dolore illum alias modi. Omnis
-                        nostrum suscipit libero quas?
-                    </p>
-                </div>
-            </div>
-
-            <div class="comments rounded-top visually-hidden" id="comments">
-                <div class="messages">
-                    <div class="comment-tag bg-primary rounded m-2">
-                        <h6 class="commenters-name m-2 pt-3 text-warning">John Ngugi</h6>
-                        <p class="comment-body m-2">The beds are too few!</p>
-                        <small class="ms-5 text-sm">
-                            - Posted on
-                            <span><i>Mon Jun 17 2:35 pm</i></span>
-                        </small>
-                    </div>
-
-                    <div class="comment-tag bg-primary rounded m-2">
-                        <h6 class="commenters-name m-2 pt-3 text-success">Martin</h6>
-                        <p class="comment-body m-2">The beds are too few!</p>
-                        <small class="ms-5 text-sm">
-                            - Posted on
-                            <span><i>Thu Aug 22 4:50 pm</i></span>
-                        </small>
-                    </div>
-
-                    <div class="comment-tag bg-primary rounded m-2">
-                        <h6 class="commenters-name m-2 pt-3 text-success">Jane Omollo</h6>
-                        <p class="comment-body m-2">The service time was Great</p>
-                        <small class="ms-5 text-sm">
-                            - Posted on
-                            <span><i>Wed Jan 08 2:20 pm</i></span>
-                        </small>
-                    </div>
-
-                    <div class="comment-tag bg-primary rounded m-2">
-                        <h6 class="commenters-name m-2 text-success">John Ngugi</h6>
-                        <p class="comment-body m-2">The place was great!</p>
-                        <small class="ms-5 text-sm">
-                            - Posted on
-                            <span><i>Fri Jul 19 7:45 am</i></span>
-                        </small>
+                <div id="loader">
+                    <div class="honeycomb">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
                     </div>
                 </div>
-                <hr class="dropdown-divider" />
-                <form action method="post">
-                    {% csrf_token %}
-                    <div>
-                        <label for="Textarea" class="form-label text-primary ms-2">Leave Comment</label>
-                        <textarea class="form-control" id="Textarea" rows="2"></textarea>
+
+                <div class="container-fluid d-flex hero-contents">
+                    <div class="display-card d-block small-info" id="small-info">
+                        <h5 class="ps-2 pt-2 small-info-title">School Accesibility Walk</h5>
+                        <div class="divider"></div>
+                        <p class="ps-2 pe-1 small-info-content">
+                            How easy it is to access schools, jobs and hospitals across the city. Select the layer of
+                            interest e.g schools to view the map of school accessibility.
+                        </p>
                     </div>
-                    <div class="d-flex">
-                        <button type="submit" class="btn btn-primary bg-primary btn-sm mt-1 ms-2 w-25 text-white">
-                            Submit
-                        </button>
+
+                    <div
+                        id="query-layer"
+                        class="layer-control pt-3 ps-2 pe-2 shadow-lg ms-2 ms-2 mt-2 rounded-top d-flex flex-column col-lg-4 visually-hidden"
+                    >
                         <button
                             type="button"
-                            id="close-comment-btn"
-                            class="btn btn-danger bg-danger btn-sm mt-1 w-25 ms-2 text-white close-comment-btn"
-                        >
-                            Close
-                        </button>
+                            class="btn-close align-self-end close-query"
+                            aria-label="Close"
+                            onclick="hideQueryLayer()"
+                        ></button>
+
+                        <h5 id="layer-title">Accessibility</h5>
+                        <p class="ps-2 text-dark explanation-text" id="layer-info">
+                            How easy it is to access schools, jobs and hospitals across the city. Select the layer of
+                            interest e.g schools to view the map of school accessibility For more information about how
+                            accessibility is measured. Go to our
+                            <span> <a href="#">methodology section.</a></span>
+                        </p>
+
+                        <div class="container mt-3">
+                            <h5>Query Layer</h5>
+                            <form method="post" id="send-layer-info" class="form">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label
+                                        for="countySelect"
+                                        class="text-primary-emphasis"
+                                        title="The layer you want to visualize, nrbjaaccess: Nairobi job access index"
+                                    >
+                                        Select County
+                                    </label>
+                                    <select class="form-control" id="countySelect">
+                                        <option value="null">--Select an Option--</option>
+                                    </select>
+                                    <label
+                                        for="layerSelect"
+                                        class="text-primary-emphasis"
+                                        title="The layer you want to visualize, nrbjaaccess: Nairobi job access index"
+                                    >
+                                        Select Layer Name
+                                    </label>
+                                    <select class="form-control" id="layerSelect">
+                                        <option value="null">--Select an Option--</option>
+                                    </select>
+
+                                    {% comment %}
+                                    <label
+                                        for="AttributeSelect"
+                                        class="text-primary-emphasis"
+                                        title="The attribute to associate with the layer eg: entropy_fn"
+                                    >
+                                        Select attribute
+                                    </label>
+                                    <select class="form-control" id="AttributeSelect">
+                                        <option value="null">--Select an Option--</option>
+                                    </select>
+                                    {% endcomment %}
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-md bg-primary mt-2 w-100 text-white"
+                                        id="get-layer-btn"
+                                    >
+                                        Get Layer
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        {% comment %}
+                        <p class="ps-2 mt-2 pt-5 text-dark">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Error vitae animi esse officia
+                            quis excepturi, laborum exercitationem omnis accusantium quam cum dolore illum alias modi.
+                            Omnis nostrum suscipit libero quas?
+                        </p>
+                        {% endcomment %}
                     </div>
-                </form>
-            </div>
-        </section>
+                </div>
+            </section>
+
+            <!--draggable="true" add this to make it draggable-->
+
+            <section class="comments-section rounded" id="comments-section">
+                <div class="comments-title">
+                    <h3 class="title-name">Getrudes Hospital</h3>
+                    <button class="close-button" id="close-button" aria-label="Close">
+                        <span class="close-icon">&times;</span>
+                    </button>
+                </div>
+                <div>
+                    <hr class="breakline" />
+                </div>
+                <div class="level-of-satisfaction draggable" id="draggableSection">
+                    <div class="comments rounded-top" id="comments">
+                        <div class="msg-title"></div>
+                        <div class="messages">
+                            <div class="comment-tag bg-primary rounded m-2">
+                                <h6 class="commenters-name m-2 pt-3">Devs</h6>
+                                <p class="comment-body m-2">Comments will show up here.</p>
+                                <small class="ms-3 text-sm">
+                                    - Posted on
+                                    <span><i>Mon Jun 17 2:35 pm</i></span>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form action method="post" id="satisfaction-form">
+                        {% csrf_token %}
+                        <div class="slider-title">
+                            <h6>What is your level of satisfaction ?</h6>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" min="1" max="5" value="3" class="slider" id="satisfactionSlider" />
+                            <div class="labels">
+                                <div class="label">Very Bad</div>
+                                <div class="label">Bad</div>
+                                <div class="label">Neutral</div>
+                                <div class="label">Good</div>
+                                <div class="label">Very Good</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="Textarea" class="form-label text-primary ms-2">Leave Comment</label>
+                            <textarea class="form-control" id="Textarea" rows="2"></textarea>
+                        </div>
+                        <div class="d-flex">
+                            <button type="submit" class="btn btn-primary bg-primary btn-sm mt-2 ms-2 w-25 text-white">
+                                Submit
+                            </button>
+                            <button
+                                type="button"
+                                id="close-comment-btn"
+                                class="btn btn-danger bg-danger btn-sm mt-2 w-25 ms-2 text-white close-comment-btn"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
         {% endblock %}
         <script src="{% static 'main.js' %}"></script>
         <script>
