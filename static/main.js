@@ -309,7 +309,7 @@ const innerTextObjs = {
     'Jobs accessibility': Accessibility_txt,
     'School accessibility': Accessibility_txt,
     "Healthcare Accessibility": Accessibility_txt,
-    "Land Use Mix": Diversity_txt,
+    "Land use mix": Diversity_txt,
     'sdna_1500meters_2018':design_of_road_network_txt,
     'sdna_1000meters_2018':design_of_road_network_txt,
     'sdna_500meters_2018': design_of_road_network_txt,
@@ -362,7 +362,19 @@ function openCommentBox(data) {
                     message_tag.insertAdjacentHTML('afterbegin', newElement )
                 });
             }
-        else{
+        else if(comments == []){
+            message_tag.innerHTML =`
+                        <div class="comment-tag bg-primary rounded m-2">
+                        <h6 class="commenters-name m-2 pt-3">Devs</h6>
+                        <p class="comment-body m-2">Comments will show here</p>
+                        <small class="ms-5 text-sm">
+                            - Posted on
+                            <span><i>Mon Jun 17 2:35 pm</i></span>
+                        </small>
+                    </div>`
+        }
+
+        else {
             message_tag.innerHTML =`
                         <div class="comment-tag bg-primary rounded m-2">
                         <h6 class="commenters-name m-2 pt-3">Devs</h6>
@@ -503,6 +515,9 @@ document.getElementById('close-comment-btn').addEventListener('click', function(
    have a closed ended and open ended approach to facilities(level of satisfaction)
 
    feedback- contact page
+   spatial join. ward and subcounty join.
 
+
+   slides on
 
  */

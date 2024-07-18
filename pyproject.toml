@@ -29,6 +29,10 @@ django-ckeditor-5 = "^0.2.13"
 branca = "^0.7.2"
 django-cors-headers = "^4.4.0"
 leafmap = "^0.34.5"
+networkx = "^3.3"
+osmnx = "^1.9.3"
+r5py = "^0.1.1"
+mapclassify = "^2.7.0"
 
 [build-system]
 requires = ["poetry-core"]

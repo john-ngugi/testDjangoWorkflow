@@ -20,12 +20,14 @@ from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
 # from . import models
 from .models import Amenities,Satisfaction
+from django.conf import settings
+import os
+from pathlib import Path
 
 import random
 # Create your views here.
 
-
-
+BASE_DIR = Path(__file__).resolve().parent.parent
 def getLayercontrol(m):
     # Create custom CSS
     custom_css = """
@@ -131,7 +133,7 @@ attribute_options = ["schoolacce", 'saccinddrv', 'schaccessb','saccindwlk','joba
 def filterLayers(layer_name,attribute_name):
     print(layer_name == 'Healthcare Accessibility')
     if layer_name == 'Jobs accessibility':
-        attribute_name = 'jobaccindx'
+        attribute_name = ['jobaccindx','subcounty','wards','population']
         table_name = 'nbijobsacces'
 
     elif layer_name == 'Land use mix' :
@@ -140,13 +142,13 @@ def filterLayers(layer_name,attribute_name):
 
 
     elif layer_name == 'Healthcare Accessibility':
-        attribute_name = 'accessindx'
+        attribute_name = ['accessindx','subcounty','wards','population']
         table_name = 'nbihealthaccess'
 
 
 
     elif layer_name == 'School accessibility':
-        attribute_name = 'schoolacce'
+        attribute_name = ['schoolacce','subcounty','wards','population']
         table_name = 'schoolaccessindexwalk'
 
     else:
@@ -310,11 +312,50 @@ color_values = [
 
 
 
+def getGeoJsonPoints(hospital_group,m):
+    # Construct the path to the file
+    file_path = os.path.join(settings.BASE_DIR, 'points_cleaned.geojson')
+    hospitals = gpd.read_file(file_path)
+    columns_to_retain = ['osmid', 'geometry','name','amenity','check_date']
+    hospitals = hospitals[columns_to_retain]
+    star_rating = generate_star_rating(2)
+    hospitals = hospitals.dropna()
+    for idx, row in hospitals.iterrows():
+        print(row['name'])
+        folium.Marker(
+            location=[row.geometry.y, row.geometry.x],
+            icon=folium.Icon(color='green'),
+            tooltip=row['name'],
+            popup= f"""
+                    <div class="card border-0 shadow-md" style="width: 20rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">{row['name']}</h5>
+                            <p>Type: {row['amenity']}</p>
+                            <p>Date: {row['check_date']}</p>
+                            <div>Level of Satisfaction: {star_rating}</div>
+                            <button class="open-dialogue" onclick="parent.postMessage({{ action: 'openCommentBox', data: '{row['name'].lower().title()}' }}, '*')" style="padding-left:0px; padding-top:2px;color:blue; background-color:transparent; border:none;outline:none;"> View and add comment </button>
+                        </div>
+                    </div>
+                    """
+        ).add_to(hospital_group)
+
+
+        # Use get_or_create to check if the amenity exists and create it if it doesn't
+        amenity, created = Amenities.objects.get_or_create(name=row['name'].title(),amenity_type=row['amenity'])
+        if created:
+            print(f"Amenity {row.name} created in the database.")
+        else:
+            print(f"Amenity {row.name} already exists in the database.")
+
+
+    hospital_group.add_to(m)
+
 def getRandomColor():
     color = color_values[random.randint(0,len(color_values))-1]
     return color
 
-def getPointData(m, marker_group, lat, lon, table_name, extra_columns=[]):
+def getPointData(m,group,lat, lon, table_name, extra_columns=[]):
+    hospital_group = group
     '''
     lat: string: latitude
     lon: string: longitude
@@ -369,27 +410,28 @@ def getPointData(m, marker_group, lat, lon, table_name, extra_columns=[]):
             tooltip=row['f_name'],
             popup=folium.Popup(popup_html, max_width=2650),
             icon=folium.Icon(color='green'),
-        ).add_to(marker_group)
-    # Add the feature group to the map
-    marker_group.add_to(m)
+        ).add_to(hospital_group)
+
+    # # Add the feature group to the map
+    # hospital_group.add_to(m)
 
     print("Markers added")
     return m
 
-def getOverpassData(marker_group,table_name):
+def getOverpassData(hospital_group,school_group,table_name):
     # Overpass API
-    if table_name in ['schoolaccessindexdrive', 'schoolaccessindexwalk', 'schoolaccessratiodrive', 'schoolaccessratiowalk']:
-        amenity = 'school'
+    if table_name == 'schoolaccessindexwalk':
+        amenity_var = 'school'
     elif table_name == 'nbihealthaccess':
-        amenity = 'hospital'
+        amenity_var = 'hospital'
     else:
-        amenity = 'hospital'
+        amenity_var = 'hospital'
 
     # Define parameters
     radius = 25000
     latitude = -1.2921
     longitude = 36.8219
-    amenity_type = f"amenity={amenity}"
+    amenity_type = f"amenity={amenity_var}"
 
     # Define the Overpass query string
     overpass_query = f"""
@@ -420,28 +462,39 @@ def getOverpassData(marker_group,table_name):
             popup_html = f"""
             <div class="card border-0 shadow-md" style="width: 20rem;">
             <div class="card-body">
-                <h5 class="card-title">{i['tags']['name']}</h5>
+                <h5 class="card-title">{i['tags'].get('name', 'no name')}</h5>
                 <p class="card-text">{i['tags'].get('description', 'No description available')}</p>
                 <div>Level of Satisfaction: {star_rating}</div>
-                <button class="open-dialogue" onclick="parent.postMessage({{ action: 'openCommentBox', data: '{i['tags']['name'].lower().title()}' }}, '*')" style="padding-left:0px; padding-top:2px;color:blue; background-color:transparent; border:none;outline:none;"> View and add comment </button>
+                <button class="open-dialogue" onclick="parent.postMessage({{ action: 'openCommentBox', data: '{i['tags'].get('name', 'no name').lower().title()}' }}, '*')" style="padding-left:0px; padding-top:2px;color:blue; background-color:transparent; border:none;outline:none;"> View and add comment </button>
             </div>
             </div>
             """
 
             # Use get_or_create to check if the amenity exists and create it if it doesn't
-            amenity, created = Amenities.objects.get_or_create(name=i['tags']['name'].title(),amenity_type=amenity)
-            if created:
-                print(f"Amenity {i['tags']['name']} created in the database.")
-            else:
-                print(f"Amenity {i['tags']['name']} already exists in the database.")
+            amenity, created = Amenities.objects.get_or_create(name=i['tags'].get('name', 'name').title(),amenity_type=amenity_var)
+            # if created:
+            #     print(f"Amenity {i['tags'].get('name')} created in the database.")
+            # else:
+            #     print(f"Amenity {i['tags'].get('name')} already exists in the database.")
+            if amenity_var == 'hospital':
+                marker_group = hospital_group
+                # Create a Marker with the formatted popup
+                folium.Marker(
+                    location=[i['lat'], i['lon']],
+                    tooltip=i['tags'].get('name', "No name"),
+                    popup=folium.Popup(popup_html, max_width=2750),
+                    icon=folium.Icon(color="red"),
+                ).add_to(marker_group)
+            elif amenity_var == 'school':
+                marker_group = school_group
+                # Create a Marker with the formatted popup
+                folium.Marker(
+                    location=[i['lat'], i['lon']],
+                    tooltip=i['tags'].get('name', "No name"),
+                    popup=folium.Popup(popup_html, max_width=2750),
+                    icon=folium.Icon(color="red"),
+                ).add_to(marker_group)
 
-            # Create a Marker with the formatted popup
-            folium.Marker(
-                location=[i['lat'], i['lon']],
-                tooltip=i['tags']['name'],
-                popup=folium.Popup(popup_html, max_width=2750),
-                icon=folium.Icon(color="red"),
-            ).add_to(marker_group)
 
         else:
             print("No elements Available ")
@@ -451,7 +504,7 @@ def getOverpassData(marker_group,table_name):
 
 
 
-def create_chloropeth(m, marker_group, table_name, legend_name, extra_columns=[]):
+def create_chloropeth(m,hospital_group,school_group,table_name, legend_name, extra_columns=[]):
     '''
     table_name: string: Database table name
     legend_name: string: Name of the legend
@@ -459,7 +512,8 @@ def create_chloropeth(m, marker_group, table_name, legend_name, extra_columns=[]
     '''
 
     if table_name == 'nbihealthaccess':
-        getPointData(m=m, marker_group=marker_group, lat='latitude', lon='longitude', table_name='nairobi_hospitals', extra_columns=['f_name', 'location', 'agency', 'division'])
+        getPointData(m=m,group=hospital_group, lat='latitude', lon='longitude', table_name='nairobi_hospitals', extra_columns=['f_name', 'location', 'agency', 'division'])
+        # getGeoJsonPoints(m=m,marker_group=marker_group)
 
     # Join all the columns specified in *args into a comma-separated string
     columns_str = ', '.join(extra_columns)
@@ -474,39 +528,46 @@ def create_chloropeth(m, marker_group, table_name, legend_name, extra_columns=[]
     try:
         # Run the SQL query to postGIS
         sql = f'SELECT geom, {columns_str} FROM {table_name}'
-
         # Create the GeoDataFrame
         df = gpd.GeoDataFrame.from_postgis(sql, con)
-        # Drop any null values
-        df = df.dropna()
-        # Convert columns starting from the third column to float
-        df[df.columns[2:]] = df[df.columns[2:]].astype(float)
-        key_on = extra_columns[0]
-
-        # Create the choropleth layer
-        choropleth = folium.Choropleth(
-            geo_data=df,  # Data to be used
-            data=df,  # Data to be used
-            columns=extra_columns,  # Column with area names and numeric values
-            key_on=f"feature.properties.{key_on}",  # Key to match GeoDataFrame with GeoJSON features
-            fill_color=getRandomColor(),  # Color scheme for the map
-            fill_opacity=0.4,  # Opacity of the fill color
-            line_opacity=0.2,  # Opacity of the border lines
-            legend_name=legend_name,  # Name of the legend
-            name=table_name,
-            bins=5,  # Number of bins for the scale
-        ).add_to(m)
-
-        choropleth.geojson.add_child(
-            folium.features.GeoJsonTooltip(fields=extra_columns, aliases=extra_columns, localize=True)
-        )
-
-        if table_name in ['schoolaccessindexwalk','nbihealthaccess']:
-            getOverpassData(marker_group=marker_group,table_name=table_name)
-        return m
     except Exception as e:
         print(f"Error with the Query: {e}")
         return 'error with the Query check the parameters and try again'
+
+    # Drop any null values
+    df = df.dropna()
+    print(df.head())
+    extra_columns = [col.strip() for col in extra_columns[1].split(',')]
+    print(extra_columns)
+    # Convert columns starting from the third column to float
+    df[df.columns[2:3]] = df[df.columns[2:3]].astype(float)
+    key_on = extra_columns[0]
+    # Create the choropleth layer
+    choropleth = folium.Choropleth(
+        geo_data=df,  # Data to be used
+        data= df.iloc[:, :3],  # Data to be used
+        columns=['id', extra_columns[0]],  # Column with area names and numeric values
+        key_on=f"feature.properties.id",  # Key to match GeoDataFrame with GeoJSON features
+        fill_color=getRandomColor(),  # Color scheme for the map
+        fill_opacity=0.4,  # Opacity of the fill color
+        line_opacity=0.2,  # Opacity of the border lines
+        legend_name=legend_name,  # Name of the legend
+        name=table_name,
+        bins=5,  # Number of bins for the scale
+    ).add_to(m)
+
+    choropleth.geojson.add_child(
+        folium.features.GeoJsonTooltip(fields=extra_columns, aliases=extra_columns, localize=True)
+    )
+
+    if table_name in ['schoolaccessindexwalk','nbihealthaccess']:
+        print("getting overpass")
+        # if table_name == 'schoolaccessindexwalk':
+        #     getOverpassData(hospital_group=hospital_group,school_group=school_group,table_name=table_name)
+        if table_name == 'nbihealthaccess':
+            getOverpassData(hospital_group=hospital_group,school_group=school_group,table_name=table_name)
+
+    return m
 
 def newIndex(request):
     if request.method == 'POST':
@@ -570,6 +631,9 @@ def index(request):
 
 def getLayers(request):
 
+    # Create individual FeatureGroups for hospitals and schools
+    hospital_group = folium.FeatureGroup(name='Hospitals', show=False)
+    school_group = folium.FeatureGroup(name='Schools', show=False)
     m = folium.Map(
                 location = (-1.2921, 36.8219),
                 zoom_control=False,
@@ -591,7 +655,13 @@ def getLayers(request):
                 name="Esri World Imagery",
                 attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community').add_to(m)
 
-    marker_group = folium.FeatureGroup(name='service Buildings', show=False)
+    # Add individual marker groups to the service buildings group
+    if hospital_group:
+        hospital_group.add_to(m)
+    if school_group:
+        school_group.add_to(m)
+
+
 
     # Ensure the 'estates_nairobi' layer is always loaded by default
     # show_layers = {'estates_nairobi': True}  # Change to False if it should be hidden by default
@@ -606,6 +676,9 @@ def getLayers(request):
         attribute = data.get('attributeSelect')
         print("initial table Name", table_name)
         table_name,attribute = filterLayers(table_name,attribute)
+
+        if isinstance(attribute, list):
+            attribute = ', '.join(attribute)
         print("atrribute: ", attribute)
         print("After filter table_name: ", table_name,attribute)
 
@@ -615,7 +688,7 @@ def getLayers(request):
         elif table_name == 'ccn_zones':
             getLineGeojson(m,table_name=table_name,extra_columns=['zone_id_1',f'{attribute}'])
         else:
-            create_chloropeth(m=m,marker_group=marker_group, table_name=table_name,legend_name=legend_name,extra_columns=['id',f'{attribute}'])
+            create_chloropeth(m=m,hospital_group=hospital_group,school_group=school_group,table_name=table_name,legend_name=legend_name,extra_columns=['id',f'{attribute}'])
 
         getLayercontrol(m)
         folium.LayerControl().add_to(m)
@@ -662,7 +735,7 @@ def getMarkerInfoFromModel(request):
         comment = data.get('comment')
         name = data.get('name')
         # print("name" + name, + "\n comment" + comment + "\n satisfaction"+ str(satisfaction))
-        amenity = Amenities.objects.get(name=name)
+        amenity = Amenities.objects.get(name=name).first()
         # Save the data to the database or perform any necessary actions
         # Example: MyModel.objects.create(satisfaction=satisfaction, comment=comment)
 
