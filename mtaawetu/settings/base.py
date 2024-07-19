@@ -129,7 +129,7 @@ USE_I18N = True
 USE_TZ = True
 
 # DATETIME_FORMAT="%Y-%m-%d%H:%M:%S"
-
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 

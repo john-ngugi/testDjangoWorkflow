@@ -137,7 +137,7 @@ def filterLayers(layer_name,attribute_name):
         table_name = 'nbijobsacces'
 
     elif layer_name == 'Land use mix' :
-        attribute_name = 'entropy_fn'
+        attribute_name = ['entropy_fn','subcounty','wards','population']
         table_name = 'nbilanduseentropy'
 
 
@@ -735,7 +735,7 @@ def getMarkerInfoFromModel(request):
         comment = data.get('comment')
         name = data.get('name')
         # print("name" + name, + "\n comment" + comment + "\n satisfaction"+ str(satisfaction))
-        amenity = Amenities.objects.get(name=name).first()
+        amenity = Amenities.objects.get(name=name)
         # Save the data to the database or perform any necessary actions
         # Example: MyModel.objects.create(satisfaction=satisfaction, comment=comment)
 

@@ -5,3 +5,6 @@ from .models import Amenities,Satisfaction
 
 admin.site.register(Amenities)
 admin.site.register(Satisfaction)
+
+class AmenitiesAdmin(admin.ModelAdmin):
+    list_display = ("name", "amenity_type")
