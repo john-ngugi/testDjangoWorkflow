@@ -1,0 +1,73 @@
+{% extends 'base.html' %}{% block content %}
+
+<div
+    class=" container research-wrapper">
+    <ol class=" breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Maps</a></li>
+        <li class="breadcrumb-item active">Research papers </li>
+    </ol>
+    <div class="mt-3  mb-2 research-titles">
+        <h3>Research Papers</h3>
+        <div class="d-flex">
+            <input class="form-control me-sm-2 " id="searchInput" type="search"
+                placeholder="Search" />
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit"
+                id="search-location">Search</button>
+        </div>
+    </div>
+    <div class="researches">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">source</th>
+                </tr>
+            </thead>
+
+            <tbody id="resultsTable">
+                {% for paper in research %}
+                <tr class="table-success table-active mt-3 pt-3">
+                    <th scope="row"><a href="{% url 'research_paper' paper.title %}" style="color: black;text-decoration:none;">{{paper.title}}</a></th>
+                    <td>{{paper.Author}}</td>
+                    <td><a href="#">{{paper.source}}</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const resultsTable = document.getElementById('resultsTable');
+
+        searchInput.addEventListener('keyup', function() {
+            const query = searchInput.value;
+            fetch(`/search_research/?q=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    resultsTable.innerHTML = '';
+                    console.log(data)
+                    if(data.length != 0){
+                    data.forEach(paper => {
+                        const row = document.createElement('tr');
+                        row.classList.add('table-active');
+                        row.classList.add('table-success');
+                        row.innerHTML = `
+                            <th scope="row"><a href="/research-paper/${encodeURIComponent(paper.title)}/" style="color: black; text-decoration: none;">${paper.title}</a></th>
+                            <td>${paper.Author}</td>
+                            <td><a href="#">${paper.source}</a></td>
+                        `;
+                        resultsTable.appendChild(row);
+                    });
+                }
+                else{
+                    resultsTable.innerHTML = '';
+                }
+                });
+        });
+    });
+</script>
+{% endblock %}

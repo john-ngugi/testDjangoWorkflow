@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-
+from django_ckeditor_5.fields import CKEditor5Field
 # Create your models here.
 
 
@@ -27,3 +27,13 @@ class Satisfaction(models.Model):
         app_label = 'mtaawetu_app'
     def __str__(self):
         return self.amenity.name
+
+class Research(models.Model):
+    title = models.CharField(max_length=50,blank=True)
+    Author = models.CharField(max_length=200)
+    source = models.CharField(max_length=1000)
+    blob = models.ImageField(upload_to='uploads',blank=True)
+    body = CKEditor5Field('Text', config_name='extends')
+
+    def __str__(self):
+        return self.title

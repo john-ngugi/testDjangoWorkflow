@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<ol class=" breadcrumb bread-research sticky">
+    <li class="breadcrumb-item"><a href="{% url 'get_research' %}">Research papers </a></li>
+    <li class="breadcrumb-item active shadow-none">{{research}}</li>
+</ol>
+    <div class="paper"> {{research.body|safe}}</div>
+{% endblock %}

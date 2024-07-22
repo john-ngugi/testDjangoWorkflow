@@ -6,16 +6,17 @@ p{
     font-weight: 300;
 }
 
-body{
+/* body{
     overflow: hidden;
     overflow-x: hidden;
-    overflow-y: hidden;
-}
+    overflow-y: scroll;
+} */
 
 .wrapper{
   width: 100vw;
   height: 100vh;
   position: absolute;
+  overflow-y: scroll;
 }
 /* Style for the whole scrollbar */
 ::-webkit-scrollbar {
@@ -45,12 +46,14 @@ body{
     position: Fixed;
     height: 90vh;
     width: 100vw;
+    overflow: hidden;
 }
 
 #map{
     position: Fixed;
     height: 90vh;
     width: 100vw;
+    overflow: hidden;
 }
 
 
@@ -231,6 +234,19 @@ body{
 
 #Textarea{
   font-size: 18px;
+}
+
+.research-wrapper{
+  height: 100vh;
+}
+.researches{
+  overflow-y: scroll;
+}
+
+.paper {
+  overflow-x: hidden;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 .socket {
     width: 100vw;

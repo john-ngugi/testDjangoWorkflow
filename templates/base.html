@@ -5,8 +5,18 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Mtaa wetu | Our Neighbourhood Planning App</title>
+
         <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}" />
+
         <link rel="stylesheet" href="{% static 'main.css' %}" />
+        {% comment %}
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous"
+        />
+        {% endcomment %}
         <link
             rel="stylesheet"
             href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -23,6 +33,29 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"
         ></script>
+        <style>
+            /* Ensure nested dropdowns show on hover */
+            .dropdown-menu .dropdown-toggle::after {
+                content: " ";
+                display: inline-block;
+                border-left: 0.3em solid transparent;
+                border-right: 0.3em solid transparent;
+                border-top: 0.3em solid;
+                vertical-align: 0.255em;
+            }
+            .dropdown-submenu {
+                position: relative;
+            }
+            .dropdown-submenu > .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -0.1rem;
+                margin-left: 0.1rem;
+            }
+            .dropdown-submenu:hover > .dropdown-menu {
+                display: block;
+            }
+        </style>
     </head>
 
     <body>
@@ -32,7 +65,7 @@
             e.g schools to view the map of school accessibility. For more information about how accessibility is
             measured. Go to our methodology section(link)
         </div>
-
+        {% comment %}
         <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Mtaa Wetu</a>
@@ -51,112 +84,99 @@
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link active" href="{% url 'home' %}"
-                                >Welcome
-                                <span class="visually-hidden">(current)</span>
-                            </a>
+                                >Welcome<span class="visually-hidden">(current)</span></a
+                            >
                         </li>
                         <li class="nav-item dropdown">
                             <a
                                 class="nav-link dropdown-toggle"
-                                data-bs-toggle="dropdown"
                                 href="#"
                                 role="button"
-                                aria-haspopup="true"
+                                data-bs-toggle="dropdown"
                                 aria-expanded="false"
                                 onclick="removeSmallInfo()"
-                                >Maps</a
                             >
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
-                                    >Destination Accessibility</a
-                                >
-                                <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
-                                    >Diversity of Land Use</a
-                                >
-                                <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
-                                    >Distance to Public Transport</a
-                                >
-                                <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
-                                    >Design of Road Network</a
-                                >
-                                <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
-                                    >Density of Buildings</a
-                                >
-                                <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
-                                    >Zoning Policy</a
-                                >
-                            </div>
+                                Maps
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
+                                        >Destination Accessibility</a
+                                    >
+                                </li>
+                                <li>
+                                    <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
+                                        >Diversity of Land Use</a
+                                    >
+                                </li>
+                                <li>
+                                    <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
+                                        >Distance to Public Transport</a
+                                    >
+                                </li>
+                                <li>
+                                    <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
+                                        >Design of Road Network</a
+                                    >
+                                </li>
+                                <li>
+                                    <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
+                                        >Density of Buildings</a
+                                    >
+                                </li>
+                                <li>
+                                    <a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()"
+                                        >Zoning Policy</a
+                                    >
+                                </li>
+                            </ul>
                         </li>
-
                         <li class="nav-item dropdown">
                             <a
                                 class="nav-link dropdown-toggle"
-                                data-bs-toggle="dropdown"
                                 href="#"
+                                id="navbarDropdownMenuLink"
                                 role="button"
-                                aria-haspopup="true"
+                                data-bs-toggle="dropdown"
                                 aria-expanded="false"
-                                data-toggle="dropdown"
-                                >Research</a
                             >
-                            <div class="dropdown-menu">
-                                <a
-                                    class="dropdown-item dropdown-toggle"
-                                    href="#"
-                                    role="button"
-                                    data-bs-toggle="dropdown"
-                                    data-toggle="dropdown"
-                                    aria-expanded="false"
-                                >
-                                    Datasets
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#" onclick="event.preventDefault();"
-                                        >Subcategory 1</a
-                                    >
-                                    <a class="dropdown-item" href="#" onclick="event.preventDefault();"
-                                        >Subcategory 2</a
-                                    >
-
-                                    <!-- Add more items as needed -->
-                                </div>
-                                <div class="dropdown">
-                                    <a
-                                        class="dropdown-item dropdown-toggle"
-                                        href="#"
-                                        role="button"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                    >
-                                        Research
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                Research
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Datasets</a>
+                                    <ul class="dropdown-menu">
                                         <li>
-                                            <a class="dropdown-item" href="#" onclick="event.preventDefault();"
-                                                >Subcategory 1</a
-                                            >
+                                            <a class="dropdown-item" href="#">Links to open data sites and portals</a>
                                         </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#" onclick="event.preventDefault();"
-                                                >Subcategory 2</a
-                                            >
-                                        </li>
-                                        <!-- Add more items as needed -->
+                                        <li><a class="dropdown-item" href="#">Mtaa Wetu generated information</a></li>
                                     </ul>
-                                </div>
-                            </div>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Online Research</a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item" href="#">List of research outputs with links</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#"
+                                                >Notebooks with code for analysis (Github link)</a
+                                            >
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="{% url 'home' %}">CyberMart </a>
+                            <a class="nav-link active" href="{% url 'home' %}">CyberMart</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="{% url 'home' %}">Contact Us </a>
+                            <a class="nav-link active" href="{% url 'home' %}">Contact Us</a>
                         </li>
                     </ul>
-
                     <form class="d-flex">
                         <input class="form-control me-sm-2" type="search" placeholder="Search" />
                         <button class="btn btn-secondary my-2 my-sm-0" type="submit" id="search-location">
@@ -165,6 +185,97 @@
                     </form>
                 </div>
             </div>
+        </nav>
+
+        {% endcomment %}
+
+        <nav class="navbar navbar-expand-lg bg-primary sticky-top" data-bs-theme="dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Mtaa Wetu</a>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarColor01"
+                    aria-controls="navbarColor01"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'home' %}">Welcome<span class="visually-hidden">(current)</span></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a
+                                class="nav-link dropdown-toggle"
+                                href="#"
+                                role="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                onclick="removeSmallInfo()"
+                            >
+                                Maps
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()">Destination Accessibility</a></li>
+                                <li><a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()">Diversity of Land Use</a></li>
+                                <li><a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()">Distance to Public Transport</a></li>
+                                <li><a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()">Design of Road Network</a></li>
+                                <li><a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()">Density of Buildings</a></li>
+                                <li><a class="dropdown-item layer-identifier" href="#" onclick="showQueryLayer()">Zoning Policy</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a
+                                class="nav-link dropdown-toggle"
+                                href="#"
+                                id="navbarDropdownMenuLink"
+                                role="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                Research
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Datasets</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">Links to open data sites and portals</a></li>
+                                        <li><a class="dropdown-item" href="#">Mtaa Wetu generated information</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Online Research</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'get_research' %}">Research papers
+                                        </a></li>
+                                        <li><a class="dropdown-item" href="#">Data validation examples
+                                        </a></li>
+                                        <li><a class="dropdown-item" href="#">Notebooks/ tutorials</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'home' %}">CyberMart</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'home' %}">Contact Us</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex">
+                        <input class="form-control me-sm-2" type="search" placeholder="Search" />
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit" id="search-location">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
         </nav>
         {% if messages %}
         <div class="mt-3">
@@ -175,7 +286,7 @@
         {% endif %} {% block content %}
         <div class="wrapper">
             <section class="container-fluid h-100 w-100 d-flex col-lg-12 top-section p-0">
-                <div class="map h-100 w-100 col-lg-12" id="map">{{ map|safe }}</div>
+                <div class="map h-100 w-100 col-lg-12" id="map">{{map|safe}}</div>
 
                 <div id="loader">
                     <div class="honeycomb">

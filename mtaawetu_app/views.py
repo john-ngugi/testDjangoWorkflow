@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 import json
 import folium
 from folium import Html, Element
@@ -19,7 +19,7 @@ import branca.colormap as cm
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
 # from . import models
-from .models import Amenities,Satisfaction
+from .models import Amenities,Satisfaction,Research
 from django.conf import settings
 import os
 from pathlib import Path
@@ -752,3 +752,26 @@ def getMarkerInfoFromModel(request):
             comments_list = []
 
         return JsonResponse({'success': True,'comments':comments_list})
+def getResearch(request):
+    papers = Research.objects.all()
+    papers = list(papers.values())
+    context = {
+        'research':papers
+    }
+    return render(request, 'content/research.html', context=context)
+
+def getResearchPaper(request, paper_name):
+    paper = get_object_or_404(Research, title=paper_name)
+    context = {
+        'research':paper
+    }
+    return render(request, 'content/researchpaper.html',context=context)
+
+
+def searchResearch(request):
+    query = request.GET.get('q', '')
+    if query:
+        papers = Research.objects.filter(title__startswith=query).values('title', 'Author', 'source')
+    else:
+        papers = Research.objects.all().values('title', 'Author', 'source')
+    return JsonResponse(list(papers), safe=False)
