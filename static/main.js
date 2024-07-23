@@ -443,9 +443,28 @@ document.getElementById('close-comment-btn').addEventListener('click', function(
 });
 
 
+ // Get all dropdown toggle elements
+ var dropdownToggles = document.querySelectorAll('.dropdown-toggle');
 
+ dropdownToggles.forEach(function(toggle) {
+     toggle.addEventListener('click', function(e) {
+         var submenu = this.nextElementSibling;
+         if (submenu) {
+             // Toggle the display of the submenu
+             submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+         }
+     });
+ });
 
-
+ // Close all submenus when clicking outside
+ document.addEventListener('click', function(e) {
+     if (!e.target.closest('.dropdown')) {
+         var submenus = document.querySelectorAll('.dropdown-menu .dropdown-menu');
+         submenus.forEach(function(submenu) {
+             submenu.style.display = 'none';
+         });
+     }
+ });
 
 
 
