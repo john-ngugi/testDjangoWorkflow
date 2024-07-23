@@ -817,4 +817,4 @@ def notebook_detail(request, pk):
     html_exporter = HTMLExporter()
     (body, resources) = html_exporter.from_notebook_node(nb)
 
-    return render(request, 'notebooks/notebook_detail.html', {'notebook_html': body})
+    return render(request, 'notebooks/notebook_detail.html', {'notebook_html': body,'notebook':notebook})
