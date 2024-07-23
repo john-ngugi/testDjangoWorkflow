@@ -27,7 +27,7 @@
 
             <tbody id="resultsTable">
                 {% for paper in research %}
-                <tr class="table-secondary table-active mt-3 pt-3">
+                <tr class="table-secondary mt-3 pt-3">
                     <th scope="row"><a href="{% url 'research_paper' paper.title %}" style="color: black;text-decoration:none;">{{paper.title}}</a></th>
                     <td>{{paper.Author}}</td>
                     <td><a href="#">{{paper.source}}</a></td>

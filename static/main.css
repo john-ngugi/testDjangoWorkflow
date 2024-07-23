@@ -248,6 +248,7 @@ p{
 .paper {
   margin-left: 10%;
   margin-right: 10%;
+  overflow-x: hidden;
 }
 .socket {
     width: 100vw;

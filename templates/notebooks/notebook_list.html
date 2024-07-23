@@ -16,7 +16,7 @@
 
             <tbody id="resultsTable">
                 {% for notebook in notebooks %}
-                <tr class="table-light table-active mt-3 pt-3">
+                <tr class="table-secondary mt-3 pt-3">
                     <th scope="row">
                         <a href="{% url 'notebook_detail' notebook.pk %}" style="color: black; text-decoration: none"
                             >{{ notebook.title }}</a
@@ -29,4 +29,6 @@
         </table>
     </div>
 </div>
+
+<script></script>
 {% endblock %}
