@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Notebooks</title>
+    </head>
+    <body>
+        <h1>Notebooks</h1>
+        <ul>
+            {% for notebook in notebooks %}
+            <li><a href="{% url 'notebook_detail' notebook.pk %}">{{ notebook.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

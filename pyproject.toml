@@ -35,6 +35,9 @@ mapclassify = "^2.7.0"
 django-ckeditor = "^6.7.1"
 django-ckeditor-5 = "^0.2.13"
 pillow = "^10.4.0"
+jupyter = "^1.0.0"
+nbconvert = "^7.16.4"
+nbformat = "^5.10.4"
 
 [build-system]
 requires = ["poetry-core"]

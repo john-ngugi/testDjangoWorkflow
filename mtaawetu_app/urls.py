@@ -12,5 +12,6 @@ urlpatterns =[
     path('research/', views.getResearch,name='get_research'),
     path('research-paper/<str:paper_name>/',views.getResearchPaper, name='research_paper'),
     path('search_research/', views.searchResearch, name='search-research'),
-
+    path('notebooklist/', views.notebook_list, name='notebook_list'),
+    path('<int:pk>/', views.notebook_detail, name='notebook_detail'),
 ]

@@ -15,8 +15,9 @@ p{
 .wrapper{
   width: 100vw;
   height: 100vh;
-  position: absolute;
-  overflow-y: scroll;
+  position: fixed;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 /* Style for the whole scrollbar */
 ::-webkit-scrollbar {
@@ -238,13 +239,13 @@ p{
 
 .research-wrapper{
   height: 100vh;
+  overflow: hidden;
 }
 .researches{
   overflow-y: scroll;
 }
 
 .paper {
-  overflow-x: hidden;
   margin-left: 10%;
   margin-right: 10%;
 }

@@ -23,6 +23,10 @@ from .models import Amenities,Satisfaction,Research
 from django.conf import settings
 import os
 from pathlib import Path
+import nbformat
+from nbconvert import HTMLExporter
+from django.shortcuts import render, get_object_or_404
+from .models import Notebook
 
 import random
 # Create your views here.
@@ -793,3 +797,24 @@ def searchResearch(request):
     else:
         papers = Research.objects.all().values('title', 'Author', 'source')
     return JsonResponse(list(papers), safe=False)
+
+
+def notebook_list(request):
+    notebooks = Notebook.objects.all()
+    return render(request, 'notebooks/notebook_list.html', {'notebooks': notebooks})
+
+def notebook_detail(request, pk):
+    notebook = get_object_or_404(Notebook, pk=pk)
+    notebook_path = notebook.file.path
+
+    try:
+        with open(notebook_path, encoding='utf-8') as f:
+            nb = nbformat.read(f, as_version=4)
+    except UnicodeDecodeError:
+        with open(notebook_path, encoding='latin-1') as f:
+            nb = nbformat.read(f, as_version=4)
+
+    html_exporter = HTMLExporter()
+    (body, resources) = html_exporter.from_notebook_node(nb)
+
+    return render(request, 'notebooks/notebook_detail.html', {'notebook_html': body})
