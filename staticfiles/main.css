@@ -6,12 +6,18 @@ p{
     font-weight: 300;
 }
 
-body{
+/* body{
     overflow: hidden;
     overflow-x: hidden;
-    overflow-y: hidden;
-}
+    overflow-y: scroll;
+} */
 
+.wrapper{
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  overflow-y: scroll;
+}
 /* Style for the whole scrollbar */
 ::-webkit-scrollbar {
     width: 8px; /* Width of the scrollbar */
@@ -40,12 +46,14 @@ body{
     position: Fixed;
     height: 90vh;
     width: 100vw;
+    overflow: hidden;
 }
 
 #map{
     position: Fixed;
     height: 90vh;
     width: 100vw;
+    overflow: hidden;
 }
 
 
@@ -66,25 +74,138 @@ body{
 .layer-control p{
   font-size: 15px;
 }
-
-.comments{
-    height: 60vh;
-    width: 350px;
-    background: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    /* margin-left: 30%; */
-    margin-top: 10%;
+@keyframes slideIn {
+  from {
+    margin-top: -20%;
+    opacity: 0;
+  }
+  to {
+    margin-top: -35%;
+    opacity: 1;
+  }
 }
 
+.comments-section {
+  height: 60vh;
+  width: 45vw;
+  display: none;
+  flex-direction: column;
+  margin-top: -35%;
+  margin-left: 54%;
+  background: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: white;
+  opacity: 0;
+  animation: slideIn 1s forwards;
+}
+
+/* To trigger the animation, you can use JavaScript to add a class that changes display to block */
+.comments-section.show {
+  display: flex;
+  animation: slideIn 0.5s forwards;
+}
+
+.comments-title{
+  width: 45vw;
+  height: 5vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-top: 10px;
+}
+.close-button {
+  background-color: transparent;
+  border: 1px solid #ccc; /* Thin border */
+  border-radius: 5px; /* Optional: add rounded corners */
+  cursor: pointer;
+  padding: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+}
+
+.close-button:hover {
+  border-color: #888; /* Optional: change border color on hover */
+}
+
+.close-button .close-icon {
+  font-size: 18px; /* Adjust the size of the icon */
+  color: #333; /* Icon color */
+}
+.level-of-satisfaction{
+    height: 45vh;
+    width: 50vw;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+.level-of-satisfaction form{
+  padding-left: 20px;
+}
+.comments{
+  overflow-y: scroll;
+}
 .comment-tag small {
   font-size: 10px;
 }
+
+.comment-tag {
+  width:208px;
+}
+
+.commenters-name{
+  color: #353535;
+}
+.slider-container {
+  width: 300px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.slider {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.labels {
+  display: flex;
+  justify-content: space-between;
+}
+
+.label {
+  flex: 1;
+  text-align: center;
+  font-size: 0.7rem;
+  color:#252525;
+}
+.display-card {
+  margin-top: 30px;
+  width: 300px;
+  height: fit-content;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.display-card p{
+  color: #333;
+}
+
+
+.hide{
+  display: none;
+}
+/* make the cursor move */
+/* .draggable {
+  cursor: move;
+} */
 
 /* Tooltip container */
 .tooltip-custom {
@@ -105,12 +226,28 @@ body{
   opacity: 1;
 }
 
-.messages{
-    overflow-y: scroll;
+.breakline {
+  border: none;
+  border-top: 1px solid black; /* Or any color you prefer */
+  margin: 20px 0; /* Adjust margin as needed */
 }
 
+#Textarea{
+  font-size: 18px;
+}
 
+.research-wrapper{
+  height: 100vh;
+}
+.researches{
+  overflow-y: scroll;
+}
 
+.paper {
+  overflow-x: hidden;
+  margin-left: 10%;
+  margin-right: 10%;
+}
 .socket {
     width: 100vw;
     height: 85vh;
@@ -458,8 +595,141 @@ body{
     margin-top: 65vh;
 }
 
+#loader{
+  height: 100vh;
+  width:100vw;
+  display: none;
+  background-color: white;
+  position: absolute;
+  z-index: 10000000;
+  justify-content: center;
+  align-items: center;
+}
 
-     /* Add this CSS for the sliding animation */
+/* loader for layers */
+
+@-webkit-keyframes honeycomb {
+  0%,
+  20%,
+  80%,
+  100% {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+
+  30%,
+  70% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+@keyframes honeycomb {
+  0%,
+  20%,
+  80%,
+  100% {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+
+  30%,
+  70% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+.honeycomb {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.honeycomb div {
+  -webkit-animation: honeycomb 1.5s infinite backwards;
+  animation: honeycomb 1.5s infinite backwards;
+  background: #378DFC;
+  height: 12px;
+  margin-top: 6px;
+  position: absolute;
+  width: 24px;
+}
+
+.honeycomb div:after, .honeycomb div:before {
+  content: '';
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.honeycomb div:after {
+  top: -6px;
+  border-bottom: 6px solid #378DFC;
+}
+
+.honeycomb div:before {
+  bottom: -6px;
+  border-top: 6px solid #378DFC;
+}
+
+.honeycomb div:nth-child(1) {
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+  left: -28px;
+  top: 0;
+}
+
+.honeycomb div:nth-child(2) {
+  -webkit-animation-delay: 0.1s;
+  animation-delay: 0.1s;
+  left: -14px;
+  top: 22px;
+}
+
+.honeycomb div:nth-child(3) {
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+  left: 14px;
+  top: 22px;
+}
+
+.honeycomb div:nth-child(4) {
+  -webkit-animation-delay: 0.3s;
+  animation-delay: 0.3s;
+  left: 28px;
+  top: 0;
+}
+
+.honeycomb div:nth-child(5) {
+  -webkit-animation-delay: 0.4s;
+  animation-delay: 0.4s;
+  left: 14px;
+  top: -22px;
+}
+
+.honeycomb div:nth-child(6) {
+  -webkit-animation-delay: 0.5s;
+  animation-delay: 0.5s;
+  left: -14px;
+  top: -22px;
+}
+
+.honeycomb div:nth-child(7) {
+  -webkit-animation-delay: 0.6s;
+  animation-delay: 0.6s;
+  left: 0;
+  top: 0;
+}
+
+
+/* Add this CSS for the sliding animation */
   .slide-up {
       animation: slide-up 0.5s ease-out forwards;
   }
@@ -489,25 +759,7 @@ body{
           opacity: 0;
       }
   }
-  .display-card {
-    margin-top: 30px;
-    width: 300px;
-    height: 254px;
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    /* box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset; */
-  }
 
-  .display-card p{
-    color: #333;
-  }
-
-
-  .hide{
-    display: none;
-  }
 @media only screen and (max-width: 768px) {
     .layer-control{
         display:none;
@@ -532,6 +784,6 @@ body{
         width: 100vw;
     }
     .hero-contents{
-           flex-direction: column;
+        flex-direction: column;
     }
     }

@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django_ckeditor_5.fields import CKEditor5Field
+from ckeditor_uploader.fields import RichTextUploadingField
 # Create your models here.
 
 
@@ -33,7 +33,7 @@ class Research(models.Model):
     Author = models.CharField(max_length=200)
     source = models.CharField(max_length=1000)
     blob = models.ImageField(upload_to='uploads',blank=True)
-    body = CKEditor5Field('Text', config_name='extends')
+    body = RichTextUploadingField()
 
     def __str__(self):
         return self.title

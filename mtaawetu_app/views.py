@@ -189,6 +189,20 @@ def get_color(properties):
     lightness = 50
     return f'hsl({hue}, {saturation}%, {lightness}%)'
 
+
+
+def  getmarkers():
+    pass
+
+
+
+
+
+
+
+
+
+
 def get_features_geojson(m,geojson_data,layername,extra_columns,show_layers):
 
         # Define a tooltip format string
@@ -752,6 +766,9 @@ def getMarkerInfoFromModel(request):
             comments_list = []
 
         return JsonResponse({'success': True,'comments':comments_list})
+
+
+
 def getResearch(request):
     papers = Research.objects.all()
     papers = list(papers.values())
@@ -769,9 +786,10 @@ def getResearchPaper(request, paper_name):
 
 
 def searchResearch(request):
-    query = request.GET.get('q', '')
+    query = request.GET.get('q', '').strip()
     if query:
-        papers = Research.objects.filter(title__startswith=query).values('title', 'Author', 'source')
+        # Case-insensitive search for titles containing the query
+        papers = Research.objects.filter(title__icontains=query).values('title', 'Author', 'source')
     else:
         papers = Research.objects.all().values('title', 'Author', 'source')
     return JsonResponse(list(papers), safe=False)
