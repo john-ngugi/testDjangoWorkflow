@@ -27,6 +27,7 @@ import nbformat
 from nbconvert import HTMLExporter
 from django.shortcuts import render, get_object_or_404
 from .models import Notebook
+import numpy as np
 
 import random
 # Create your views here.
@@ -155,6 +156,14 @@ def filterLayers(layer_name,attribute_name):
         attribute_name = ['schoolacce','subcounty','wards','population']
         table_name = 'schoolaccessindexwalk'
 
+    elif layer_name == 'Opportunity- hospitals':
+        attribute_name = ['accessib_4','subcounty','wards','population']
+        table_name = 'hospital_opportunity'
+
+    elif layer_name == 'Population':
+        attribute_name = ['population','subcounty','wards']
+        table_name = 'hospital_opportunity'
+
     else:
         table_name = layer_name
         attribute_name = "None"
@@ -235,7 +244,7 @@ def get_features_geojson(m,geojson_data,layername,extra_columns,show_layers):
         elif gdfType.values[0] == 'MultiLineString':
             line_attribute = extra_columns[1]
             # Create a colormap
-            colormap = cm.linear.viridis.scale( round(gdf[line_attribute].min()),  round(gdf[line_attribute].max()))
+            colormap = cm.linear.Set1_08.scale( round(gdf[line_attribute].min()),  round(gdf[line_attribute].max()))
             colormap.caption = extra_columns[1]
             m.add_child(colormap)
             def style_function(feature):
@@ -539,7 +548,6 @@ def create_chloropeth(m,hospital_group,school_group,table_name, legend_name, ext
     tablename = f'{table_name}'
     # Get the connection url from the database
     db_connection_url = "postgresql://mtaa-wetu0:MtaaWetu***@postgresql-mtaa-wetu0.alwaysdata.net:5432/mtaa-wetu0_start"
-
     # Create the connection engine
     con = create_engine(db_connection_url)
 
@@ -557,9 +565,12 @@ def create_chloropeth(m,hospital_group,school_group,table_name, legend_name, ext
     print(df.head())
     extra_columns = [col.strip() for col in extra_columns[1].split(',')]
     print(extra_columns)
+
     # Convert columns starting from the third column to float
     df[df.columns[2:3]] = df[df.columns[2:3]].astype(float)
     key_on = extra_columns[0]
+    quantile_bins = np.quantile(df[key_on], [0, 0.25, 0.5, 0.75, 1.0])
+
     # Create the choropleth layer
     choropleth = folium.Choropleth(
         geo_data=df,  # Data to be used
@@ -571,7 +582,7 @@ def create_chloropeth(m,hospital_group,school_group,table_name, legend_name, ext
         line_opacity=0.2,  # Opacity of the border lines
         legend_name=legend_name,  # Name of the legend
         name=table_name,
-        bins=5,  # Number of bins for the scale
+        bins=quantile_bins,  # Number of bins for the scale
     ).add_to(m)
 
     choropleth.geojson.add_child(
@@ -701,7 +712,8 @@ def getLayers(request):
         print("After filter table_name: ", table_name,attribute)
 
         if table_name == 'sdna_1500meters_2018' or table_name == 'sdna_1000meters_2018' or table_name == 'sdna_500meters_2018':
-            print(table_name)
+            table_name = 'sdna_500meters_2018'
+            attribute = 'mad500'
             getLineGeojson(m,table_name=table_name,extra_columns=['id',f'{attribute}'])
         elif table_name == 'ccn_zones':
             getLineGeojson(m,table_name=table_name,extra_columns=['zone_id_1',f'{attribute}'])

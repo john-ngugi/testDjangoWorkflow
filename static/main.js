@@ -27,6 +27,8 @@ const attributeObj = {
     'Healthcare Accessibility ':'Healthcare Access Index',
     'Jobs accessibility':'Jobs access index',
     'Land use mix ': 'Land use mix index',
+    'Opportunity':'Opportunity',
+    'Population': 'Population',
 }
 // const attributeSelect = null
 // const attributeSelectFn= getAttributes(layerSelectFn)
@@ -187,16 +189,28 @@ const zoning_layers ={
     'ccn_zones':' Zoning'
 }
 
+const opportunity_layers ={
+    'Opportunity- hospitals': 'Opportunity'
+}
+
+const population_layers ={
+    'Population' : 'Population'
+}
+
 const designAttrs = ['mad1500','diva1500','len1500','hullr1500','tpbta1500','mad1000','diva1000','len1000','hullr1000','tpbta1000','mad500','diva500','len500','hullr500','tpbta500']
 const accessAttrs = ["schoolacce", 'saccinddrv', 'schaccessb','saccindwlk','jobaccindx','jobacratio','accessindx','acessratio']
 const entropyAttrs = ['areahex','entropy_fn']
 const zoningAttrs = ['dev_1970']
+const opportunityAttrs = ['accessib_4']
+const populationAttrs = ['population']
 
 const layerObjs = {
     'Destination Accessibility': accesibility_layers,
     'Design of Road Network': design_layers,
     'Diversity of Land Use': landUse_layers,
     'Zoning Policy' : zoning_layers,
+    'Opportunity':opportunity_layers,
+    'Population':population_layers,
 }
 
 const attrsObj = {
@@ -204,6 +218,8 @@ const attrsObj = {
     'Design of Road Network': designAttrs,
     'Diversity of Land Use':entropyAttrs,
     'Zoning Policy': zoningAttrs,
+    'Opportunity':opportunityAttrs,
+    "Population":populationAttrs,
 }
 
 function clearChildrenFromIndex(element, startIndex) {
@@ -286,7 +302,8 @@ const Diversity_txt = "This map tells us how different land uses are mixed in a 
 const Density_txt = "Building density tells us the level of development in a neighborhood. It represents the number of buildings per unit area of land."
 const distance_to_pt_txt = "This map shows us how far (or near) buildings are to public transport stops. "
 const design_of_road_network_txt = "This map shows us how the road network is designed and how this design affects accessibility, walkability, and sustainable transport"
-
+const opportunity_txt = "The Opportunity Index in urban planning measures access to essential services like education, employment, healthcare, and transportation within a city. It helps identify areas with varying levels of opportunity, guiding urban planners to address inequalities and create more equitable, inclusive environments for all residents."
+const pouplation_txt= 'Population growth significantly impacts urban planning, necessitating the development of infrastructure, housing, and services. Effective planning ensures cities can sustainably manage this growth, providing transportation, healthcare, education, and recreational spaces. Integrating population data helps cities anticipate future needs, promoting balanced and inclusive growth.'
 const drn_txt_extra = `Layer name:
 Important roads
 Road importance
@@ -313,6 +330,8 @@ const innerTextObjs = {
     'sdna_1500meters_2018':design_of_road_network_txt,
     'sdna_1000meters_2018':design_of_road_network_txt,
     'sdna_500meters_2018': design_of_road_network_txt,
+    "Opportunity- hospitals": opportunity_txt,
+    "Population":pouplation_txt,
 }
 
 const texts_objs ={
@@ -321,6 +340,8 @@ const texts_objs ={
     'Density of Buildings':Density_txt,
     'Design of Road Network': design_of_road_network_txt,
     'Distance to Public Transport': distance_to_pt_txt,
+    "Opportunity": opportunity_txt,
+    "Population":pouplation_txt,
 }
 
 const closeBtn = document.getElementById('close-button');
