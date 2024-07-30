@@ -737,9 +737,7 @@ def getMarkerInfoFromModel(request):
         name = data.get('name')
         # print("name" + name, + "\n comment" + comment + "\n satisfaction"+ str(satisfaction))
         amenity = Amenities.objects.get(name=name)
-        # Save the data to the database or perform any necessary actions
-        # Example: MyModel.objects.create(satisfaction=satisfaction, comment=comment)
-
+        # Save the data to the database
         s = Satisfaction.objects.create(amenity = amenity,comment=comment,satisfaction_range = satisfaction)
         s.save()
 

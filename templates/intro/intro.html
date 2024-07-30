@@ -1,266 +1,351 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Mtaa wetu | our neighbourhood planning app</title>
-        <link rel="stylesheet" href="{% static 'mainpage.css' %}" />
-        <script src="https://kit.fontawesome.com/c4e0f4710c.js"
-            crossorigin="anonymous"></script>
 
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-            crossorigin />
-        <!-- Make sure you put this AFTER Leaflet's CSS -->
-        <script
-            src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin></script>
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-            crossorigin="anonymous" />
-        <script src="https://kit.fontawesome.com/c4e0f4710c.js"
-            crossorigin="anonymous"></script>
-        <style>
-            body,
-            html {
-                margin: 0;
-                padding: 0;
-                height: 100%;
-                overflow: hidden;
-            }
-            .video-container {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                overflow: hidden;
-                z-index: -1;
-            }
-            video {
-                min-width: 100%;
-                min-height: 100%;
-                width: auto;
-                height: auto;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-        </style>
-    </head>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mtaa wetu | our neighbourhood planning app</title>
+    <link rel="stylesheet" href="{% static 'mainpage.css' %}" />
+    <script src="https://kit.fontawesome.com/c4e0f4710c.js" crossorigin="anonymous"></script>
 
-    <body>
-        {% block content %}
-        <div class="video-container">
-            <video autoplay muted loop>
-                <source src="{% static '15556119-hd_1920_1080_30fps.mp4' %}"
-                    type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
-        </div>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <script src="https://kit.fontawesome.com/c4e0f4710c.js" crossorigin="anonymous"></script>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
 
-        <div class="wrapper">
-            <nav>
-                <div class="logo">Mtaa Wetu</div>
-                <!-- <div class="navbar-toggle">
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    {% block content %}
+    <div class="video-container">
+        <video autoplay muted loop>
+            <source src="{% static '15556119-hd_1920_1080_30fps.mp4' %}" type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div class="wrapper">
+        <nav>
+            <div class="logo">Mtaa Wetu</div>
+            <!-- <div class="navbar-toggle">
                     <i class="fas fa-bars"></i>
                 </div> -->
-                <div class="navlinks">
-                    <ul>
-                        <li><a href="#"> Welcome </a></li>
-                        <li><a href="#"> About</a></li>
-                        <li><a href="#"> Contact </a></li>
-                        <!-- <li><a href="#"> Home </a></li> -->
-                    </ul>
-                </div>
-            </nav>
-            <hr class="breakline" />
-            <section>
-                <header class="hero">
-                    <h2>Mtaa Wetu</h2>
-                    <h6>Mtaa Wetu is yours. Welcome !</h6>
-                    <p>
-                        You can use Mtaa Wetu; as an interactive platform
-                        through which you can report your perceived
-                        level of satisfaction with public facilities,
-                        infrastructure and services. For example, did you
-                        just visit a hospital? Were you satisfied with the
-                        services offered or the infrastructure in
-                        general? Or are you satisfied with the quality of the
-                        road that you commonly use ?
-                    </p>
-                    <a href="{% url 'loading' %}"><button>Start App</button></a>
-                </header>
-            </section>
-
-            <div class="divider">
-                <p>Learn more</p>
-                <a href="#cards"><i
-                        class="fa-solid fa-arrow-down fa-bounce"></i></a>
+            <div class="navlinks">
+                <ul>
+                    <li><a href="#"> Welcome </a></li>
+                    <li><a href="#"> About</a></li>
+                    <li><a href="#"> Contact </a></li>
+                    <!-- <li><a href="#"> Home </a></li> -->
+                </ul>
             </div>
+        </nav>
+        <hr class="breakline" />
+        <section>
+            <header class="hero">
+                <h2>Mtaa Wetu</h2>
+                <h6>Mtaa Wetu is yours. Welcome !</h6>
+                <p>
+                    You can use Mtaa Wetu; as an interactive platform
+                    through which you can report your perceived
+                    level of satisfaction with public facilities,
+                    infrastructure and services. For example, did you
+                    just visit a hospital? Were you satisfied with the
+                    services offered or the infrastructure in
+                    general? Or are you satisfied with the quality of the
+                    road that you commonly use ?
+                </p>
+                <a href="{% url 'loading' %}"><button>Start App</button></a>
+            </header>
+        </section>
 
-            <section id="cards" class="card-container">
-                <div class="cards-title"><h4>What we do</h4></div>
-                <div class="container">
-                    <div class="row row-cols-1 row-cols-md-3 g-4">
-                        <div class="col card-deck">
-                            <div class="card bg-transparent h-100">
-                                <div class="card-body rounded">
-                                    <h5 class="card-title"><i
-                                            class="fa-solid fa-house-user"></i>
-                                        &nbsp; Residents</h5>
-                                    <p class="card-text">
-                                        Residents can get to know important or
-                                        interesting information about where they
-                                        live and make informed choices about
-                                        residential location.
-                                    </p>
-                                </div>
+        <div class="divider">
+            <p>Learn more</p>
+            <a href="#cards"><i class="fa-solid fa-arrow-down fa-bounce"></i></a>
+        </div>
+
+        <section id="cards" class="card-container">
+            <div class="cards-title">
+                <h4>What we do</h4>
+            </div>
+            <div class="container">
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="col card-deck">
+                        <div class="card bg-transparent h-100">
+                            <div class="card-body rounded">
+                                <h5 class="card-title"><i class="fa-solid fa-house-user"></i>
+                                    &nbsp; Residents</h5>
+                                <p class="card-text">
+                                    Residents can get to know important or
+                                    interesting information about where they
+                                    live and make informed choices about
+                                    residential location.
+                                </p>
                             </div>
                         </div>
-                        <div class="col card-deck">
-                            <div class="card bg-transparent h-100">
-                                <div class="card-body rounded">
-                                    <h5 class="card-title">
-                                        <i class="fa-solid fa-tree-city"></i>
-                                        &nbsp; Neighborhood Associations
-                                    </h5>
-                                    <p class="card-text">
-                                        Neighborhood associations can get a good
-                                        grasp of their surroundings improving
-                                        situational awareness.
-                                    </p>
-                                </div>
+                    </div>
+                    <div class="col card-deck">
+                        <div class="card bg-transparent h-100">
+                            <div class="card-body rounded">
+                                <h5 class="card-title">
+                                    <i class="fa-solid fa-tree-city"></i>
+                                    &nbsp; Neighborhood Associations
+                                </h5>
+                                <p class="card-text">
+                                    Neighborhood associations can get a good
+                                    grasp of their surroundings improving
+                                    situational awareness.
+                                </p>
                             </div>
                         </div>
-                        <div class="col card-deck">
-                            <div class="card bg-transparent h-100">
-                                <div class="card-body rounded">
-                                    <h5 class="card-title">
-                                        <i
-                                            class="fa-solid fa-building-columns"></i>
-                                        &nbsp;County Governments
-                                    </h5>
-                                    <p class="card-text">
-                                        The county governments can access data
-                                        information to aid in urban planning and
-                                        management.
-                                    </p>
-                                </div>
+                    </div>
+                    <div class="col card-deck">
+                        <div class="card bg-transparent h-100">
+                            <div class="card-body rounded">
+                                <h5 class="card-title">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                    &nbsp;County Governments
+                                </h5>
+                                <p class="card-text">
+                                    The county governments can access data
+                                    information to aid in urban planning and
+                                    management.
+                                </p>
                             </div>
                         </div>
-                        <div class="col card-deck">
-                            <div class="card bg-transparent h-100">
-                                <div class="card-body rounded">
-                                    <h5 class="card-title">
-                                        <i
-                                            class="fa-solid fa-magnifying-glass-location"></i>&nbsp;Researchers
-                                    </h5>
-                                    <p class="card-text">
-                                        Researchers can quickly access data and
-                                        information to support their discovery
-                                        of knowledge.
-                                    </p>
-                                </div>
+                    </div>
+                    <div class="col card-deck">
+                        <div class="card bg-transparent h-100">
+                            <div class="card-body rounded">
+                                <h5 class="card-title">
+                                    <i class="fa-solid fa-magnifying-glass-location"></i>&nbsp;Researchers
+                                </h5>
+                                <p class="card-text">
+                                    Researchers can quickly access data and
+                                    information to support their discovery
+                                    of knowledge.
+                                </p>
                             </div>
                         </div>
-                        <div class="col card-deck">
-                            <div class="card bg-transparent h-100">
-                                <div class="card-body rounded">
-                                    <h5 class="card-title">
-                                        <i
-                                            class="fa-solid fa-map-location-dot"></i>&nbsp;Planning
-                                        Professionals
-                                    </h5>
-                                    <p class="card-text">
-                                        Planning professionals and built
-                                        environment experts have a ready source
-                                        of
-                                        information to support their work and
-                                        assignments.
-                                    </p>
-                                </div>
+                    </div>
+                    <div class="col card-deck">
+                        <div class="card bg-transparent h-100">
+                            <div class="card-body rounded">
+                                <h5 class="card-title">
+                                    <i class="fa-solid fa-map-location-dot"></i>&nbsp;Planning
+                                    Professionals
+                                </h5>
+                                <p class="card-text">
+                                    Planning professionals and built
+                                    environment experts have a ready source
+                                    of
+                                    information to support their work and
+                                    assignments.
+                                </p>
                             </div>
                         </div>
-                        <div class="col card-deck">
-                            <div class="card bg-transparent h-100">
-                                <div class="card-body rounded">
-                                    <h5 class="card-title">
-                                        <i
-                                            class="fa-solid fa-hand-holding-dollar"></i>
-                                        &nbsp;Real Estate Investors
-                                    </h5>
-                                    <p class="card-text">
-                                        Real Estate Investors and property
-                                        developers can get information to assess
-                                        the
-                                        feasibility of different sites.
-                                    </p>
-                                </div>
+                    </div>
+                    <div class="col card-deck">
+                        <div class="card bg-transparent h-100">
+                            <div class="card-body rounded">
+                                <h5 class="card-title">
+                                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                                    &nbsp;Real Estate Investors
+                                </h5>
+                                <p class="card-text">
+                                    Real Estate Investors and property
+                                    developers can get information to assess
+                                    the
+                                    feasibility of different sites.
+                                </p>
                             </div>
                         </div>
-                        <div class="col card-deck">
-                            <div class="card bg-transparent h-100">
-                                <div class="card-body rounded">
-                                    <h5 class="card-title">
-                                        <i
-                                            class="fa-solid fa-building-user"></i>
-                                        &nbsp;Entrepreneurs
-                                    </h5>
-                                    <p class="card-text">
-                                        Entrepreneurs and commercial enterprises
-                                        can utilize Mtaa Wetu to pinpoint the
-                                        “best bet” locations for business.
-                                        Location, location, location is the Mtaa
-                                        Wetu mantra.
-                                    </p>
-                                </div>
+                    </div>
+                    <div class="col card-deck">
+                        <div class="card bg-transparent h-100">
+                            <div class="card-body rounded">
+                                <h5 class="card-title">
+                                    <i class="fa-solid fa-building-user"></i>
+                                    &nbsp;Entrepreneurs
+                                </h5>
+                                <p class="card-text">
+                                    Entrepreneurs and commercial enterprises
+                                    can utilize Mtaa Wetu to pinpoint the
+                                    “best bet” locations for business.
+                                    Location, location, location is the Mtaa
+                                    Wetu mantra.
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
-            <hr class="breakline" />
-            <section>
-                <footer>
-                    <div class="foot-wrapper">
-                        <div class="name-footer-div"><p>Mtaawetu</p></div>
-                        <div class="footer-contact">
-                            <div class="social-title">Socials</div>
-                            <div id="whatsapp" class="socials">
+            </div>
+        </section>
 
-                                <p><i class="fa-brands fa-whatsapp fa-lg"></i>
-                                    &nbsp;+254735880407</p>
-                            </div>
-                            <div id="email" class="socials">
 
-                                <p> <i
-                                        class="fa-solid fa-envelope fa-lg"></i>
-                                    &nbsp;info@mtaawetu.com</p>
+
+        <section>
+            <div class="calltoaction contaner-fluid">
+                <div class="container call-to-action-wrapper">
+                    <div class="left-side-content-call-to-action">
+                        <h6>Get Valuable Insights from your Mtaa!</h6>
+                        <p>We offer insight on crime, Land use, Opportunity , Accessibility and mauch more all which
+                            Help you know more about your mtaa and know how that affects you</p>
+                        <button class="btn btn-md btn-primary "> Start Now! </button>
+                    </div>
+                    <div class="right-side-content-call-to-action">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <div class="opinion contaner-fluid">
+                <div class="container call-to-action-wrapper">
+                    <div class="left-side-content-opinion">
+
+                    </div>
+                    <div class="right-side-content-opinion">
+                        <h6>Let Your Voice be heard</h6>
+                        <p> Your opinions on the state of Roads, Hospitals ,Schools and other services in your mtaa is
+                            important. Using our level of
+                            satisfaction, you can let your voice be herad by commenting on your satisfaction with your
+                            services. This data informs urban planners, the government and other stakeholders to improve
+                            your mtaa to be the paradise you desire </p>
+                        <!-- <button class="btn btn-md btn-primary "> Start Now! </button> -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <div class="newsletter contaner-fluid">
+                <div class="container call-to-action-wrapper">
+                    <div class="right-side-content-newsletter">
+                        <form action="" class="newsletter-form">
+                            <h6>Sign Up For Our Newsletter</h6>
+                            {% csrf_token %}
+                            <div class="mb-2">
+                                <label for="firstname" class="form-label ms-5">Firstname</label>
+                                <input type="text" class="form-control w-75 ms-5" id="firstname">
                             </div>
+
+                            <div class="mb-2">
+                                <label for="lastname" class="form-label ms-5">Lastname</label>
+                                <input type="password" class="form-control w-75 ms-5" id="lastname">
+                            </div>
+
+                            <div class="mb-2">
+                                <label for="exampleInputEmail1" class="form-label ms-5">Email address</label>
+                                <input type="email" class="form-control w-75 ms-5" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                                <div id="emailHelp" class="form-text text-warning ms-5">We'll never share your email
+                                    with anyone
+                                    else.
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label for="phone" class="form-label ms-5">Phone Number</label>
+                                <input type="text" class="form-control w-75 ms-5" id="phone">
+                                <div id="emailHelp" class="form-text text-warning ms-5">We'll never share your phone
+                                    number
+                                    with anyone
+                                    else.
+                                </div>
+                            </div>
+                            <div class="mb-2 form-check">
+                                <input type="checkbox" class="form-check-input ms-4" id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1 "> &nbsp; I agree to the <a
+                                        class="terms text-warning" href="#">terms
+                                        and
+                                        conditions</a>
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-warning w-75 ms-5">Submit</button>
+                        </form>
+                        <!-- <button class="btn btn-md btn-primary "> Start Now! </button> -->
+                    </div>
+                    <div class="left-side-content-newsletter">
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+
+        <hr class="breakline" />
+
+        <section>
+            <footer>
+                <div class="foot-wrapper">
+                    <div class="name-footer-div">
+                        <p>Mtaawetu</p>
+                    </div>
+                    <div class="footer-contact">
+                        <div class="social-title">Socials</div>
+                        <div id="whatsapp" class="socials">
+
+                            <p><i class="fa-brands fa-whatsapp fa-lg"></i>
+                                &nbsp;+254735880407</p>
                         </div>
+                        <div id="email" class="socials">
 
-                        <div class="Quicklinks">
-                            <div class="social-title">Quick links</div>
-                            <ul>
-                                <li>About</li>
-                                <li>Welcome</li>
-                            </ul>
+                            <p> <i class="fa-solid fa-envelope fa-lg"></i>
+                                &nbsp;info@mtaawetu.com</p>
                         </div>
                     </div>
-                    <div class="copyrights"><i
-                            class="fa-regular fa-copyright"></i> &nbsp;mtaa
-                        wetu</div>
-                </footer>
-            </section>
-        </div>
-        {% endblock %}
-    </body>
+
+                    <div class="Quicklinks">
+                        <div class="social-title">Quick links</div>
+                        <ul>
+                            <li>About</li>
+                            <li>Welcome</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="copyrights"><i class="fa-regular fa-copyright"></i> &nbsp;mtaa
+                    wetu</div>
+            </footer>
+        </section>
+    </div>
+    {% endblock %}
+</body>
+
 </html>
