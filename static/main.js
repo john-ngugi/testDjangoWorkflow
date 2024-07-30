@@ -463,6 +463,8 @@ document.getElementById('close-comment-btn').addEventListener('click', function(
     // Handle the close button action (e.g., hide the form or modal)
 });
 
+
+
 //   // Get all dropdown toggle elements
 //   var dropdownToggles = document.querySelectorAll('.dropdown-toggle');
 

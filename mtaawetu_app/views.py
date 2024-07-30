@@ -2,6 +2,7 @@ from django.shortcuts import render,get_object_or_404
 import json
 import folium
 from folium import Html, Element
+from folium.plugins import Geocoder
 import json
 import requests
 import psycopg2
@@ -78,50 +79,6 @@ def getLayercontrol(m):
     # Inject custom CSS into the map
     css_element = folium.Element(custom_css)
     m.get_root().html.add_child(css_element)
-
-    # Inject custom JavaScript for sliders
-    slider_js = """
-    <script>
-    function createSlider(layerName, index) {
-        var slider = document.createElement('input');
-        slider.type = 'range';
-        slider.min = '0';
-        slider.max = '1';
-        slider.step = '0.1';
-        slider.value = '1';
-        slider.style.width = '100px';
-        slider.style.margin = '5px';
-
-        slider.oninput = function() {
-            var layers = document.querySelectorAll('input[type="checkbox"][title="' + layerName + '"]');
-            if (layers.length > 0) {
-                var layerId = layers[0].id.replace(/-/g, '_');
-                var mapLayer = window[layerId];
-                if (mapLayer) {
-                    mapLayer.eachLayer(function(layer) {
-                        layer.setStyle({opacity: slider.value, fillOpacity: slider.value});
-                    });
-                }
-            }
-        };
-
-        return slider;
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var layers = document.querySelectorAll('.leaflet-control-layers-overlays label span');
-        layers.forEach(function(layer, index) {
-            var layerName = layer.innerText;
-            var slider = createSlider(layerName, index);
-            layer.parentElement.appendChild(slider);
-        });
-    });
-    </script>
-    """
-
-    # Add the JavaScript to the map
-    js_element = folium.Element(slider_js)
-    m.get_root().html.add_child(js_element)
     return 'control success'
 
 layer_options=['schoolaccessindexdrive','schoolaccessindexwalk', 'schoolaccessratiodrive',
@@ -216,69 +173,81 @@ def  getmarkers():
 
 
 
-def get_features_geojson(m,geojson_data,layername,extra_columns,show_layers):
+def get_features_geojson(m, geojson_data, layername, extra_columns, show_layers, have_popup):
+    # Define a tooltip format string
+    tooltip_format = "<br>".join([f"<b>{alias}:</b> {{%s}}" % field for field, alias in zip(extra_columns, extra_columns)])
 
-        # Define a tooltip format string
-        tooltip_format = "<br>".join([f"<b>{alias}:</b> {{%s}}" % field for field, alias in zip(extra_columns, extra_columns)])
+    if gdfType.values[0] == 'MultiPolygon':
+        geojson = folium.GeoJson(
+            geojson_data,
+            name=layername,
+            style_function=lambda feature: {
+                "fillColor": get_color(feature['properties']),
+                "color": "grey",  # Outline color
+                "weight": 1,      # Outline weight
+                "fillOpacity": 0.4,  # Transparency of fill color
+                'show': show_layers.get(layername, True),
+            },
+            highlight_function=lambda feature: {
+                "fillColor": "rgba(255, 255, 255, 0.1)",  # Color for highlighted feature
+                "color": "grey",
+                "weight": 3,
+                "fillOpacity": 0.1
+            },
+            tooltip=folium.GeoJsonTooltip(fields=extra_columns, aliases=extra_columns)
+        )
 
-        if gdfType.values[0] == 'MultiPolygon':
-            folium.GeoJson(
-                geojson_data,
-                name=layername,
-                style_function=lambda feature: {
-                    "fillColor": get_color(feature['properties']),
-                    "color": "grey",      # Outline color
-                    "weight": 1,          # Outline weight
-                    "fillOpacity": 0.4,# Transparency of fill color
-                    'show':show_layers.get(layername,True),
-                },
-                highlight_function=lambda feature: {
-                    "fillColor": "rgba(255, 255, 255, 0.1)",   # Color for highlighted feature
-                    "color": "grey",
-                    "weight": 3,
-                    "fillOpacity": 0.1
-                },
-                tooltip=folium.GeoJsonTooltip(fields=extra_columns, aliases=extra_columns)
-            ).add_to(m)
+        if have_popup:
+            geojson.add_child(folium.Popup("This is a popup"))
 
-        elif gdfType.values[0] == 'MultiLineString':
+        geojson.add_to(m)
+
+    elif gdfType.values[0] == 'MultiLineString':
+        line_attribute = extra_columns[1]
+        # Create a colormap
+        colormap = cm.linear.Set1_08.scale(round(gdf[line_attribute].min()), round(gdf[line_attribute].max()))
+        colormap.caption = extra_columns[1]
+        m.add_child(colormap)
+
+        def style_function(feature):
+            # Get the normalized value for the current feature
             line_attribute = extra_columns[1]
-            # Create a colormap
-            colormap = cm.linear.Set1_08.scale( round(gdf[line_attribute].min()),  round(gdf[line_attribute].max()))
-            colormap.caption = extra_columns[1]
-            m.add_child(colormap)
-            def style_function(feature):
-                # Get the normalized value for the current feature
-                line_attribute = extra_columns[1]
-                value = feature['properties'][line_attribute]
-                color = colormap(value)
-                return {
-                    "color": color,
-                    "weight": 3,
-                    "opacity": 0.7
-                }
-            folium.GeoJson(
-                geojson_data,
-                name=layername,
-                style_function=style_function,
-                highlight_function=lambda feature: {
-                    "color": "yellow",  # Highlighted line color
-                    "weight": 5,        # Highlighted line weight
-                    "opacity": 1        # Highlighted line opacity
-                },
-                tooltip=folium.GeoJsonTooltip(fields=extra_columns,
-                                            aliases=extra_columns,
-                                            localize=True,
-                                            sticky=False,
-                                            labels=True,)).add_to(m)
+            value = feature['properties'][line_attribute]
+            color = colormap(value)
+            return {
+                "color": color,
+                "weight": 3,
+                "opacity": 0.7
+            }
 
-        else:
-            print('Layer is neither MultiPolygon nor MultiLineString')
-            return m
+        geojson = folium.GeoJson(
+            geojson_data,
+            name=layername,
+            style_function=style_function,
+            highlight_function=lambda feature: {
+                "color": "yellow",  # Highlighted line color
+                "weight": 5,        # Highlighted line weight
+                "opacity": 1        # Highlighted line opacity
+            },
+            tooltip=folium.GeoJsonTooltip(fields=extra_columns,
+                                          aliases=extra_columns,
+                                          localize=True,
+                                          sticky=False,
+                                          labels=True)
+        )
 
+        if have_popup:
+            geojson.add_child(folium.Popup("This is a popup"))
+
+        geojson.add_to(m)
+
+    else:
+        print('Layer is neither MultiPolygon nor MultiLineString')
         return m
 
-def getLineGeojson(m,table_name,extra_columns=[],show_layers=None):
+    return m
+
+def getLineGeojson(m, table_name, extra_columns=[], show_layers=None, have_popup=False):
     # get the connection url from the database
     db_connection_url = "postgresql://mtaa-wetu0:MtaaWetu***@postgresql-mtaa-wetu0.alwaysdata.net:5432/mtaa-wetu0_start"
 
@@ -307,7 +276,7 @@ def getLineGeojson(m,table_name,extra_columns=[],show_layers=None):
         geojson_data = gdf.to_json()
         if show_layers is None:
             show_layers = {}
-        get_features_geojson(m=m,geojson_data=geojson_data,layername=table_name,extra_columns=extra_columns,show_layers=show_layers)
+        get_features_geojson(m=m, geojson_data=geojson_data, layername=table_name, extra_columns=extra_columns, show_layers=show_layers, have_popup=have_popup)
 
     except exc.SQLAlchemyError as e:
         print(f"Error occurred: {e}")
@@ -316,6 +285,7 @@ def getLineGeojson(m,table_name,extra_columns=[],show_layers=None):
         session.close()
 
     return m
+
 
 color_values = [
     "YlGn",
@@ -642,9 +612,10 @@ def index(request):
     # connect to the database
     # getPointData(m=m,marker_group=marker_group ,lat='latitude',lon='longitude',table_name='nairobi_hospitals',extra_columns=['f_name', 'location','agency','division'])
     # create_chloropeth(m=m,marker_group=marker_group,table_name="schoolaccessindexdrive",legend_name='school access Index',extra_columns=['id','schoolacce'])
-    getLineGeojson(m,table_name='estates_nairobi',extra_columns=['name','shape_area'])
+    getLineGeojson(m,table_name='estates_nairobi',extra_columns=['name','shape_area'],have_popup=True)
     getLayercontrol(m)
-    folium.LayerControl().add_to(m)
+    folium.LayerControl(collapsed=False).add_to(m)
+    Geocoder().add_to(m)
     print("I am getting the layers! ")
     context = {
         'map': m._repr_html_(),

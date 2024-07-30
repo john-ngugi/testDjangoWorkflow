@@ -115,7 +115,7 @@ nav{
 .hero p{
     padding-top: 18px;
     width: 50%;
-    font-weight: 200;
+    /* font-weight: 200; */
     /* line-height: 1.8rem; */
     /* letter-spacing: 0.03rem; */
 }

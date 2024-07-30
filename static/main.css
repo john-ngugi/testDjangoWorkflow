@@ -75,6 +75,7 @@ p{
 .layer-control p{
   font-size: 15px;
 }
+
 @keyframes slideIn {
   from {
     margin-top: -20%;
