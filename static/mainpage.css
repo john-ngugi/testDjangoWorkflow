@@ -305,10 +305,10 @@ nav{
 .left-side-content-opinion{
     width: 60%;
     height: 60vh;
-    background-image: url("https://github.com/john-ngugi/Email-Imgs/blob/main/Screenshot%20(70).png?raw=true");
+    background-image: url("https://github.com/john-ngugi/Email-Imgs/blob/main/Screenshot%20(70)_new.png?raw=true");
     background-size: cover;
     background-repeat: no-repeat;
-
+    clip-path: polygon(25% 0%, 100% 0, 75% 100%, 0% 100%);
 }
 
 .right-side-content-opinion{
@@ -386,6 +386,13 @@ nav{
 /* .newsletter-form label, .newsletter-form input{
     margin: 10px;
 } */
+
+
+.content-wrapper{
+    width: 100vw;
+    padding-left: 10%;
+    padding-right: 10%;
+}
 footer{
     width: 100vw;
     height: 250px;
