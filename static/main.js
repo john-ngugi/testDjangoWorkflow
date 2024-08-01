@@ -467,7 +467,7 @@ document.getElementById('close-comment-btn').addEventListener('click', function(
 
 // Listen for messages from the parent window
 window.addEventListener('message', function(event) {
-    if (event.data.action === 'submitForm') {
+    if (event.data.event_id  === 'submitForm') {
         // Handle form submission data
         const formData = event.data.data;
         const extraColumnName = 'extra_columns[0]'; // Replace with actual column name

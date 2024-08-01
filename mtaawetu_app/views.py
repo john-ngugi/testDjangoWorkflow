@@ -210,43 +210,43 @@ def create_popup_form():
         </style>
     </head>
     <body>
-    <div class="container">
-        <form>
+<div class="container">
+        <form id="popupForm">
             <h4>What are the three main problems in this neighbourhood (choose any three)</h4>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="poorRoads">
+                <input class="form-check-input" type="checkbox" value="Poor roads" id="poorRoads">
                 <label class="form-check-label" for="poorRoads">Poor roads</label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="waterAvailability">
+                <input class="form-check-input" type="checkbox" value="Water availability" id="waterAvailability">
                 <label class="form-check-label" for="waterAvailability">Water availability (hakuna maji)</label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="sewerSanitation">
+                <input class="form-check-input" type="checkbox" value="Sewer and sanitation" id="sewerSanitation">
                 <label class="form-check-label" for="sewerSanitation">Sewer and sanitation</label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="solidWaste">
+                <input class="form-check-input" type="checkbox" value="Solid Waste" id="solidWaste">
                 <label class="form-check-label" for="solidWaste">Solid Waste (taka taka)</label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="noise">
+                <input class="form-check-input" type="checkbox" value="Noise" id="noise">
                 <label class="form-check-label" for="noise">Noise (kelele)</label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="crime">
+                <input class="form-check-input" type="checkbox" value="Crime" id="crime">
                 <label class="form-check-label" for="crime">Crime (wizi)</label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="airPollution">
+                <input class="form-check-input" type="checkbox" value="Air pollution" id="airPollution">
                 <label class="form-check-label" for="airPollution">Air pollution (hewa mbaya)</label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="transport">
+                <input class="form-check-input" type="checkbox" value="Transport" id="transport">
                 <label class="form-check-label" for="transport">Transport (hakuna matatu karibu)</label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="illegalDevelopment">
+                <input class="form-check-input" type="checkbox" value="Illegal / unplanned development" id="illegalDevelopment">
                 <label class="form-check-label" for="illegalDevelopment">Illegal / unplanned development (nyumba haramu)</label>
             </div>
             <div class="form-group">
@@ -260,25 +260,23 @@ def create_popup_form():
     </div>
 
     <script>
-                function handleFormSubmit() {
-                    const form = document.getElementById('popupForm');
-                    console.log(form)
-                    const formData = new FormData(form);
-                    const data = {};
-                    formData.forEach((value, key) => {
-                        if (data[key]) {
-                            if (!Array.isArray(data[key])) {
-                                data[key] = [data[key]];
-                            }
-                            data[key].push(value);
-                        } else {
-                            data[key] = value;
-                        }
-                    });
+        function handleFormSubmit() {
+            const data = {
+                poorRoads: document.getElementById('poorRoads').checked,
+                waterAvailability: document.getElementById('waterAvailability').checked,
+                sewerSanitation: document.getElementById('sewerSanitation').checked,
+                solidWaste: document.getElementById('solidWaste').checked,
+                noise: document.getElementById('noise').checked,
+                crime: document.getElementById('crime').checked,
+                airPollution: document.getElementById('airPollution').checked,
+                transport: document.getElementById('transport').checked,
+                illegalDevelopment: document.getElementById('illegalDevelopment').checked,
+                otherIssues: document.getElementById('otherIssues').value
+            };
 
-                    // Post message to parent window
-                    parent.postMessage({ action: 'submitForm', data: data }, '*');
-                    }
+            // Post message to parent window
+            parent.postMessage({ event_id: 'submitForm', data: data }, '*');
+        }
     </script>
     </body>
     '''
