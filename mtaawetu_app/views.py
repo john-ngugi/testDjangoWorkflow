@@ -29,6 +29,7 @@ from nbconvert import HTMLExporter
 from django.shortcuts import render, get_object_or_404
 from .models import Notebook
 import numpy as np
+import branca
 
 import random
 # Create your views here.
@@ -166,11 +167,122 @@ def  getmarkers():
 
 
 
+def create_popup_form():
+    form_html = '''
+        <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mtaa wetu | Our Neighbourhood Planning App</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous"
+        />
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"
+        ></script>
+        <style>
+            /* Style for the whole scrollbar */
+            ::-webkit-scrollbar {
+                width: 8px; /* Width of the scrollbar */
+                height: 8px; /* Height of the scrollbar for horizontal scrollbars */
+            }
 
+            /* Style for the scrollbar track */
+            ::-webkit-scrollbar-track {
+                background: #f1f1f1; /* Background of the scrollbar track */
+                border-radius: 10px; /* Rounded edges for the scrollbar track */
+            }
 
+            /* Style for the scrollbar thumb */
+            ::-webkit-scrollbar-thumb {
+                background:#378DFC ; /* Background color of the scrollbar thumb */
+                border-radius: 10px; /* Rounded edges for the scrollbar thumb */
+            }
 
+            /* Style for the scrollbar thumb on hover */
+            ::-webkit-scrollbar-thumb:hover {
+                background: #3872be; /* Background color of the scrollbar thumb on hover */
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container">
+        <form>
+            <h4>What are the three main problems in this neighbourhood (choose any three)</h4>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="poorRoads">
+                <label class="form-check-label" for="poorRoads">Poor roads</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="waterAvailability">
+                <label class="form-check-label" for="waterAvailability">Water availability (hakuna maji)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="sewerSanitation">
+                <label class="form-check-label" for="sewerSanitation">Sewer and sanitation</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="solidWaste">
+                <label class="form-check-label" for="solidWaste">Solid Waste (taka taka)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="noise">
+                <label class="form-check-label" for="noise">Noise (kelele)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="crime">
+                <label class="form-check-label" for="crime">Crime (wizi)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="airPollution">
+                <label class="form-check-label" for="airPollution">Air pollution (hewa mbaya)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="transport">
+                <label class="form-check-label" for="transport">Transport (hakuna matatu karibu)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="illegalDevelopment">
+                <label class="form-check-label" for="illegalDevelopment">Illegal / unplanned development (nyumba haramu)</label>
+            </div>
+            <div class="form-group">
+                <label for="otherIssues">Other (please specify in the space below)</label>
+                <textarea class="form-control" id="otherIssues" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <input class="btn btn-primary btn-md w-100 mt-3" type="button" value="Submit" onclick="handleFormSubmit()">
+            </div>
+        </form>
+    </div>
 
+    <script>
+                function handleFormSubmit() {
+                    const form = document.getElementById('popupForm');
+                    console.log(form)
+                    const formData = new FormData(form);
+                    const data = {};
+                    formData.forEach((value, key) => {
+                        if (data[key]) {
+                            if (!Array.isArray(data[key])) {
+                                data[key] = [data[key]];
+                            }
+                            data[key].push(value);
+                        } else {
+                            data[key] = value;
+                        }
+                    });
 
+                    // Post message to parent window
+                    parent.postMessage({ action: 'submitForm', data: data }, '*');
+                    }
+    </script>
+    </body>
+    '''
+    return form_html
 
 
 def get_features_geojson(m, geojson_data, layername, extra_columns, show_layers, have_popup):
@@ -198,8 +310,13 @@ def get_features_geojson(m, geojson_data, layername, extra_columns, show_layers,
         )
 
         if have_popup:
-            geojson.add_child(folium.Popup("This is a popup"))
+            # popup_content = create_popup_form()
+            html =create_popup_form()
+            iframe = branca.element.IFrame(html=html, width=300, height=300)
+            popup = folium.Popup(iframe,max_width=500)
 
+
+            geojson.add_child(popup)
         geojson.add_to(m)
 
     elif gdfType.values[0] == 'MultiLineString':
@@ -230,14 +347,16 @@ def get_features_geojson(m, geojson_data, layername, extra_columns, show_layers,
                 "opacity": 1        # Highlighted line opacity
             },
             tooltip=folium.GeoJsonTooltip(fields=extra_columns,
-                                          aliases=extra_columns,
-                                          localize=True,
-                                          sticky=False,
-                                          labels=True)
+                                        aliases=extra_columns,
+                                        localize=True,
+                                        sticky=False,
+                                        labels=True)
         )
 
         if have_popup:
-            geojson.add_child(folium.Popup("This is a popup"))
+            popup_content = create_popup_form()
+            popup = folium.Popup(popup_content, max_width=300, parse_html=True)
+            geojson.add_child(popup)
 
         geojson.add_to(m)
 
@@ -799,3 +918,11 @@ def notebook_detail(request, pk):
     (body, resources) = html_exporter.from_notebook_node(nb)
 
     return render(request, 'notebooks/notebook_detail.html', {'notebook_html': body,'notebook':notebook})
+
+
+def estateFormHandler(request):
+    if request.method =="POST":
+        data = json.loads(request.body)
+        print(data)
+        return JsonResponse({"message":"success"})
+    return JsonResponse({'message':"faliure"})

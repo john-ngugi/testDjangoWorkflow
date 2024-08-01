@@ -14,4 +14,5 @@ urlpatterns =[
     path('search_research/', views.searchResearch, name='search-research'),
     path('notebooklist/', views.notebook_list, name='notebook_list'),
     path('<int:pk>/', views.notebook_detail, name='notebook_detail'),
+    path('estates-info/',views.estateFormHandler,name="estates_info"),
 ]

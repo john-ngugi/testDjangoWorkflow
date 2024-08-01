@@ -465,6 +465,32 @@ document.getElementById('close-comment-btn').addEventListener('click', function(
 
 
 
+// Listen for messages from the parent window
+window.addEventListener('message', function(event) {
+    if (event.data.action === 'submitForm') {
+        // Handle form submission data
+        const formData = event.data.data;
+        const extraColumnName = 'extra_columns[0]'; // Replace with actual column name
+
+        // Send form data to the server
+        fetch('/estates-info/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name: extraColumnName, values: formData })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert('Form submitted successfully!');
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+});
+
 //   // Get all dropdown toggle elements
 //   var dropdownToggles = document.querySelectorAll('.dropdown-toggle');
 
