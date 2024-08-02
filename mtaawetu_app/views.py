@@ -164,8 +164,10 @@ folium.TileLayer(tiles="https://server.arcgisonline.com/ArcGIS/rest/services/Wor
                 show=False,
                 name="Esri World Imagery",
                 attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community').add_to(m)
-
-
+map = m
+def getMap():
+    m = map
+    return m
 # Function to generate star rating HTML
 def generate_star_rating(rating):
     stars = ''
@@ -294,7 +296,7 @@ def create_popup_form():
                 });
 
                 try {
-                    const response = await fetch('/estates-info/', {
+                    const response = await fetch("https/mtaawetu.com/estates-info/", {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -342,10 +344,10 @@ def get_features_geojson(m, geojson_data, layername, extra_columns, show_layers,
         if have_popup:
             # popup_content = create_popup_form()
             html =create_popup_form()
-            # iframe = branca.element.IFrame(html=html, width=300, height=300)
-            # popup = folium.Popup(iframe,max_width=500)
-            popup_content = create_popup_form()
-            popup = folium.Popup(popup_content, max_width=300, parse_html=True)
+            iframe = branca.element.IFrame(html=html, width=500, height=300)
+            popup = folium.Popup(iframe,max_width=500)
+            # popup_content = create_popup_form()
+            # popup = folium.Popup(popup_content, max_width=300, parse_html=True)
 
 
             geojson.add_child(popup)
@@ -775,7 +777,7 @@ def getLayers(request):
     #             show=False,
     #             name="Esri World Imagery",
     #             attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community').add_to(m)
-
+    getMap()
     if request.method == 'POST':
         # Process POST data
         data = json.loads(request.body)
