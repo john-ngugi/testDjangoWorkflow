@@ -35,6 +35,7 @@ import random
 # Create your views here.
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 def getLayercontrol(m):
     # Create custom CSS
     custom_css = """
@@ -140,6 +141,31 @@ base_maps = {
     "OpenStreetMap": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 }
 
+
+m = folium.Map(
+                location = (-1.2921, 36.8219),
+                zoom_control=False,
+                zoom_start=12,
+                width='100%',
+                height='100%')
+
+# Add the custom base map tile layer with a custom name
+folium.TileLayer(
+    tiles=custom_tile_url,
+    name=custom_tile_name,
+    attr='CartoDB'
+).add_to(m)
+
+folium.TileLayer(tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                zoom_control = False,
+                zoom_start=12,
+                width='100%',
+                height="100%",
+                show=False,
+                name="Esri World Imagery",
+                attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community').add_to(m)
+
+
 # Function to generate star rating HTML
 def generate_star_rating(rating):
     stars = ''
@@ -159,11 +185,6 @@ def get_color(properties):
     saturation = 50
     lightness = 50
     return f'hsl({hue}, {saturation}%, {lightness}%)'
-
-
-
-def  getmarkers():
-    pass
 
 
 
@@ -210,74 +231,85 @@ def create_popup_form():
         </style>
     </head>
     <body>
-<div class="container">
-        <form id="popupForm">
-            <h4>What are the three main problems in this neighbourhood (choose any three)</h4>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="Poor roads" id="poorRoads">
-                <label class="form-check-label" for="poorRoads">Poor roads</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="Water availability" id="waterAvailability">
-                <label class="form-check-label" for="waterAvailability">Water availability (hakuna maji)</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="Sewer and sanitation" id="sewerSanitation">
-                <label class="form-check-label" for="sewerSanitation">Sewer and sanitation</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="Solid Waste" id="solidWaste">
-                <label class="form-check-label" for="solidWaste">Solid Waste (taka taka)</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="Noise" id="noise">
-                <label class="form-check-label" for="noise">Noise (kelele)</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="Crime" id="crime">
-                <label class="form-check-label" for="crime">Crime (wizi)</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="Air pollution" id="airPollution">
-                <label class="form-check-label" for="airPollution">Air pollution (hewa mbaya)</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="Transport" id="transport">
-                <label class="form-check-label" for="transport">Transport (hakuna matatu karibu)</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="Illegal / unplanned development" id="illegalDevelopment">
-                <label class="form-check-label" for="illegalDevelopment">Illegal / unplanned development (nyumba haramu)</label>
-            </div>
-            <div class="form-group">
-                <label for="otherIssues">Other (please specify in the space below)</label>
-                <textarea class="form-control" id="otherIssues" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-                <input class="btn btn-primary btn-md w-100 mt-3" type="button" value="Submit" onclick="handleFormSubmit()">
-            </div>
-        </form>
-    </div>
+        <div class="container">
+            <form id="popupForm">
+                <h4>What are the three main problems in this neighbourhood (choose any three)</h4>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Poor roads" id="poorRoads">
+                    <label class="form-check-label" for="poorRoads">Poor roads</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Water availability" id="waterAvailability">
+                    <label class="form-check-label" for="waterAvailability">Water availability (hakuna maji)</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Sewer and sanitation" id="sewerSanitation">
+                    <label class="form-check-label" for="sewerSanitation">Sewer and sanitation</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Solid Waste" id="solidWaste">
+                    <label class="form-check-label" for="solidWaste">Solid Waste (taka taka)</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Noise" id="noise">
+                    <label class="form-check-label" for="noise">Noise (kelele)</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Crime" id="crime">
+                    <label class="form-check-label" for="crime">Crime (wizi)</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Air pollution" id="airPollution">
+                    <label class="form-check-label" for="airPollution">Air pollution (hewa mbaya)</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Transport" id="transport">
+                    <label class="form-check-label" for="transport">Transport (hakuna matatu karibu)</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="Illegal / unplanned development" id="illegalDevelopment">
+                    <label class="form-check-label" for="illegalDevelopment">Illegal / unplanned development (nyumba haramu)</label>
+                </div>
+                <div class="form-group">
+                    <label for="otherIssues">Other (please specify in the space below)</label>
+                    <textarea class="form-control" id="otherIssues" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-primary btn-md w-100 mt-3" type="button" value="Submit" onclick="handleFormSubmit()">
+                </div>
+            </form>
+        </div>
 
-    <script>
-        function handleFormSubmit() {
-            const data = {
-                poorRoads: document.getElementById('poorRoads').checked,
-                waterAvailability: document.getElementById('waterAvailability').checked,
-                sewerSanitation: document.getElementById('sewerSanitation').checked,
-                solidWaste: document.getElementById('solidWaste').checked,
-                noise: document.getElementById('noise').checked,
-                crime: document.getElementById('crime').checked,
-                airPollution: document.getElementById('airPollution').checked,
-                transport: document.getElementById('transport').checked,
-                illegalDevelopment: document.getElementById('illegalDevelopment').checked,
-                otherIssues: document.getElementById('otherIssues').value
-            };
+        <script>
+            async function handleFormSubmit() {
+                const formData = new FormData(document.getElementById('popupForm'));
+                const data = {};
 
-            // Post message to parent window
-            parent.postMessage({ event_id: 'submitForm', data: data }, '*');
-        }
-    </script>
+                formData.forEach((value, key) => {
+                    if (key === 'otherIssues') {
+                        data[key] = value;
+                    } else {
+                        data[key] = document.getElementById(key).checked;
+                    }
+                });
+
+                try {
+                    const response = await fetch('/estates-info/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    const result = await response.json();
+                    console.log(result);
+                    // Handle the JSON response here (e.g., display a success message)
+                } catch (error) {
+                    console.error('Error:', error);
+                    // Handle the error here (e.g., display an error message)
+                }
+            }
+        </script>
     </body>
     '''
     return form_html
@@ -310,8 +342,10 @@ def get_features_geojson(m, geojson_data, layername, extra_columns, show_layers,
         if have_popup:
             # popup_content = create_popup_form()
             html =create_popup_form()
-            iframe = branca.element.IFrame(html=html, width=300, height=300)
-            popup = folium.Popup(iframe,max_width=500)
+            # iframe = branca.element.IFrame(html=html, width=300, height=300)
+            # popup = folium.Popup(iframe,max_width=500)
+            popup_content = create_popup_form()
+            popup = folium.Popup(popup_content, max_width=300, parse_html=True)
 
 
             geojson.add_child(popup)
@@ -618,17 +652,12 @@ def getOverpassData(hospital_group,school_group,table_name):
 
 
 
-def create_chloropeth(m,hospital_group,school_group,table_name, legend_name, extra_columns=[]):
+def create_chloropeth(m,table_name, legend_name, extra_columns=[]):
     '''
     table_name: string: Database table name
     legend_name: string: Name of the legend
     extra_columns: list: other attributes to be returned
     '''
-
-    if table_name == 'nbihealthaccess':
-        getPointData(m=m,group=hospital_group, lat='latitude', lon='longitude', table_name='nairobi_hospitals', extra_columns=['f_name', 'location', 'agency', 'division'])
-        # getGeoJsonPoints(m=m,marker_group=marker_group)
-
     # Join all the columns specified in *args into a comma-separated string
     columns_str = ', '.join(extra_columns)
     # Set the table name
@@ -676,13 +705,6 @@ def create_chloropeth(m,hospital_group,school_group,table_name, legend_name, ext
         folium.features.GeoJsonTooltip(fields=extra_columns, aliases=extra_columns, localize=True)
     )
 
-    if table_name in ['schoolaccessindexwalk','nbihealthaccess']:
-        print("getting overpass")
-        # if table_name == 'schoolaccessindexwalk':
-        #     getOverpassData(hospital_group=hospital_group,school_group=school_group,table_name=table_name)
-        if table_name == 'nbihealthaccess':
-            getOverpassData(hospital_group=hospital_group,school_group=school_group,table_name=table_name)
-
     return m
 
 def newIndex(request):
@@ -701,31 +723,16 @@ def newIndex(request):
 
 def index(request):
     print("runing...")
-    m = folium.Map(
-                location = (-1.2921, 36.8219),
-                zoom_control=False,
-                zoom_start=12,
-                width='100%',
-                height='100%')
+    # Create individual FeatureGroups for hospitals and schools
+    hospital_group = folium.FeatureGroup(name='Hospitals', show=True)
+    school_group = folium.FeatureGroup(name='Schools', show=False)
+    # Add individual marker groups to the service buildings group
+    if hospital_group:
+        hospital_group.add_to(m)
+    print("getting overpass")
 
-    # Add the custom base map tile layer with a custom name
-    folium.TileLayer(
-        tiles=custom_tile_url,
-        name=custom_tile_name,
-        attr='CartoDB'
-    ).add_to(m)
-
-    folium.TileLayer(tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-                    zoom_control = False,
-                    zoom_start=12,
-                    width='100%',
-                    height="100%",
-                    show=False,
-                    name="Esri World Imagery",
-                    attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community').add_to(m)
-
-    marker_group = folium.FeatureGroup(name='Service buildings',show=False)
-
+    getOverpassData(hospital_group=hospital_group,school_group=school_group,table_name='nbihealthaccess')
+    getPointData(m=m,group=hospital_group, lat='latitude', lon='longitude', table_name='nairobi_hospitals', extra_columns=['f_name', 'location', 'agency', 'division'])
     # connect to the database
     # getPointData(m=m,marker_group=marker_group ,lat='latitude',lon='longitude',table_name='nairobi_hospitals',extra_columns=['f_name', 'location','agency','division'])
     # create_chloropeth(m=m,marker_group=marker_group,table_name="schoolaccessindexdrive",legend_name='school access Index',extra_columns=['id','schoolacce'])
@@ -748,42 +755,26 @@ def index(request):
 
 def getLayers(request):
 
-    # Create individual FeatureGroups for hospitals and schools
-    hospital_group = folium.FeatureGroup(name='Hospitals', show=False)
-    school_group = folium.FeatureGroup(name='Schools', show=False)
-    m = folium.Map(
-                location = (-1.2921, 36.8219),
-                zoom_control=False,
-                zoom_start=12)
+    # m = folium.Map(
+    #             location = (-1.2921, 36.8219),
+    #             zoom_control=False,
+    #             zoom_start=12)
 
-    folium.TileLayer(
-        tiles=custom_tile_url,
-        name=custom_tile_name,
-        attr='CartoDB'
-    ).add_to(m)
+    # folium.TileLayer(
+    #     tiles=custom_tile_url,
+    #     name=custom_tile_name,
+    #     attr='CartoDB'
+    # ).add_to(m)
 
 
-    folium.TileLayer(tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-                zoom_control = False,
-                zoom_start=12,
-                width='100%',
-                height="100%",
-                show=False,
-                name="Esri World Imagery",
-                attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community').add_to(m)
-
-    # Add individual marker groups to the service buildings group
-    if hospital_group:
-        hospital_group.add_to(m)
-    if school_group:
-        school_group.add_to(m)
-
-
-
-    # Ensure the 'estates_nairobi' layer is always loaded by default
-    # show_layers = {'estates_nairobi': True}  # Change to False if it should be hidden by default
-    # getLineGeojson(m, table_name='estates_nairobi', extra_columns=['name', 'shape_area'], show_layers=show_layers)
-
+    # folium.TileLayer(tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    #             zoom_control = False,
+    #             zoom_start=12,
+    #             width='100%',
+    #             height="100%",
+    #             show=False,
+    #             name="Esri World Imagery",
+    #             attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community').add_to(m)
 
     if request.method == 'POST':
         # Process POST data
@@ -806,7 +797,7 @@ def getLayers(request):
         elif table_name == 'ccn_zones':
             getLineGeojson(m,table_name=table_name,extra_columns=['zone_id_1',f'{attribute}'])
         else:
-            create_chloropeth(m=m,hospital_group=hospital_group,school_group=school_group,table_name=table_name,legend_name=legend_name,extra_columns=['id',f'{attribute}'])
+            create_chloropeth(m=m,table_name=table_name,legend_name=legend_name,extra_columns=['id',f'{attribute}'])
 
         getLayercontrol(m)
         folium.LayerControl().add_to(m)
@@ -918,9 +909,16 @@ def notebook_detail(request, pk):
     return render(request, 'notebooks/notebook_detail.html', {'notebook_html': body,'notebook':notebook})
 
 
-def estateFormHandler(request):
-    if request.method =="POST":
-        data = json.loads(request.body)
-        print(data)
-        return JsonResponse({"message":"success"})
-    return JsonResponse({'message':"faliure"})
+@csrf_exempt
+def handle_form_submission(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            # Process the data here (e.g., save it to the database)
+            response = {'status': 'success', 'message': 'Form submitted successfully!'}
+        except Exception as e:
+            response = {'status': 'error', 'message': str(e)}
+
+        return JsonResponse(response)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
